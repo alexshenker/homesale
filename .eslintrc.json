@@ -1,3 +1,28 @@
 {
-  "extends": "next/core-web-vitals"
+    "root": true,
+    "extends": [
+        "next/core-web-vitals",
+        "eslint:recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "plugins": ["react-hooks", "@typescript-eslint", "unused-imports"],
+    "rules": {
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": [
+            "error",
+            { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+        ],
+        "unused-imports/no-unused-imports": "error",
+        "no-unexpected-multiline": "off"
+    },
+    "overrides": [
+        {
+            "files": ["./environment.d.ts"],
+            "rules": {
+                "@typescript-eslint/no-unused-vars": "off"
+            }
+        }
+    ],
+    "ignorePatterns": ["node_modules", "build", "dist", "public"]
 }
