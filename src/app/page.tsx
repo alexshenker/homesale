@@ -1,3 +1,7 @@
+"use client";
+
 export default function Home() {
-    return <main></main>;
+    return (
+        <main className="grow w-full flex justify-center items-center"></main>
+    );
 }
