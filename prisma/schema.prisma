@@ -28,6 +28,9 @@ model Account {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @updatedAt @db.Timestamptz()
+
   @@unique([provider, providerAccountId])
 }
 
@@ -38,6 +41,9 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @updatedAt @db.Timestamptz()
 }
 
 model VerificationToken {
@@ -60,9 +66,149 @@ model User {
   sessions      Session[]
 
   //CUSTOM PROPS
-  firstName String?
-  lastName  String?
+  PersonalInfo PersonalInfo?
+  Properties   Property[] //properties listed for sale
 
   createdAt DateTime @default(now()) @db.Timestamptz()
   updatedAt DateTime @updatedAt @db.Timestamptz()
+}
+
+model PersonalInfo {
+  id     String @id @default(cuid())
+  userId String @unique
+  User   User   @relation(fields: [userId], references: [id])
+
+  firstName  String?
+  middleName String?
+  lastName   String?
+  prefix     NamePrefix?
+  suffix     NameSuffix?
+
+  cellNumber String? @unique
+}
+
+model Property {
+  id       String @id @default(cuid())
+  sellerId String
+  Seller   User   @relation(fields: [sellerId], references: [id])
+
+  Address      PropertyAddress?
+  price        Float
+  description  String
+  propertyType PropertyTypes
+
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @updatedAt @db.Timestamptz()
+}
+
+model PropertyAddress {
+  id         String   @id @default(cuid())
+  property   Property @relation(fields: [propertyId], references: [id])
+  propertyId String   @unique
+
+  street_address String
+  apartment      String?
+  zipCode        String  @db.VarChar(5) //"12345"
+  zipCodeExt     String  @db.VarChar(4) //"1234"
+  city           String
+  state          States
+
+  @@unique([street_address, apartment, zipCode, zipCodeExt, city, state])
+}
+
+enum NamePrefix {
+  Mr // Mister
+  Mrs // Mistress
+  Ms // Miss
+  Miss // Miss
+  Dr // Doctor
+  Rev // Reverend
+  Sir // Sir (used as a formal prefix for knights)
+}
+
+enum NameSuffix {
+  Jr // Junior
+  Sr // Senior
+  II //Second
+  III // Third
+}
+
+enum PropertyTypes {
+  apartment
+  condo
+  coop
+  house //this and single-family home can be used interchangeably, but may have different meaning in terms of zoning
+  single_family_home
+  multi_family_home
+  duplex
+  triplex
+  townhouse
+  land
+  commercial_property
+  industrial_property
+}
+
+enum UnitTypes {
+  studio
+  loft
+  penthouse
+}
+
+enum States {
+  AL // Alabama
+  AK // Alaska
+  AZ // Arizona
+  AR // Arkansas
+  CA // California
+  CO // Colorado
+  CT // Connecticut
+  DE // Delaware
+  FL // Florida
+  GA // Georgia
+  HI // Hawaii
+  ID // Idaho
+  IL // Illinois
+  IN // Indiana
+  IA // Iowa
+  KS // Kansas
+  KY // Kentucky
+  LA // Louisiana
+  ME // Maine
+  MD // Maryland
+  MA // Massachusetts
+  MI // Michigan
+  MN // Minnesota
+  MS // Mississippi
+  MO // Missouri
+  MT // Montana
+  NE // Nebraska
+  NV // Nevada
+  NH // New Hampshire
+  NJ // New Jersey
+  NM // New Mexico
+  NY // New York
+  NC // North Carolina
+  ND // North Dakota
+  OH // Ohio
+  OK // Oklahoma
+  OR // Oregon
+  PA // Pennsylvania
+  RI // Rhode Island
+  SC // South Carolina
+  SD // South Dakota
+  TN // Tennessee
+  TX // Texas
+  UT // Utah
+  VT // Vermont
+  VA // Virginia
+  WA // Washington
+  WV // West Virginia
+  WI // Wisconsin
+  WY // Wyoming
+  DC // District of Columbia
+  AS // American Samoa
+  GU // Guam
+  MP // Northern Mariana Islands
+  PR // Puerto Rico
+  VI // US Virgin Islands
 }
