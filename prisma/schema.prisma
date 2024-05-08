@@ -131,6 +131,7 @@ enum NameSuffix {
   Sr // Senior
   II //Second
   III // Third
+  IV // Fourth
 }
 
 enum PropertyTypes {
