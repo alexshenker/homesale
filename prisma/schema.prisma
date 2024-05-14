@@ -92,16 +92,32 @@ model Property {
   sellerId String
   Seller   User   @relation(fields: [sellerId], references: [id])
 
-  Address PropertyAddress?
-  price   Float
-  rent    Float
+  hiddenFromView Boolean @default(false)
 
-  description  String
+  Address PropertyAddress?
+  price   Float?
+
+  rent                Float?
+  leaseDurationMonths Int
+
+  description  String?
   propertyType PropertyTypes
 
-  squareFeet Int
-  bedrooms   Int
-  bathrooms  Float
+  amenities      Amenities[]
+  otherAmenities String?
+
+  utilities      Utilities[]
+  otherUtilities String?
+
+  squareFeet              Int?
+  bedrooms                Int?
+  bathrooms               Float?
+  numberOfFloors          Int?
+  basement                Boolean?
+  yearBuilt               Int?
+  lastRoofReplacementDate DateTime?
+
+  dateAvailable DateTime?
 
   createdAt DateTime @default(now()) @db.Timestamptz()
   updatedAt DateTime @updatedAt @db.Timestamptz()
@@ -161,8 +177,55 @@ enum PropertyTypes {
   industrial_property
 }
 
+enum Amenities {
+  Laundry_Washer
+  Laundry_Dryer
+
+  Cooling_Central
+  Cooling_WallUnit
+  Cooling_WindowUnit
+
+  Heating_Baseboard
+  Heating_ForcedAir
+  Heating_HeatPump
+  Heating_WallUnit
+
+  Appliances_Dishwasher
+  Appliances_Refrigerator
+  Appliances_Microwave
+  Appliances_Oven
+  Appliances_ElectricStove
+  Appliances_GasStove
+
+  Outdoor_Balcony
+  Outdoor_Deck
+  Outdoor_Rooftop
+  Outdoor_Patio
+  Outdoor_Waterfront
+  Outdoor_Beachfront
+
+  Storage_BicycleStorage
+  Storage_StorageSpace
+
+  Accessibility_Elevator
+  Accessibility_DisabilityAccessible
+
+  Other_Garage
+  Other_Pool
+  Other_Gym
+  Other_ChildrensPlayroom
+  Other_EVChargingStation
+  Other_Doorman
+}
+
 enum Utilities {
   water
+  electric
+  gas
+  internet
+  cable
+  heating
+  airConditioning
 }
 
 enum States {
