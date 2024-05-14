@@ -92,13 +92,26 @@ model Property {
   sellerId String
   Seller   User   @relation(fields: [sellerId], references: [id])
 
-  Address      PropertyAddress?
-  price        Float
+  Address PropertyAddress?
+  price   Float
+  rent    Float
+
   description  String
   propertyType PropertyTypes
 
+  squareFeet Int
+  bedrooms   Int
+  bathrooms  Float
+
   createdAt DateTime @default(now()) @db.Timestamptz()
   updatedAt DateTime @updatedAt @db.Timestamptz()
+}
+
+enum Pets {
+  No
+  Cats
+  SmallDogs
+  LargeDogs
 }
 
 model PropertyAddress {
@@ -123,7 +136,7 @@ enum NamePrefix {
   Miss // Miss
   Dr // Doctor
   Rev // Reverend
-  Sir // Sir (used as a formal prefix for knights)
+  Sir // Sir
 }
 
 enum NameSuffix {
@@ -138,8 +151,7 @@ enum PropertyTypes {
   apartment
   condo
   coop
-  house //this and single-family home can be used interchangeably, but may have different meaning in terms of zoning
-  single_family_home
+  house
   multi_family_home
   duplex
   triplex
@@ -149,10 +161,8 @@ enum PropertyTypes {
   industrial_property
 }
 
-enum UnitTypes {
-  studio
-  loft
-  penthouse
+enum Utilities {
+  water
 }
 
 enum States {

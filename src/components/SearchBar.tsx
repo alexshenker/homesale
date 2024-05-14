@@ -1,6 +1,5 @@
 "use client";
 
-import useTranslate from "@/utils/public/hooks/useTranslate";
 import SearchIcon from "@mui/icons-material/Search";
 import { InputAdornment } from "@mui/material";
 import { KeyboardEvent } from "react";
@@ -14,8 +13,6 @@ interface Props {
 }
 
 const SearchBar = (props: Props): JSX.Element => {
-    const t = useTranslate();
-
     const onEnter = (e: KeyboardEvent<HTMLDivElement>) => {
         if (props.onSearch === undefined) {
             return;
@@ -30,7 +27,7 @@ const SearchBar = (props: Props): JSX.Element => {
     return (
         <TextField
             value={props.searchTerm ?? ""}
-            placeholder={props.placeholder ?? `${t("Search")}...`}
+            placeholder={props.placeholder ?? "Search..."}
             onKeyDown={props.onSearch === undefined ? undefined : onEnter}
             onChange={(e) => props.onChange(e.target.value)}
             type="search"
