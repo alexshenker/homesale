@@ -19,6 +19,7 @@ const Navbar: FC = () => {
             sx={{
                 zIndex: (t) => t.zIndex.appBar, //Ensures appBar remains above the clipped permanent Drawer
                 backgroundColor: colors.background,
+                width: "100%",
             }}
         >
             <Toolbar>

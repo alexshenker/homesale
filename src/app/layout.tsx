@@ -41,10 +41,16 @@ export default async function RootLayout({
                 <SessionProvider session={session}>
                     <TanstackProvider>
                         <ToastProvider>
-                            <div className={"flex flex-col min-h-screen"}>
-                                <Navbar />
+                            <div
+                                className={
+                                    "flex flex-col min-h-screen items-center"
+                                }
+                            >
+                                <Stack maxWidth={900} width={"100%"}>
+                                    <Navbar />
 
-                                <Stack flexGrow={1}>{children}</Stack>
+                                    <Stack flexGrow={1}>{children}</Stack>
+                                </Stack>
                             </div>
                             <Footer />
                         </ToastProvider>
