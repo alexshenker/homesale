@@ -5,6 +5,7 @@ import { FC, useState } from "react";
 import Logo from "./ui/logo/Logo";
 
 import SearchBar from "./SearchBar";
+import colors from "@/utils/public/colors";
 
 const Navbar: FC = () => {
     const [searchTerm, setSearchTerm] = useState<string | null>(null);
@@ -17,6 +18,7 @@ const Navbar: FC = () => {
             position={"static"}
             sx={{
                 zIndex: (t) => t.zIndex.appBar, //Ensures appBar remains above the clipped permanent Drawer
+                backgroundColor: colors.background,
             }}
         >
             <Toolbar>

@@ -2,7 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global colors */
 :root {
+    --primary0: #fcf8ed;
+    --primary50: #e0dbc8;
+    --primary80: #a29a87;
+
+    --neutral: #565855;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -10,5 +16,22 @@
     }
 }
 
+:root {
+    --text: var(--neutral);
+
+    --background: var(--primary0);
+
+    --surface: var(--primary50);
+}
+
 body {
+    background: linear-gradient(
+        to bottom right,
+        var(--primary0) 0%,
+        var(--primary0) 30%,
+        var(--primary50) 55%,
+        var(--primary50) 60%,
+        var(--primary80) 90%,
+        var(--primary80) 100%
+    );
 }

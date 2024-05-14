@@ -15,7 +15,11 @@ export default {
             xl: "1440px",
         },
         extend: {
-            colors: {},
+            colors: {
+                text: "var(--text)",
+                background: "var(--background)",
+                surface: "var(--surface)",
+            },
         },
     },
     plugins: [],

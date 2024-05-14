@@ -7,7 +7,6 @@ import { Stack } from "@mui/material";
 import company from "@/utils/constants/company";
 import TanstackProvider from "@/components/providers/TanstackProvider";
 import toClassName from "@/utils/public/toClassName";
-import colors from "@/utils/public/colors";
 
 import ToastProvider from "@/components/ui/Toast/ToastProvider";
 import SessionProvider from "@/components/providers/SessionProvider";
