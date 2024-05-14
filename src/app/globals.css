@@ -29,8 +29,8 @@ body {
         to bottom right,
         var(--primary0) 0%,
         var(--primary0) 30%,
-        var(--primary50) 55%,
-        var(--primary50) 60%,
+        var(--primary50) 45%,
+        var(--primary50) 65%,
         var(--primary80) 90%,
         var(--primary80) 100%
     );
