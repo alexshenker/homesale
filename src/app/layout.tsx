@@ -45,8 +45,15 @@ export default async function RootLayout({
                                 className={
                                     "flex flex-col min-h-screen items-center"
                                 }
+                                style={{
+                                    paddingTop: "40px",
+                                }}
                             >
-                                <Stack maxWidth={900} width={"100%"}>
+                                <Stack
+                                    maxWidth={900}
+                                    width={"100%"}
+                                    borderRadius={"20px"}
+                                >
                                     <Navbar />
 
                                     <Stack flexGrow={1}>{children}</Stack>
