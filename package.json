@@ -15,9 +15,6 @@
         "db:prod": "npx prisma generate && npx prisma migrate deploy"
     },
     "dependencies": {
-        "react": "^18",
-        "react-dom": "^18",
-        "next": "14.2.2",
         "@auth/prisma-adapter": "^1.6.0",
         "@aws-sdk/client-s3": "^3.556.0",
         "@aws-sdk/s3-request-presigner": "^3.556.0",
@@ -38,32 +35,35 @@
         "hex-color-opacity": "^0.4.2",
         "lodash": "^4.17.21",
         "milliseconds": "^1.0.3",
+        "next": "14.2.2",
         "next-auth": "^4.24.7",
         "postcss": "8.4.38",
         "prisma": "^5.12.1",
+        "react": "^18",
+        "react-dom": "^18",
         "react-hook-form": "^7.51.3",
         "server-only": "^0.0.1",
         "tailwind-merge": "^2.2.2",
         "tailwindcss": "3.4.3",
         "usehooks-ts": "^3.1.0",
-        "zod": "^3.22.4"
+        "zod": "^3.23.8"
     },
     "devDependencies": {
-        "typescript": "^5",
+        "@types/lodash": "^4.17.0",
+        "@types/milliseconds": "^0.0.33",
         "@types/node": "^20",
         "@types/react": "^18",
         "@types/react-dom": "^18",
-        "postcss": "^8",
-        "@types/lodash": "^4.17.0",
-        "@types/milliseconds": "^0.0.33",
-        "tailwindcss": "^3.4.1",
+        "@typescript-eslint/eslint-plugin": "^7.7.0",
         "eslint": "^8",
         "eslint-config-next": "14.2.2",
-        "@typescript-eslint/eslint-plugin": "^7.7.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-react": "^7.34.1",
         "eslint-plugin-react-hooks": "^4.6.0",
         "eslint-plugin-unused-imports": "^3.1.0",
-        "prettier": "^3.2.5"
+        "postcss": "^8",
+        "prettier": "^3.2.5",
+        "tailwindcss": "^3.4.1",
+        "typescript": "^5"
     }
 }

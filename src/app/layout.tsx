@@ -60,7 +60,9 @@ export default async function RootLayout({
                                 >
                                     <Navbar />
 
-                                    <Stack flexGrow={1}>{children}</Stack>
+                                    <Stack component="main" flexGrow={1}>
+                                        {children}
+                                    </Stack>
                                 </Stack>
                             </div>
                             <Footer />

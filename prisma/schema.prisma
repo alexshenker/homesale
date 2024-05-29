@@ -88,9 +88,9 @@ model PersonalInfo {
 }
 
 model Property {
-  id       String @id @default(cuid())
-  sellerId String
-  Seller   User   @relation(fields: [sellerId], references: [id])
+  id      String @id @default(cuid())
+  ownerId String
+  Owner   User   @relation(fields: [ownerId], references: [id])
 
   hiddenFromView Boolean @default(false)
 
@@ -98,10 +98,10 @@ model Property {
   price   Float?
 
   rent                Float?
-  leaseDurationMonths Int
+  leaseDurationMonths Int?
 
   description  String?
-  propertyType PropertyTypes
+  propertyType PropertyTypes?
 
   amenities      Amenities[]
   otherAmenities String?
@@ -116,6 +116,7 @@ model Property {
   basement                Boolean?
   yearBuilt               Int?
   lastRoofReplacementDate DateTime?
+  pets                    Pets?
 
   dateAvailable DateTime?
 
@@ -128,6 +129,7 @@ enum Pets {
   Cats
   SmallDogs
   LargeDogs
+  All
 }
 
 model PropertyAddress {

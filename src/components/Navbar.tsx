@@ -8,6 +8,7 @@ import colors from "@/utils/public/colors";
 import LinkText from "./ui/text/LinkText/LinkText";
 import { signIn, signOut } from "next-auth/react";
 import useAuth from "@/utils/public/hooks/useAuth";
+import routes, { create_new_listing } from "@/utils/public/routes";
 
 const Navbar: FC = () => {
     const auth = useAuth();
@@ -40,7 +41,11 @@ const Navbar: FC = () => {
 
                     <Stack direction={"row"} gap={1} alignItems={"center"}>
                         {<LinkText href="">Buy/Rent</LinkText>}
-                        {<LinkText href="">Sell/List</LinkText>}
+                        {
+                            <LinkText href={routes[create_new_listing].$}>
+                                Sell/List
+                            </LinkText>
+                        }
                         {auth.data === null ? (
                             <LinkText onClick={() => signIn()}>Login</LinkText>
                         ) : (

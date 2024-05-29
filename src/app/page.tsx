@@ -9,41 +9,33 @@ export default function Home() {
     const [searchTerm, setSearchTerm] = useState("");
 
     return (
-        <main
-            style={{
-                flexGrow: 1,
-                display: "flex",
-                flexDirection: "column",
-            }}
-        >
-            <Box position={"relative"}>
-                <Image
-                    src="/images/lawn_1.webp"
-                    width={1792}
-                    height={1024}
-                    alt="lawn"
-                />
+        <Box position={"relative"}>
+            <Image
+                src="/images/lawn_1.webp"
+                width={1792}
+                height={1024}
+                alt="lawn"
+            />
 
-                <Stack
-                    position="absolute"
-                    top={0}
-                    bottom={0}
-                    left={0}
-                    right={0}
-                    display={"flex"}
-                    flexDirection="column"
-                    justifyContent={"center"}
-                    padding={5}
-                >
-                    <Box width={"200px"}>
-                        <SearchBar
-                            searchTerm={searchTerm}
-                            onChange={setSearchTerm}
-                            placeholder="Enter a location"
-                        />
-                    </Box>
-                </Stack>
-            </Box>
-        </main>
+            <Stack
+                position="absolute"
+                top={0}
+                bottom={0}
+                left={0}
+                right={0}
+                display={"flex"}
+                flexDirection="column"
+                justifyContent={"center"}
+                padding={5}
+            >
+                <Box width={"200px"}>
+                    <SearchBar
+                        searchTerm={searchTerm}
+                        onChange={setSearchTerm}
+                        placeholder="Enter a location"
+                    />
+                </Box>
+            </Stack>
+        </Box>
     );
 }
