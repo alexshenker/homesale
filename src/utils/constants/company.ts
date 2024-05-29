@@ -1,3 +1,3 @@
-const company = "HomeSale";
+const company = "Balabeit";
 
 export default company;

@@ -12,6 +12,7 @@ export const queryKey = ["auth"];
 type ModifiedSession = {
     expires: string;
     user: { email: string; id: UserId };
+    authenticated: true;
 };
 
 const useAuth = (): HookResult<ModifiedSession | null> => {
@@ -57,14 +58,14 @@ const useAuth = (): HookResult<ModifiedSession | null> => {
                             `[${
                                 useAuth.name
                             }] - Session is authenticated but is either expired, has no user, no email, or no Id: ${JSON.stringify(
-                                data,
-                            )}`,
+                                data
+                            )}`
                         ),
                     };
                 }
 
                 return {
-                    data: { expires, user: { email, id } },
+                    data: { expires, user: { email, id }, authenticated: true },
                     isLoading: false,
                     hasError: false,
                 };
@@ -76,7 +77,7 @@ const useAuth = (): HookResult<ModifiedSession | null> => {
                     isLoading: false,
                     hasError: true,
                     error: new Error(
-                        `[${useAuth.name}]: Unknown session error`,
+                        `[${useAuth.name}]: Unknown session error`
                     ),
                 };
         }

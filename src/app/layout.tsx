@@ -43,16 +43,20 @@ export default async function RootLayout({
                         <ToastProvider>
                             <div
                                 className={
-                                    "flex flex-col min-h-screen items-center"
+                                    "min-h-screen flex flex-col items-center"
                                 }
-                                style={{
-                                    paddingTop: "40px",
-                                }}
                             >
                                 <Stack
-                                    maxWidth={900}
-                                    width={"100%"}
+                                    maxWidth={1100}
+                                    width="100%"
+                                    height="100%"
                                     borderRadius={"20px"}
+                                    style={{
+                                        paddingTop: "40px",
+                                        paddingLeft: "20px",
+                                        paddingRight: "20px",
+                                    }}
+                                    flexGrow={1}
                                 >
                                     <Navbar />
 

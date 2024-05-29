@@ -1,14 +1,16 @@
 "use client";
 
 import { AppBar, Stack, Toolbar } from "@mui/material";
-import { FC, useState } from "react";
+import { FC } from "react";
 import Logo from "./ui/logo/Logo";
 
-import SearchBar from "./SearchBar";
 import colors from "@/utils/public/colors";
+import LinkText from "./ui/text/LinkText/LinkText";
+import { signIn, signOut } from "next-auth/react";
+import useAuth from "@/utils/public/hooks/useAuth";
 
 const Navbar: FC = () => {
-    const [searchTerm, setSearchTerm] = useState<string | null>(null);
+    const auth = useAuth();
 
     return (
         <AppBar
@@ -34,18 +36,19 @@ const Navbar: FC = () => {
                 >
                     <Stack direction={"row"} gap={1}>
                         <Logo />
-
-                        <SearchBar
-                            searchTerm={searchTerm}
-                            onChange={setSearchTerm}
-                        />
                     </Stack>
 
-                    <Stack
-                        direction={"row"}
-                        gap={1}
-                        alignItems={"center"}
-                    ></Stack>
+                    <Stack direction={"row"} gap={1} alignItems={"center"}>
+                        {<LinkText href="">Buy/Rent</LinkText>}
+                        {<LinkText href="">Sell/List</LinkText>}
+                        {auth.data === null ? (
+                            <LinkText onClick={() => signIn()}>Login</LinkText>
+                        ) : (
+                            <LinkText onClick={() => signOut()}>
+                                Logout
+                            </LinkText>
+                        )}
+                    </Stack>
                 </Stack>
             </Toolbar>
         </AppBar>

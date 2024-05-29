@@ -15,7 +15,7 @@ import prismaClient from "@/lib/db";
 
 const theme: NextAuthOptions["theme"] = {
     colorScheme: "auto",
-    logo: "/logoDark.svg",
+    logo: "/logo.jpg",
 };
 
 const providers: NextAuthOptions["providers"] = [
@@ -45,18 +45,10 @@ const callbacks: NextAuthOptions["callbacks"] = {
                 where: {
                     email: token.email,
                 },
-                include: {
-                    permissions: true,
-                },
             });
 
             if (user !== null) {
                 token.id = user.id as UserId;
-                token.role =
-                    user.permissions !== null &&
-                    user.permissions.admin_view === true
-                        ? "admin"
-                        : "user";
             }
 
             return token;
@@ -90,27 +82,6 @@ export const authOptions: NextAuthOptions = {
     },
     jwt: {
         maxAge: maxSessionAge,
-    },
-    events: {
-        createUser: async ({ user }) => {
-            // try {
-            //     //Permissions is an optional object in prisma type, so we have to create it
-            //     const permission = await prisma.permissions.findFirst({
-            //         where: {
-            //             userId: user.id,
-            //         },
-            //     });
-            //     if (permission === null) {
-            //         await prisma.permissions.create({
-            //             data: { user: { connect: { id: user.id } } },
-            //         });
-            //     }
-            //     return;
-            // } catch (e) {
-            //     console.error(e);
-            //     return;
-            // }
-        },
     },
 };
 
