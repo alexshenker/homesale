@@ -5,45 +5,44 @@ import routes, {
 } from "@/utils/public/routes";
 import z from "zod";
 
-const HouseNumber = z.string().refine((v) => /^\d+$/.test(v), {
-    message: "house number must be an integer string",
+const featureTypes = [
+    "country",
+    "region",
+    "postcode",
+    "district",
+    "place",
+    "locality",
+    "neighborhood",
+    "street",
+    "address",
+] as const;
+
+const FeatureType = z.enum(featureTypes);
+type FeatureType = (typeof featureTypes)[number];
+
+const Properties = z.object({
+    mapbox_id: z.string(), //Same exact string as MapboxPlace.id
+    feature_type: FeatureType,
+    name: z.string(), //228 Johnson avenue
+    place_formatted: z.string(), //Brooklyn, New York 11231, United States
+    full_address: z.string(), //name & place_formatted combined
 });
 
-const PostalCode = z
-    .string()
-    .length(5)
-    .refine((v) => /^\d+$/.test(v), {
-        message: "postal code must be an integer string",
-    });
-
-const NominatimAddress = z.object({
-    country: z.string(),
-    county: z.string().optional(),
-    borough: z.string().optional(),
-    city: z.string().optional(),
-    house_number: HouseNumber.optional(),
-    postcode: PostalCode.optional(),
-    road: z.string().optional(),
-    state: z.string(),
+const MapboxPlace = z.object({
+    id: z.string(), //Same exact string as MapboxPlace.properties.mapbox_id
+    properties: Properties,
+    type: z.string(), //Feature
 });
 
-const NominatimPlace = z.object({
-    address: NominatimAddress,
-    type: z.string(), //house, //residential, ...etc
-    place_id: z.number().int(),
+const MapboxResponse = z.object({
+    type: z.string(),
+    features: MapboxPlace.array(),
+    attribution: z.string(),
 });
 
-const NominatimResponse = NominatimPlace.array();
+export type MapboxResponse = z.infer<typeof MapboxResponse>;
 
-export type NominatimResponse = z.infer<typeof NominatimResponse>;
-
-const searchAddress = async (
-    searchQuery: string
-): Promise<NominatimResponse> => {
-    if (searchQuery.length < 2) {
-        return [];
-    }
-
+const searchAddress = async (searchQuery: string): Promise<MapboxResponse> => {
     const res = await fetch(
         absoluteUrl(routes[api][address_search](searchQuery).$)
     );
@@ -54,7 +53,7 @@ const searchAddress = async (
 
     const data = await res.json();
 
-    const parsed = NominatimResponse.safeParse(data);
+    const parsed = MapboxResponse.safeParse(data);
 
     if (parsed.success) {
         return parsed.data;

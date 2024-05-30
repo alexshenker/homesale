@@ -17,19 +17,16 @@ export async function GET(req: NextRequest) {
 
     const encodedQuery = encodeURIComponent(query);
 
-    const format = "json";
     const usCountryCode = "us";
-    const maxResults = 10;
+    const maxResults = 7; //Max is 10
 
+    /**
+     * Permanent - indicates were storing these (We are not)
+     * Autocomplete - doesn't only return full matches, tries to autocomplete
+     */
     try {
         const results = await fetch(
-            `https://nominatim.openstreetmap.org/search?q=${encodedQuery}&format=${format}&countrycodes=${usCountryCode}&limit=${maxResults}&addressdetails=1`,
-            {
-                headers: {
-                    Referer: "http://localhost",
-                    "User-Agent": "myhomeapp (Chrome)",
-                },
-            }
+            `https://api.mapbox.com/search/geocode/v6/forward?q=${encodedQuery}&country=${usCountryCode}&limit=${maxResults}&autocomplete=true&permanent=false&access_token=${process.env.MAPBOX_TOKEN}`
         );
 
         const parsedResults = await results.json();
