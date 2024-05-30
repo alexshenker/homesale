@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
      */
     try {
         const results = await fetch(
-            `https://api.mapbox.com/search/geocode/v6/forward?q=${encodedQuery}&country=${usCountryCode}&limit=${maxResults}&autocomplete=true&permanent=false&access_token=${process.env.MAPBOX_TOKEN}`
+            `https://api.mapbox.com/search/geocode/v6/forward?address_line1=${encodedQuery}&country=${usCountryCode}&limit=${maxResults}&autocomplete=true&permanent=false&access_token=${process.env.MAPBOX_TOKEN}`
         );
 
         const parsedResults = await results.json();

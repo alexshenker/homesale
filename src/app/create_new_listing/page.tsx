@@ -1,10 +1,12 @@
 "use client";
 
 import TextField from "@/components/fields/TextField";
+import Text from "@/components/ui/text/Text";
 import searchAddress, {
-    NominatimResponse,
+    MapboxResponse,
 } from "@/lib/searchAddress/searchAddress";
 import { formProps } from "@/utils/constants/formProps";
+import { Stack } from "@mui/material";
 import { debounce } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -16,9 +18,11 @@ const CreateNewListing = (props: Props): JSX.Element => {
         ...formProps,
     });
 
-    const [addressToSearch, setAddressToSearch] = useState("");
+    const [addressSelected, setAddressSelected] = useState(false);
 
-    const [places, setPlaces] = useState<NominatimResponse>();
+    const [address, setAddress] = useState("");
+
+    const [places, setPlaces] = useState<MapboxResponse | null>(null);
 
     const onAddressChange = useCallback(
         debounce(async (newAddress: string) => {
@@ -28,19 +32,46 @@ const CreateNewListing = (props: Props): JSX.Element => {
         }, 250),
         []
     );
+
     useEffect(() => {
-        console.log(places);
-    }, [places]);
-    useEffect(() => {
-        onAddressChange(addressToSearch);
-    }, [addressToSearch, onAddressChange]);
+        if (address.length < 2) {
+            return;
+        }
+
+        if (addressSelected) {
+            return;
+        }
+
+        onAddressChange(address);
+    }, [address, addressSelected, onAddressChange]);
 
     return (
         <div>
             <TextField
-                value={addressToSearch}
-                onChange={(e) => setAddressToSearch(e.target.value)}
+                value={address}
+                onChange={(e) => {
+                    setAddressSelected(false);
+                    setAddress(e.target.value);
+                }}
             />
+
+            <Stack>
+                {places !== null &&
+                    places.features.map((place) => {
+                        return (
+                            <Text
+                                key={place.id}
+                                onClick={() => {
+                                    setAddress(place.properties.full_address);
+                                    setAddressSelected(true);
+                                    setPlaces(null);
+                                }}
+                            >
+                                {place.properties.full_address}
+                            </Text>
+                        );
+                    })}
+            </Stack>
 
             {/* <FormProvider {...methods}></FormProvider> */}
         </div>
