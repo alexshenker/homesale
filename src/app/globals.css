@@ -22,6 +22,8 @@
     --background: var(--primary0);
 
     --surface: var(--primary50);
+
+    --border: var(--neutral);
 }
 
 body {

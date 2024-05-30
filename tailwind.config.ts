@@ -19,6 +19,7 @@ export default {
                 text: "var(--text)",
                 background: "var(--background)",
                 surface: "var(--surface)",
+                border: "var(--border)",
             },
         },
     },

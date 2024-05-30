@@ -32,8 +32,7 @@ const TextField = ({ label, fullWidth, ...props }: Props): JSX.Element => {
                 padding: `${textFieldPaddingY} ${textFieldPaddingX}`,
                 width: fullWidth === false ? "auto" : "100%",
                 backgroundColor: colors.background,
-                borderStartStartRadius: textFieldBorderRadius,
-                borderEndStartRadius: textFieldBorderRadius,
+                borderRadius: textFieldBorderRadius,
             },
             [`& .${outlinedInputClasses.notchedOutline}`]: {
                 border: "none",
@@ -51,6 +50,7 @@ const TextField = ({ label, fullWidth, ...props }: Props): JSX.Element => {
                 paddingRight: "0px",
                 borderRadius: textFieldBorderRadius,
                 backgroundColor: colors.surface,
+                border: `1px solid ${colors.text}`,
             },
         }));
     }, [fullWidth, props.multiline]);
