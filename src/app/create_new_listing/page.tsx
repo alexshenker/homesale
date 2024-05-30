@@ -1,8 +1,12 @@
 "use client";
 
-import search_address from "@/lib/search_address/search_address";
+import TextField from "@/components/fields/TextField";
+import searchAddress, {
+    NominatimResponse,
+} from "@/lib/searchAddress/searchAddress";
 import { formProps } from "@/utils/constants/formProps";
-import { useState } from "react";
+import { debounce } from "lodash";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface Props {}
@@ -12,20 +16,32 @@ const CreateNewListing = (props: Props): JSX.Element => {
         ...formProps,
     });
 
-    const [v, setV] = useState("");
+    const [addressToSearch, setAddressToSearch] = useState("");
+
+    const [places, setPlaces] = useState<NominatimResponse>();
+
+    const onAddressChange = useCallback(
+        debounce(async (newAddress: string) => {
+            const newPlaces = await searchAddress(newAddress);
+
+            setPlaces(newPlaces);
+        }, 250),
+        []
+    );
+    useEffect(() => {
+        console.log(places);
+    }, [places]);
+    useEffect(() => {
+        onAddressChange(addressToSearch);
+    }, [addressToSearch, onAddressChange]);
 
     return (
         <div>
-            <input value={v} onChange={(e) => setV(e.target.value)} />
-            <button
-                onClick={async () => {
-                    const r = await search_address(v);
+            <TextField
+                value={addressToSearch}
+                onChange={(e) => setAddressToSearch(e.target.value)}
+            />
 
-                    console.log(r);
-                }}
-            >
-                Search
-            </button>
             {/* <FormProvider {...methods}></FormProvider> */}
         </div>
     );
