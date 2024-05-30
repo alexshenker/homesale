@@ -19,6 +19,7 @@ import {
     typographyClasses,
 } from "@mui/material";
 import { debounce } from "lodash";
+import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -32,6 +33,8 @@ const CreateNewListing = (props: Props): JSX.Element => {
     const [addressSelected, setAddressSelected] = useState(false);
 
     const [address, setAddress] = useState("");
+
+    const [apt, setApt] = useState("");
 
     const [places, setPlaces] = useState<MapboxResponse | null>(null);
 
@@ -57,114 +60,160 @@ const CreateNewListing = (props: Props): JSX.Element => {
     }, [address, addressSelected, onAddressChange]);
 
     return (
-        <div>
-            <Space />
-            <ClickAwayListener
-                onClickAway={() => {
-                    setPlaces(null); //closes the 'dropdown'
+        <Box position="relative">
+            <Box
+                sx={{
+                    display: "inline-block",
+                    "&::before": {
+                        content: '""',
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        background:
+                            "linear-gradient(to bottom, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 60%)",
+                    },
                 }}
             >
-                <Box
-                    position={"relative"}
-                    width="100%"
-                    maxWidth={"350px"}
-                    minWidth="180px"
+                <Image
+                    src="/images/lawn_3.webp"
+                    width={2048}
+                    height={2048}
+                    alt="lawn"
+                    objectFit="contain"
+                />
+            </Box>
+            <Box
+                width="100%"
+                maxWidth={"350px"}
+                minWidth="180px"
+                position="absolute"
+                top="0px"
+                padding={4}
+            >
+                <Space />
+                <Text fontSize={"18px"}>
+                    What is the street address of your property?
+                </Text>
+                <Space />
+                <ClickAwayListener
+                    onClickAway={() => {
+                        setPlaces(null); //closes the 'dropdown'
+                    }}
                 >
-                    <TextField
-                        value={address}
-                        onChange={(e) => {
-                            setAddressSelected(false);
-                            setAddress(e.target.value);
-                        }}
-                        placeholder="Search address..."
-                        sx={
-                            places === null
-                                ? {}
-                                : {
-                                      [`& .${outlinedInputClasses.root}`]: {
-                                          borderEndEndRadius: "0px",
-                                          borderEndStartRadius: "0px",
-                                          borderBottom: "none",
-                                      },
-                                      [`& .${outlinedInputClasses.input}`]: {
-                                          borderEndEndRadius: "0px",
-                                          borderEndStartRadius: "0px",
-                                      },
-                                  }
-                        }
-                    />
-                    {places !== null && (
-                        <Stack
-                            position={"absolute"}
-                            width="100%"
-                            sx={{
-                                [`&.${stackClasses.root}`]: {
-                                    backgroundColor: colors.background,
-                                    borderLeft: `1px solid ${colors.border}`,
-                                    borderRight: `1px solid ${colors.border}`,
-                                    borderBottom: `1px solid ${colors.border}`,
-                                    borderEndEndRadius: textFieldBorderRadius,
-                                    borderEndStartRadius: textFieldBorderRadius,
-                                },
+                    <Box position={"relative"}>
+                        <TextField
+                            label="Street address"
+                            value={address}
+                            onChange={(e) => {
+                                setAddressSelected(false);
+                                setAddress(e.target.value);
                             }}
-                        >
-                            {places.features.map((place, idx) => {
-                                const isLastItem =
-                                    idx === places.features.length - 1;
-                                return (
-                                    <Box
-                                        key={place.id}
-                                        paddingX={2}
-                                        paddingY={0.5}
-                                        sx={{
-                                            "&:hover": {
-                                                backgroundColor: colors.surface,
-                                            },
-                                            ...(isLastItem
-                                                ? {
-                                                      borderEndEndRadius:
-                                                          textFieldBorderRadius,
-                                                      borderEndStartRadius:
-                                                          textFieldBorderRadius,
-                                                  }
-                                                : {}),
-                                        }}
-                                    >
-                                        <Text
-                                            onClick={() => {
-                                                setAddress(
-                                                    place.properties.full_address.replace(
-                                                        ", United States",
-                                                        ""
-                                                    )
-                                                );
-                                                setAddressSelected(true);
-                                                setPlaces(null);
-                                            }}
-                                            whiteSpace={"nowrap"}
-                                            textOverflow={"ellipsis"}
-                                            overflow={"hidden"}
+                            required
+                            placeholder="Search address..."
+                            sx={
+                                places === null
+                                    ? {}
+                                    : {
+                                          [`& .${outlinedInputClasses.root}`]: {
+                                              borderEndEndRadius: "0px",
+                                              borderEndStartRadius: "0px",
+                                              borderBottom: "none",
+                                          },
+                                          [`& .${outlinedInputClasses.input}`]:
+                                              {
+                                                  borderEndEndRadius: "0px",
+                                                  borderEndStartRadius: "0px",
+                                              },
+                                      }
+                            }
+                        />
+                        {places !== null && (
+                            <Stack
+                                position={"absolute"}
+                                width="100%"
+                                sx={{
+                                    [`&.${stackClasses.root}`]: {
+                                        backgroundColor: colors.background,
+                                        borderLeft: `1px solid ${colors.border}`,
+                                        borderRight: `1px solid ${colors.border}`,
+                                        borderBottom: `1px solid ${colors.border}`,
+                                        borderEndEndRadius:
+                                            textFieldBorderRadius,
+                                        borderEndStartRadius:
+                                            textFieldBorderRadius,
+                                    },
+                                }}
+                            >
+                                {places.features.map((place, idx) => {
+                                    const isLastItem =
+                                        idx === places.features.length - 1;
+                                    return (
+                                        <Box
+                                            key={place.id}
+                                            paddingX={2}
+                                            paddingY={0.5}
                                             sx={{
-                                                [`&.${typographyClasses.root}`]:
-                                                    {
-                                                        width: "auto",
-                                                    },
+                                                "&:hover": {
+                                                    backgroundColor:
+                                                        colors.surface,
+                                                },
+                                                ...(isLastItem
+                                                    ? {
+                                                          borderEndEndRadius:
+                                                              textFieldBorderRadius,
+                                                          borderEndStartRadius:
+                                                              textFieldBorderRadius,
+                                                      }
+                                                    : {}),
                                             }}
                                         >
-                                            {place.properties.full_address.replace(
-                                                ", United States",
-                                                ""
-                                            )}
-                                        </Text>
-                                    </Box>
-                                );
-                            })}
-                        </Stack>
-                    )}
+                                            <Text
+                                                onClick={() => {
+                                                    setAddress(
+                                                        place.properties.full_address.replace(
+                                                            ", United States",
+                                                            ""
+                                                        )
+                                                    );
+                                                    setAddressSelected(true);
+                                                    setPlaces(null);
+                                                }}
+                                                whiteSpace={"nowrap"}
+                                                textOverflow={"ellipsis"}
+                                                overflow={"hidden"}
+                                                sx={{
+                                                    [`&.${typographyClasses.root}`]:
+                                                        {
+                                                            width: "auto",
+                                                        },
+                                                }}
+                                            >
+                                                {place.properties.full_address.replace(
+                                                    ", United States",
+                                                    ""
+                                                )}
+                                            </Text>
+                                        </Box>
+                                    );
+                                })}
+                            </Stack>
+                        )}
+                    </Box>
+                </ClickAwayListener>
+                {/* <FormProvider {...methods}></FormProvider> */}
+                <Space />
+                <Box width={"100px"}>
+                    <TextField
+                        value={apt}
+                        placeholder="Apt/Suite..."
+                        onChange={(e) => setApt(e.target.value)}
+                        label="Apartment/Suite"
+                    />
                 </Box>
-            </ClickAwayListener>
-            {/* <FormProvider {...methods}></FormProvider> */}
-        </div>
+            </Box>
+        </Box>
     );
 };
 
