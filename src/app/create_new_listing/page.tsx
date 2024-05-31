@@ -95,6 +95,7 @@ const CreateNewListing = (): JSX.Element => {
             await createProperty({
                 ownerId: auth.data.user.id,
                 property: {
+                    mapboxPlaceId: place.id,
                     street_address: place.properties.name,
                     zipCode: context.postcode.name,
                     city: context.locality?.name ?? context.place.name,

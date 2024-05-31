@@ -94,7 +94,6 @@ model Property {
 
   hiddenFromView Boolean @default(false)
 
-
   price Float?
 
   rent                Float?
@@ -127,8 +126,9 @@ model Property {
   zipCodeExt     String? @db.VarChar(4) //"1234"
   city           String
   state          States
-  longitude Float
-  latitude  Float
+  longitude      Float
+  latitude       Float
+  mapboxPlaceId  String  @unique
 
   createdAt DateTime @default(now()) @db.Timestamptz()
   updatedAt DateTime @updatedAt @db.Timestamptz()

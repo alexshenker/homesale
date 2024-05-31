@@ -8,9 +8,14 @@ import routes, {
 } from "@/utils/public/routes";
 import { Prisma } from "@prisma/client";
 import { z } from "zod";
+import { MapboxPlaceId } from "../searchAddress/searchAddress";
 
-const PrismaPropertyCreateInput =
-    z.custom<OmitMod<Prisma.PropertyCreateInput, "Owner">>();
+const PrismaPropertyCreateInput = z
+    .custom<OmitMod<Prisma.PropertyCreateInput, "Owner">>()
+    .transform((p) => ({
+        ...p,
+        mapboxPlaceId: p.mapboxPlaceId as MapboxPlaceId,
+    }));
 
 export const PropertyCreateInput = z.object({
     ownerId: UserId,
