@@ -37,7 +37,7 @@ const Geometry = z.object({
     type: z.string(), //Point
 });
 
-export type Geometry = z.infer<typeof Geometry>
+export type Geometry = z.infer<typeof Geometry>;
 
 const Context = z.object({
     postcode: z.object({
@@ -66,7 +66,6 @@ const Context = z.object({
 });
 
 const Properties = z.object({
-    geometry: Geometry,
     mapbox_id: MapboxPlaceId, //Same exact string as MapboxPlace.id
     feature_type: FeatureType,
     context: Context,
@@ -82,6 +81,7 @@ const MapboxPlace = z.object({
     id: MapboxPlaceId, //Same exact string as MapboxPlace.properties.mapbox_id
     properties: Properties,
     type: z.string(), //Feature
+    geometry: Geometry,
 });
 
 export type MapboxPlace = z.infer<typeof MapboxPlace>;
@@ -106,8 +106,6 @@ const searchAddress = async (searchQuery: string): Promise<MapboxResponse> => {
     const data = await res.json();
 
     const parsed = MapboxResponse.safeParse(data);
-
-    console.log(data);
 
     if (parsed.success) {
         return parsed.data;

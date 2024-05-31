@@ -89,20 +89,18 @@ const CreateNewListing = (): JSX.Element => {
 
         setLoading(true);
 
-        const { properties } = place;
-
-        const { context } = properties;
+        const { context } = place.properties;
 
         try {
             await createProperty({
                 ownerId: auth.data.user.id,
                 property: {
-                    street_address: properties.name,
+                    street_address: place.properties.name,
                     zipCode: context.postcode.name,
                     city: context.locality?.name ?? context.place.name,
                     state: context.region.region_code,
-                    longitude: properties.geometry.coordinates[0],
-                    latitude: properties.geometry.coordinates[1],
+                    longitude: place.geometry.coordinates[0],
+                    latitude: place.geometry.coordinates[1],
                     ...(apt.length > 0 ? { apartment: apt } : {}),
                 },
             });
@@ -154,7 +152,7 @@ const CreateNewListing = (): JSX.Element => {
             >
                 <Space />
                 <Text fontSize={"18px"}>
-                    What is the street address of your property?
+                    What is the address of your property?
                 </Text>
                 <Space />
                 <ClickAwayListener
@@ -192,6 +190,7 @@ const CreateNewListing = (): JSX.Element => {
                         {places !== null && (
                             <Stack
                                 position={"absolute"}
+                                zIndex={1}
                                 width="100%"
                                 sx={{
                                     [`&.${stackClasses.root}`]: {
@@ -272,11 +271,13 @@ const CreateNewListing = (): JSX.Element => {
                         label="Apartment/Suite"
                     />
                 </Box>
-            </Box>
 
-            <Button onClick={submit} disabled={submitDisabled}>
-                Submit
-            </Button>
+                <Space />
+
+                <Button onClick={submit} disabled={submitDisabled}>
+                    Submit
+                </Button>
+            </Box>
         </Box>
     );
 };
