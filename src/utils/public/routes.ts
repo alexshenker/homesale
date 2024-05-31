@@ -5,18 +5,16 @@ export const accompaniment = "accompaniment";
 export const admin = "admin";
 export const api = "api";
 
-export const currentuser = "currentuser";
-export const users = "users";
 export const create_new_listing = "create_new_listing";
 export const properties = "properties";
 export const create_property = "create_property";
+export const get_property = "get_property";
 export const edit_listing = "edit_listing";
 
 export const address_search = "address_search";
 export const Q_address_search_freeform_query = "address_search_freeform_query";
 
 //Dynamic routes
-export const $userid = "userid";
 export const $propertyid = "propertyid";
 
 export const u = (...args: string[]): string => {
@@ -44,18 +42,16 @@ export const absoluteUrl = (path: string): string => {
 
 //Base routes
 const API = {
-    [users]: {
-        $: u(api, users),
-        [currentuser]: {
-            $: u(api, users, currentuser),
-            [$userid]: (userId: UserId) => ({
-                $: u(api, users, currentuser, userId),
-            }),
-        },
-    },
     [properties]: {
         [create_property]: {
             $: u(api, properties, create_property),
+        },
+        [get_property]: {
+            [$propertyid]: (propertyId: PropertyId) => {
+                return {
+                    $: u(api, properties, get_property, propertyId),
+                };
+            },
         },
     },
     [address_search]: (searchQuery?: string) => {

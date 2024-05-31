@@ -9,6 +9,7 @@ import LinkText from "./ui/text/LinkText/LinkText";
 import { signIn, signOut } from "next-auth/react";
 import useAuth from "@/utils/public/hooks/useAuth";
 import routes, { create_new_listing } from "@/utils/public/routes";
+import { isNil } from "lodash";
 
 const Navbar: FC = () => {
     const auth = useAuth();
@@ -46,7 +47,7 @@ const Navbar: FC = () => {
                                 List your home
                             </LinkText>
                         }
-                        {auth.data === null ? (
+                        {isNil(auth.data) ? (
                             <LinkText onClick={() => signIn()}>Login</LinkText>
                         ) : (
                             <LinkText onClick={() => signOut()}>

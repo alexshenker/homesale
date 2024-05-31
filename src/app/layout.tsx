@@ -10,7 +10,6 @@ import toClassName from "@/utils/public/toClassName";
 
 import ToastProvider from "@/components/ui/Toast/ToastProvider";
 import SessionProvider from "@/components/providers/SessionProvider";
-import { getAuthSession } from "./api/auth/[...nextauth]/route";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,12 +32,10 @@ export default async function RootLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const session = await getAuthSession();
-
     return (
         <html lang="en">
             <body className={toClassName(inter.className, "relative")}>
-                <SessionProvider session={session}>
+                <SessionProvider>
                     <TanstackProvider>
                         <ToastProvider>
                             <div

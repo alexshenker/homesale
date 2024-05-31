@@ -18,7 +18,7 @@ const PrismaPropertyCreateInput = z
     }));
 
 export const PropertyCreateInput = z.object({
-    ownerId: UserId,
+    creatorId: UserId,
     property: PrismaPropertyCreateInput,
 });
 

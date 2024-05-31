@@ -7,9 +7,9 @@ const createProperty = async (body: PropertyCreateInput) => {
     return await prismaClient.property.create({
         data: {
             ...body.property,
-            Owner: {
+            creator: {
                 connect: {
-                    id: body.ownerId,
+                    id: body.creatorId,
                 },
             },
         },
@@ -30,6 +30,6 @@ export const CreatePropertyRes = z
         };
     });
 
-export type CreatePropertysRes = z.infer<typeof CreatePropertyRes>;
+export type CreatePropertyRes = z.infer<typeof CreatePropertyRes>;
 
 export default createProperty;
