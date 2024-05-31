@@ -25,6 +25,7 @@ import {
     typographyClasses,
 } from "@mui/material";
 import { debounce, isNil } from "lodash";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -44,7 +45,19 @@ const CreateNewListing = (): JSX.Element => {
 
     const [apt, setApt] = useState("");
 
+    const [showDropdown, setShowDropdown] = useState(false);
+
     const [places, setPlaces] = useState<MapboxResponse | null>(null);
+
+    useEffect(() => {
+        if (auth.isLoading || auth.hasError) {
+            return;
+        }
+
+        if (auth.data === null || !auth.data.authenticated) {
+            signIn();
+        }
+    }, [auth.data, auth.hasError, auth.isLoading]);
 
     const place = useMemo(() => {
         if (placeId === null || places === null) {
@@ -65,6 +78,7 @@ const CreateNewListing = (): JSX.Element => {
         debounce((newAddress: string) => {
             searchAddress(newAddress).then((newPlaces) => {
                 setPlaces(newPlaces);
+                setShowDropdown(true);
             });
         }, 300),
         []
@@ -111,7 +125,6 @@ const CreateNewListing = (): JSX.Element => {
             });
 
             toast.create("New property created", "success");
-
             router.push(routes[edit_listing][$propertyid](property.id).$);
         } catch {
             toast.create("Failed to create property", "error");
@@ -162,7 +175,7 @@ const CreateNewListing = (): JSX.Element => {
                 <Space />
                 <ClickAwayListener
                     onClickAway={() => {
-                        setPlaces(null); //closes the 'dropdown'
+                        setShowDropdown(false);
                     }}
                 >
                     <Box position={"relative"}>
@@ -176,7 +189,7 @@ const CreateNewListing = (): JSX.Element => {
                             required
                             placeholder="Search address..."
                             sx={
-                                places === null
+                                showDropdown === false
                                     ? {}
                                     : {
                                           [`& .${outlinedInputClasses.root}`]: {
@@ -192,7 +205,7 @@ const CreateNewListing = (): JSX.Element => {
                                       }
                             }
                         />
-                        {places !== null && (
+                        {places !== null && showDropdown && (
                             <Stack
                                 position={"absolute"}
                                 zIndex={1}
@@ -242,7 +255,7 @@ const CreateNewListing = (): JSX.Element => {
                                                         )
                                                     );
                                                     setPlaceId(pl.id);
-                                                    setPlaces(null);
+                                                    setShowDropdown(false);
                                                 }}
                                                 whiteSpace={"nowrap"}
                                                 textOverflow={"ellipsis"}

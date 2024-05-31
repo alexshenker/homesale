@@ -80,9 +80,14 @@ const routes = {
         $: u(create_new_listing),
     },
     [edit_listing]: {
-        [$propertyid]: (propertyId: PropertyId) => ({
-            $: u(edit_listing, propertyId),
-        }),
+        [$propertyid]: (propertyId: PropertyId) => {
+            console.log("propertyId:", propertyId);
+            console.log("Generated URL:", u(edit_listing, propertyId));
+
+            return {
+                $: u(edit_listing, propertyId),
+            };
+        },
     },
 };
 

@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-        const newProperty = createProperty(parsedBody.data);
+        const newProperty = await createProperty(parsedBody.data);
 
         return Response.json(newProperty);
     } catch (e) {

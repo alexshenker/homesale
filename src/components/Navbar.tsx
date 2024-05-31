@@ -39,11 +39,11 @@ const Navbar: FC = () => {
                         <Logo />
                     </Stack>
 
-                    <Stack direction={"row"} gap={1} alignItems={"center"}>
+                    <Stack direction={"row"} gap={2} alignItems={"center"}>
                         {<LinkText href="">Buy/Rent</LinkText>}
                         {
                             <LinkText href={routes[create_new_listing].$}>
-                                Sell/List
+                                List your home
                             </LinkText>
                         }
                         {auth.data === null ? (
