@@ -15,6 +15,7 @@ import searchAddress, {
 
 import colors from "@/utils/public/colors";
 import useAuth from "@/utils/public/hooks/useAuth";
+import routes, { $propertyid, edit_listing } from "@/utils/public/routes";
 import {
     Box,
     ClickAwayListener,
@@ -25,10 +26,13 @@ import {
 } from "@mui/material";
 import { debounce, isNil } from "lodash";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 const CreateNewListing = (): JSX.Element => {
     const auth = useAuth();
+
+    const router = useRouter();
 
     const [placeId, setPlaceId] = useState<MapboxPlaceId | null>(null);
 
@@ -92,7 +96,7 @@ const CreateNewListing = (): JSX.Element => {
         const { context } = place.properties;
 
         try {
-            await createProperty({
+            const property = await createProperty({
                 ownerId: auth.data.user.id,
                 property: {
                     mapboxPlaceId: place.id,
@@ -108,7 +112,7 @@ const CreateNewListing = (): JSX.Element => {
 
             toast.create("New property created", "success");
 
-            //@TODO: Redirect to next property process
+            router.push(routes[edit_listing][$propertyid](property.id).$);
         } catch {
             toast.create("Failed to create property", "error");
         } finally {

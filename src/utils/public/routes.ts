@@ -1,4 +1,4 @@
-import { UserId } from "@/opaqueIdTypes";
+import { PropertyId, UserId } from "@/opaqueIdTypes";
 
 //Routes
 export const accompaniment = "accompaniment";
@@ -9,13 +9,15 @@ export const currentuser = "currentuser";
 export const users = "users";
 export const create_new_listing = "create_new_listing";
 export const properties = "properties";
-export const create = "create";
+export const create_property = "create_property";
+export const edit_listing = "edit_listing";
 
 export const address_search = "address_search";
 export const Q_address_search_freeform_query = "address_search_freeform_query";
 
 //Dynamic routes
 export const $userid = "userid";
+export const $propertyid = "propertyid";
 
 export const u = (...args: string[]): string => {
     return `/${args.join("/")}`;
@@ -52,8 +54,8 @@ const API = {
         },
     },
     [properties]: {
-        [create]: {
-            $: u(api, properties, create),
+        [create_property]: {
+            $: u(api, properties, create_property),
         },
     },
     [address_search]: (searchQuery?: string) => {
@@ -76,6 +78,11 @@ const routes = {
     [api]: API,
     [create_new_listing]: {
         $: u(create_new_listing),
+    },
+    [edit_listing]: {
+        [$propertyid]: (propertyId: PropertyId) => ({
+            $: u(edit_listing, propertyId),
+        }),
     },
 };
 

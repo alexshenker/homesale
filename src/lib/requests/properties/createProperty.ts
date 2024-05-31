@@ -3,7 +3,7 @@ import { UserId } from "@/opaqueIdTypes";
 import routes, {
     absoluteUrl,
     api,
-    create,
+    create_property,
     properties,
 } from "@/utils/public/routes";
 import { Prisma } from "@prisma/client";
@@ -25,10 +25,13 @@ export const PropertyCreateInput = z.object({
 export type PropertyCreateInput = z.infer<typeof PropertyCreateInput>;
 
 const createProperty = async (body: PropertyCreateInput) => {
-    const res = await fetch(absoluteUrl(routes[api][properties][create].$), {
-        method: "POST",
-        body: JSON.stringify(body),
-    });
+    const res = await fetch(
+        absoluteUrl(routes[api][properties][create_property].$),
+        {
+            method: "POST",
+            body: JSON.stringify(body),
+        }
+    );
 
     if (!res.ok) {
         throw new Error(`[${createProperty}]: Failed to create property`);
