@@ -4,12 +4,17 @@ import TextField, {
     textFieldBorderRadius,
 } from "@/components/fields/TextField";
 import Space from "@/components/ui/Space";
+import useToast from "@/components/ui/Toast/useToast";
+import Button from "@/components/ui/button/Button";
 import Text from "@/components/ui/text/Text";
+import createProperty from "@/lib/requests/properties/createProperty";
 import searchAddress, {
+    MapboxPlaceId,
     MapboxResponse,
-} from "@/lib/searchAddress/searchAddress";
-import { formProps } from "@/utils/constants/formProps";
+} from "@/lib/requests/searchAddress/searchAddress";
+
 import colors from "@/utils/public/colors";
+import useAuth from "@/utils/public/hooks/useAuth";
 import {
     Box,
     ClickAwayListener,
@@ -18,25 +23,39 @@ import {
     stackClasses,
     typographyClasses,
 } from "@mui/material";
-import { debounce } from "lodash";
+import { debounce, isNil } from "lodash";
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-interface Props {}
+const CreateNewListing = (): JSX.Element => {
+    const auth = useAuth();
 
-const CreateNewListing = (props: Props): JSX.Element => {
-    const methods = useForm({
-        ...formProps,
-    });
-
-    const [addressSelected, setAddressSelected] = useState(false);
+    const [placeId, setPlaceId] = useState<MapboxPlaceId | null>(null);
 
     const [address, setAddress] = useState("");
+
+    const toast = useToast();
+
+    const [loading, setLoading] = useState(false);
 
     const [apt, setApt] = useState("");
 
     const [places, setPlaces] = useState<MapboxResponse | null>(null);
+
+    const place = useMemo(() => {
+        if (placeId === null || places === null) {
+            return null;
+        }
+
+        const placeLocal = places.features.find((pl) => pl.id === placeId);
+
+        if (placeLocal === undefined) {
+            console.error("Missing place for Id", placeId);
+            return null;
+        }
+
+        return placeLocal;
+    }, [placeId, places]);
 
     const onAddressChange = useCallback(
         debounce((newAddress: string) => {
@@ -52,12 +71,53 @@ const CreateNewListing = (props: Props): JSX.Element => {
             return;
         }
 
-        if (addressSelected) {
+        if (placeId !== null) {
             return;
         }
 
         onAddressChange(address);
-    }, [address, addressSelected, onAddressChange]);
+    }, [address, onAddressChange, placeId]);
+
+    const submit = async () => {
+        if (submitDisabled) {
+            return;
+        }
+
+        if (isNil(auth.data) || place === null) {
+            return;
+        }
+
+        setLoading(true);
+
+        const { properties } = place;
+
+        const { context } = properties;
+
+        try {
+            await createProperty({
+                ownerId: auth.data.user.id,
+                property: {
+                    street_address: properties.name,
+                    zipCode: context.postcode.name,
+                    city: context.locality?.name ?? context.place.name,
+                    state: context.region.region_code,
+                    longitude: properties.geometry.coordinates[0],
+                    latitude: properties.geometry.coordinates[1],
+                    ...(apt.length > 0 ? { apartment: apt } : {}),
+                },
+            });
+
+            toast.create("New property created", "success");
+
+            //@TODO: Redirect to next property process
+        } catch {
+            toast.create("Failed to create property", "error");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const submitDisabled = place === null || loading || isNil(auth.data);
 
     return (
         <Box position="relative">
@@ -107,7 +167,7 @@ const CreateNewListing = (props: Props): JSX.Element => {
                             label="Street address"
                             value={address}
                             onChange={(e) => {
-                                setAddressSelected(false);
+                                setPlaceId(null);
                                 setAddress(e.target.value);
                             }}
                             required
@@ -146,12 +206,12 @@ const CreateNewListing = (props: Props): JSX.Element => {
                                     },
                                 }}
                             >
-                                {places.features.map((place, idx) => {
+                                {places.features.map((pl, idx) => {
                                     const isLastItem =
                                         idx === places.features.length - 1;
                                     return (
                                         <Box
-                                            key={place.id}
+                                            key={pl.id}
                                             paddingX={2}
                                             paddingY={0.5}
                                             sx={{
@@ -172,12 +232,12 @@ const CreateNewListing = (props: Props): JSX.Element => {
                                             <Text
                                                 onClick={() => {
                                                     setAddress(
-                                                        place.properties.full_address.replace(
+                                                        pl.properties.full_address.replace(
                                                             ", United States",
                                                             ""
                                                         )
                                                     );
-                                                    setAddressSelected(true);
+                                                    setPlaceId(pl.id);
                                                     setPlaces(null);
                                                 }}
                                                 whiteSpace={"nowrap"}
@@ -190,7 +250,7 @@ const CreateNewListing = (props: Props): JSX.Element => {
                                                         },
                                                 }}
                                             >
-                                                {place.properties.full_address.replace(
+                                                {pl.properties.full_address.replace(
                                                     ", United States",
                                                     ""
                                                 )}
@@ -213,6 +273,10 @@ const CreateNewListing = (props: Props): JSX.Element => {
                     />
                 </Box>
             </Box>
+
+            <Button onClick={submit} disabled={submitDisabled}>
+                Submit
+            </Button>
         </Box>
     );
 };

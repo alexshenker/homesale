@@ -8,6 +8,8 @@ export const api = "api";
 export const currentuser = "currentuser";
 export const users = "users";
 export const create_new_listing = "create_new_listing";
+export const properties = "properties";
+export const create = "create";
 
 export const address_search = "address_search";
 export const Q_address_search_freeform_query = "address_search_freeform_query";
@@ -47,6 +49,11 @@ const API = {
             [$userid]: (userId: UserId) => ({
                 $: u(api, users, currentuser, userId),
             }),
+        },
+    },
+    [properties]: {
+        [create]: {
+            $: u(api, properties, create),
         },
     },
     [address_search]: (searchQuery?: string) => {
