@@ -3,6 +3,7 @@
 import TextField, {
     textFieldBorderRadius,
 } from "@/components/fields/TextField";
+import Loading from "@/components/ui/Loading";
 import Space from "@/components/ui/Space";
 import useToast from "@/components/ui/Toast/useToast";
 import Button from "@/components/ui/button/Button";
@@ -97,10 +98,6 @@ const CreateNewListing = (): JSX.Element => {
     }, [address, onAddressChange, placeId]);
 
     const submit = async () => {
-        if (submitDisabled) {
-            return;
-        }
-
         if (isNil(auth.data) || place === null) {
             return;
         }
@@ -125,6 +122,7 @@ const CreateNewListing = (): JSX.Element => {
             });
 
             toast.create("New property created", "success");
+
             router.push(routes[edit_listing][$propertyid](property.id).$);
         } catch {
             toast.create("Failed to create property", "error");
@@ -134,6 +132,14 @@ const CreateNewListing = (): JSX.Element => {
     };
 
     const submitDisabled = place === null || loading || isNil(auth.data);
+
+    if (auth.isLoading) {
+        return <Loading />;
+    }
+
+    if (auth.hasError || auth.data === null) {
+        return <></>;
+    }
 
     return (
         <Box position="relative">
@@ -148,7 +154,7 @@ const CreateNewListing = (): JSX.Element => {
                         width: "100%",
                         height: "100%",
                         background:
-                            "linear-gradient(to bottom, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 60%)",
+                            "linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.2) 60%)",
                     },
                 }}
             >
@@ -279,7 +285,7 @@ const CreateNewListing = (): JSX.Element => {
                         )}
                     </Box>
                 </ClickAwayListener>
-                {/* <FormProvider {...methods}></FormProvider> */}
+
                 <Space />
                 <Box width={"100px"}>
                     <TextField

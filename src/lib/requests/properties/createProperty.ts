@@ -11,7 +11,7 @@ import { z } from "zod";
 import { MapboxPlaceId } from "../searchAddress/searchAddress";
 
 const PrismaPropertyCreateInput = z
-    .custom<OmitMod<Prisma.PropertyCreateInput, "Owner">>()
+    .custom<OmitMod<Prisma.PropertyCreateInput, "creator">>()
     .transform((p) => ({
         ...p,
         mapboxPlaceId: p.mapboxPlaceId as MapboxPlaceId,

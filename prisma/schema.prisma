@@ -88,16 +88,20 @@ model PersonalInfo {
 }
 
 model Property {
-  id      String @id @default(cuid())
-  ownerId String
-  Owner   User   @relation(fields: [ownerId], references: [id])
+  id        String @id @default(cuid())
+  creatorId String //User who added this property
+  creator   User   @relation(fields: [creatorId], references: [id])
 
-  hiddenFromView Boolean @default(false)
+  published Boolean @default(false)
 
-  price Float?
-
-  rent                Float?
+  salePrice           Float?
+  rentPrice           Float?
   leaseDurationMonths Int?
+
+  annual_property_tax Float?
+
+  HOA_monthly_fee         Float?
+  HOA_bylaws_document_src String? @unique
 
   description  String?
   propertyType PropertyTypes?
@@ -114,10 +118,27 @@ model Property {
   numberOfFloors          Int?
   basement                Boolean?
   yearBuilt               Int?
-  lastRoofReplacementDate DateTime?
+  lastRoofReplacementYear Int?
   pets                    Pets?
+  dateAvailable           DateTime?
 
-  dateAvailable DateTime?
+  //Media
+  primaryPhoto String?  @unique //primary photo src
+  photos       String[] //All photos src
+  video        String?  @unique
+
+  //OWNER On Deed
+  Owner_first  String?
+  Owner_last   String?
+  Owner_middle String?
+
+  Owner_ID_front_src String?
+  Owner_ID_back_src  String?
+
+  Deed_src String? @unique
+
+  creator_confirmed_management_permission         Boolean   @default(false) //Creator of property must confirm they are the owner or permitted to manage the property by the owner
+  creator_confirmed_management_permission_on_date DateTime?
 
   //ADDRESS
   street_address String

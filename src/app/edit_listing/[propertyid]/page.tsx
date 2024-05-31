@@ -1,6 +1,4 @@
-interface Props {}
-
-const page = (props: Props): JSX.Element => {
+const Page = (): JSX.Element => {
     return (
         <div>
             <div>Edit listing...</div>
@@ -8,4 +6,4 @@ const page = (props: Props): JSX.Element => {
     );
 };
 
-export default page;
+export default Page;
