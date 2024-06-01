@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import {
     PropertyForm,
     hoaBylawsDocumentField,
@@ -72,6 +72,10 @@ const PriceDetails = ({
 
                     <Space />
 
+                    <Divider />
+
+                    <Space />
+
                     <Box>
                         <Label>Is the property part of an HOA?</Label>
 
@@ -138,7 +142,7 @@ const PriceDetails = ({
                     <Box width={"125px"}>
                         <FormAmountField
                             name={leaseTermMonthsField}
-                            label="List Term in Months"
+                            label="Lease Term Months"
                             endAdornment={
                                 <Text padding={1} fontSize={"12px"}>
                                     Months
