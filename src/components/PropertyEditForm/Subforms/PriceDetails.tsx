@@ -96,7 +96,7 @@ const PriceDetails = ({
 
                                 <FormFileField
                                     name={hoaBylawsDocumentField}
-                                    label="HOA Bylaws Document"
+                                    label="Upload HOA Bylaws Document"
                                 />
                             </Box>
                         )}
