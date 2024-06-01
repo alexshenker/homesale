@@ -151,10 +151,13 @@ const FileField = ({
                         </Box>
                     </Box>
                 )}
-                <Box className="absolute flex justify-center items-center inset-y-0 inset-x-0">
+                <Box
+                    padding={1}
+                    className="absolute flex justify-center items-center inset-y-0 inset-x-0"
+                >
                     <Stack justifyContent={"center"}>
                         {isNil(props.value) ? (
-                            <Text type="neutral">
+                            <Text type="neutral" textAlign={"center"}>
                                 {label ?? placeholder ?? ""}
                             </Text>
                         ) : props.multiple ? (

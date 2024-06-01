@@ -53,20 +53,22 @@ const PriceDetails = ({
     switch (listingType) {
         case "sell": {
             return (
-                <Box width={"200px"}>
-                    <FormAmountField
-                        name={salePriceField}
-                        startAdornment={"$"}
-                        label="Price"
-                    />
+                <Box>
+                    <Box width="200px">
+                        <FormAmountField
+                            name={salePriceField}
+                            startAdornment={"$"}
+                            label="Price"
+                        />
 
-                    <Space />
+                        <Space />
 
-                    <FormAmountField
-                        name={propertyTaxField}
-                        startAdornment={"$"}
-                        label="Annual Property Tax"
-                    />
+                        <FormAmountField
+                            name={propertyTaxField}
+                            startAdornment={"$"}
+                            label="Annual Property Tax"
+                        />
+                    </Box>
 
                     <Space />
 
@@ -77,27 +79,35 @@ const PriceDetails = ({
 
                         {hasHOA && (
                             <Box>
-                                <FormAmountField
-                                    name={hoaMonthlyField}
-                                    startAdornment={"$"}
-                                    label="Monthly HOA Fee"
-                                    endAdornment={
-                                        <Text
-                                            padding={1}
-                                            fontSize={"12px"}
-                                            whiteSpace={"nowrap"}
-                                        >
-                                            Per month
-                                        </Text>
-                                    }
-                                />
+                                <Box width="200px">
+                                    <FormAmountField
+                                        name={hoaMonthlyField}
+                                        startAdornment={"$"}
+                                        label="Monthly HOA Fee"
+                                        endAdornment={
+                                            <Text
+                                                padding={1}
+                                                fontSize={"12px"}
+                                                whiteSpace={"nowrap"}
+                                            >
+                                                Per month
+                                            </Text>
+                                        }
+                                    />
+                                </Box>
 
                                 <Space />
 
-                                <FormFileField
-                                    name={hoaBylawsDocumentField}
-                                    label="Upload HOA Bylaws Document"
-                                />
+                                <Box
+                                    width="100%"
+                                    maxWidth={"300px"}
+                                    minWidth="175px"
+                                >
+                                    <FormFileField
+                                        name={hoaBylawsDocumentField}
+                                        label="Upload HOA Bylaws Document"
+                                    />
+                                </Box>
                             </Box>
                         )}
                     </Box>
