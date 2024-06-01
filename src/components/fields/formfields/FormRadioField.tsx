@@ -14,7 +14,9 @@ const FormRadioField = <T extends string>({
             {...controllerProps}
             rules={{ ...controllerProps.rules, required }}
             render={({ field }) => {
-                return <Radio {...field} options={options} />;
+                const { ref: _ref, ...restField } = field;
+
+                return <Radio {...restField} options={options} />;
             }}
         />
     );

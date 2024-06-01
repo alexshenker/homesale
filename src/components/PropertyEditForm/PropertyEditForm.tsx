@@ -42,6 +42,7 @@ const propertyFormPages: PropertyFormPage[] = [
 
 interface Props {
     property: NonNullable<GetPropertyRes>;
+    hoaBylawsDocument: File | null;
 }
 
 export const listingTypeField = "listingType";
@@ -53,6 +54,8 @@ export const salePriceField = "salePrice";
 export const rentPriceField = "rentPrice";
 export const propertyTaxField = "propertyTax";
 export const hoaMonthlyField = "hoaMonthly";
+export const hoaBylawsDocumentField = "hoaBylawsDocument";
+export const leaseTermMonthsField = "leaseTermMonths";
 
 export interface PropertyForm {
     //1
@@ -68,7 +71,9 @@ export interface PropertyForm {
     [salePriceField]: string | null;
     [propertyTaxField]: string | null;
     [hoaMonthlyField]: string | null;
+    [hoaBylawsDocumentField]: File | null;
     [rentPriceField]: string | null;
+    [leaseTermMonthsField]: string | null;
 }
 
 const toNumString = (num: number | null): string | null => {
@@ -79,7 +84,10 @@ const toNumString = (num: number | null): string | null => {
     return `${num}`;
 };
 
-const PropertyEditForm = ({ property }: Props): JSX.Element => {
+const PropertyEditForm = ({
+    property,
+    hoaBylawsDocument,
+}: Props): JSX.Element => {
     const {
         propertyType,
         listing_type,
@@ -90,6 +98,7 @@ const PropertyEditForm = ({ property }: Props): JSX.Element => {
         annual_property_tax,
         rentPrice,
         HOA_monthly_fee,
+        leaseDurationMonths,
     } = property;
 
     const toast = useToast();
@@ -107,12 +116,17 @@ const PropertyEditForm = ({ property }: Props): JSX.Element => {
             [propertyTaxField]: toNumString(annual_property_tax),
             [hoaMonthlyField]: toNumString(HOA_monthly_fee),
             [rentPriceField]: toNumString(rentPrice),
+            [leaseTermMonthsField]: toNumString(leaseDurationMonths),
+
+            [hoaBylawsDocumentField]: hoaBylawsDocument,
         };
     }, [
         HOA_monthly_fee,
         annual_property_tax,
         bathrooms,
         bedrooms,
+        hoaBylawsDocument,
+        leaseDurationMonths,
         listing_type,
         propertyType,
         rentPrice,

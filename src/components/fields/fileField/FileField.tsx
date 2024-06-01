@@ -144,7 +144,7 @@ const FileField = ({
                         <Box className={"p-1"} zIndex={zIndex}>
                             <IconButton onClick={clear}>
                                 <CancelRoundedIcon
-                                    style={{ color: colors.icon }}
+                                    style={{ color: colors.text }}
                                     className="w-5 h-5"
                                 />
                             </IconButton>
@@ -194,7 +194,7 @@ const FileField = ({
                                                     >
                                                         <CancelRoundedIcon
                                                             style={{
-                                                                color: colors.icon,
+                                                                color: colors.text,
                                                             }}
                                                             className="w-4 h-4"
                                                         />

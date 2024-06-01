@@ -1,26 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { HookResult } from "./types";
-
-async function urlToFile(url: string, type: "img"): Promise<File | null> {
-    const res = await fetch(url);
-
-    return res.ok ? new File([await res.blob()], type) : null;
-}
+import urlToFile from "../urlToFile";
 
 const useUrlToFile = (
     input: {
         url: string;
-        type: "img";
+        fileName: string;
+        type?: "img";
     } | null
 ): HookResult<File | null> => {
     const file = useQuery({
         queryKey: ["url-to-file"],
         queryFn:
             input === null
-                ? undefined
-                : async () => urlToFile(input.url, input.type),
-        enabled: input !== null,
+                ? () => null
+                : async () => urlToFile(input.url, input.fileName, input.type),
     });
 
     return useMemo(() => {

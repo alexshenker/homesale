@@ -1,7 +1,9 @@
 import { Box } from "@mui/material";
 import {
     PropertyForm,
+    hoaBylawsDocumentField,
     hoaMonthlyField,
+    leaseTermMonthsField,
     listingTypeField,
     propertyTaxField,
     rentPriceField,
@@ -14,6 +16,7 @@ import FormAmountField from "@/components/fields/formfields/FormAmountField";
 import Space from "@/components/ui/Space";
 import Switch from "@/components/fields/Switch";
 import Label from "@/components/ui/text/Label";
+import FormFileField from "@/components/fields/formfields/FormFileField";
 
 interface Props {
     formValues: PropertyForm;
@@ -88,6 +91,13 @@ const PriceDetails = ({
                                         </Text>
                                     }
                                 />
+
+                                <Space />
+
+                                <FormFileField
+                                    name={hoaBylawsDocumentField}
+                                    label="HOA Bylaws Document"
+                                />
                             </Box>
                         )}
                     </Box>
@@ -112,6 +122,20 @@ const PriceDetails = ({
                             </Text>
                         }
                     />
+
+                    <Space />
+
+                    <Box width={"125px"}>
+                        <FormAmountField
+                            name={leaseTermMonthsField}
+                            label="List Term in Months"
+                            endAdornment={
+                                <Text padding={1} fontSize={"12px"}>
+                                    Months
+                                </Text>
+                            }
+                        />
+                    </Box>
                 </Box>
             );
         }
