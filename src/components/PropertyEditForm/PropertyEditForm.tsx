@@ -53,7 +53,7 @@ interface Form {
     [propertyTypeField]: PropertyTypeOption | null;
 
     //2
-    [squareFeetField]: number | null;
+    [squareFeetField]: `${number}` | null;
     [bedroomsField]: BedroomOption | null;
     [bathroomsField]: BathroomOption | null;
 }
@@ -68,7 +68,7 @@ const PropertyEditForm = ({ property }: Props): JSX.Element => {
             [listingTypeField]: listing_type,
             [propertyTypeField]: getPropertyTypeOption(propertyType),
 
-            [squareFeetField]: squareFeet,
+            [squareFeetField]: squareFeet !== null ? `${squareFeet}` : null,
             [bedroomsField]: getBedroomOption(bedrooms),
             [bathroomsField]: getBathroomOption(bathrooms),
         },
