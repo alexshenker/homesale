@@ -1,9 +1,9 @@
-import Radio from "@/components/fields/Radio";
+import FormRadioField from "@/components/fields/formfields/FormRadioField";
 import { GetPropertyRes } from "@/lib/db/properties/getProperty";
 import { formProps } from "@/utils/constants/formProps";
 import { Box, Button } from "@mui/material";
 import { ListingType as ListingTypeT } from "@prisma/client";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 
 type Props = {
     property: NonNullable<GetPropertyRes>;
@@ -42,10 +42,13 @@ const ListingType = ({
 
     return (
         <div>
-            <Radio
-                value={methods.getValues()[listingTypeField]}
-                options={Object.values(ListingTypeT)}
-            />
+            <FormProvider {...methods}>
+                <FormRadioField
+                    name={listingTypeField}
+                    options={Object.values(ListingTypeT)}
+                    required
+                />
+            </FormProvider>
 
             <Box display="flex" justifyContent={"space-between"}>
                 {previousPage ? (

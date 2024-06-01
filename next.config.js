@@ -13,16 +13,16 @@ const nextConfig = {
             process.env.VERCEL_URL !== undefined
                 ? "https://homesale.vercel.app"
                 : process.env.VERCEL_URL !== undefined
-                ? `https://${process.env.VERCEL_URL}`
-                : process.env.NEXTAUTH_URL,
+                  ? `https://${process.env.VERCEL_URL}`
+                  : process.env.NEXTAUTH_URL,
 
         NEXT_PUBLIC_NEXTAUTH_URL:
             process.env.VERCEL_ENV === "production" &&
             process.env.VERCEL_URL !== undefined
                 ? "https://homesale.vercel.app"
                 : process.env.VERCEL_URL !== undefined
-                ? `https://${process.env.VERCEL_URL}`
-                : process.env.NEXT_PUBLIC_NEXTAUTH_URL,
+                  ? `https://${process.env.VERCEL_URL}`
+                  : process.env.NEXT_PUBLIC_NEXTAUTH_URL,
     },
 };
 
