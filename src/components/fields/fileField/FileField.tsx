@@ -134,7 +134,7 @@ const FileField = ({
                     "&:hover": {
                         border: `1px solid ${colors.border}`,
                     },
-                    borderRadius: "4px",
+                    borderRadius: "10px",
                 }}
                 onDragOver={onDragOver}
                 onDrop={onDrop}
