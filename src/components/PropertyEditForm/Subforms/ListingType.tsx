@@ -1,74 +1,44 @@
 import FormRadioField from "@/components/fields/formfields/FormRadioField";
-import Button from "@/components/ui/button/Button";
-import { GetPropertyRes } from "@/lib/db/properties/getProperty";
-import { formProps } from "@/utils/constants/formProps";
+import { ListingType as ListingTypeT, PropertyTypes } from "@prisma/client";
 import { Box } from "@mui/material";
-import { ListingType as ListingTypeT } from "@prisma/client";
-import { FormProvider, useForm } from "react-hook-form";
+import { listingTypeField } from "../PropertyEditForm";
 
-type Props = {
-    property: NonNullable<GetPropertyRes>;
-} & (
-    | {
-          nextPage: () => void;
-          previousPage: () => void;
-      }
-    | {
-          nextPage?: undefined;
-          previousPage: () => void;
-      }
-    | {
-          nextPage: () => void;
-          previousPage?: undefined;
-      }
-);
-
-const listingTypeField = "listingType";
-
-interface Form {
-    [listingTypeField]: ListingTypeT | null;
-}
-
-const ListingType = ({
-    property,
-    nextPage,
-    previousPage,
-}: Props): JSX.Element => {
-    const methods = useForm<Form>({
-        ...formProps,
-        defaultValues: {
-            [listingTypeField]: property.listing_type,
-        },
-    });
-
-    const { formState } = methods;
-
+const ListingType = (): JSX.Element => {
     return (
-        <div>
-            <FormProvider {...methods}>
-                <FormRadioField
-                    name={listingTypeField}
-                    options={Object.values(ListingTypeT)}
-                    required
-                />
-            </FormProvider>
-
-            <Box display="flex" justifyContent={"space-between"}>
-                {previousPage ? (
-                    <Button onClick={previousPage}>Previous Page</Button>
-                ) : (
-                    <Button disabled>Previous Page</Button>
-                )}
-                {nextPage ? (
-                    <Button onClick={nextPage} disabled={!formState.isValid}>
-                        Next Page
-                    </Button>
-                ) : (
-                    <Button disabled>Next Page</Button>
-                )}
-            </Box>
-        </div>
+        <Box>
+            <FormRadioField
+                name={listingTypeField}
+                options={Object.values(ListingTypeT)}
+                required
+            />
+        </Box>
     );
 };
 
 export default ListingType;
+
+export type PropertyTypeOption = { value: PropertyTypes; label: string };
+
+export const propertyTypeOptions: PropertyTypeOption[] = [
+    { value: "apartment", label: "Apartment" },
+    { value: "condo", label: "Condo" },
+    { value: "coop", label: "Coop" },
+    { value: "house", label: "House" },
+    { value: "multi_family_home", label: "Multifamily home" },
+    { value: "duplex", label: "Duplex" },
+    { value: "triplex", label: "Triplex" },
+    { value: "townhouse", label: "Townhouse" },
+    // { value: "land", label: "Land" },
+    // { value: "commercial_property", label: "Commercial Property" },
+    // { value: "industrial_property", label: "Industrial Property" },
+];
+
+export const getPropertyTypeOption = (
+    propType: PropertyTypes | null
+): PropertyTypeOption | null => {
+    if (propType === null) {
+        return null;
+    }
+
+    return propertyTypeOptions.find((p) => p.value === propType) ?? null;
+};
