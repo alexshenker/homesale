@@ -144,6 +144,9 @@ const PropertyEditForm = ({ property }: Props): JSX.Element => {
                                 p.title === "Pricing" &&
                                 formValues[listingTypeField] === null
                             }
+                            {...(p.page === page
+                                ? { variant: "outlined" }
+                                : {})}
                         >
                             {p.title}
                         </Button>
