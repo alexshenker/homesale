@@ -6,36 +6,51 @@ import {
     squareFeetField,
 } from "../PropertyEditForm";
 import FormTextField from "@/components/fields/formfields/FormTextField";
+import Space from "@/components/ui/Space";
+import Text from "@/components/ui/text/Text";
 
 const PropertyDetails = (): JSX.Element => {
     return (
         <Box>
-            <FormTextField
-                name={squareFeetField}
-                label="Square Footage"
-                rules={{
-                    validate: {
-                        isNumber: (v) => {
-                            const numberPattern = /^(0|[1-9]\d*)(\.\d+)?$/;
-                            return numberPattern.test(v)
-                                ? true
-                                : "Please enter a valid number";
+            <Box width="125px">
+                <FormTextField
+                    name={squareFeetField}
+                    label="Square Footage"
+                    rules={{
+                        validate: {
+                            isNumber: (v) => {
+                                const numberPattern = /^(0|[1-9]\d*)(\.\d+)?$/;
+                                return numberPattern.test(v)
+                                    ? true
+                                    : "Please enter a valid number";
+                            },
                         },
-                    },
-                }}
-            />
+                    }}
+                    endAdornment={
+                        <Box padding={1}>
+                            <Text fontSize={"12px"}>sq/ft</Text>
+                        </Box>
+                    }
+                />
 
-            <FormDropdownField
-                label="Bedrooms"
-                name={bedroomsField}
-                options={bedroomsOptions}
-            />
+                <Space />
 
-            <FormDropdownField
-                label="Bathrooms"
-                name={bathroomsField}
-                options={bathroomOptions}
-            />
+                <FormDropdownField
+                    label="Bedrooms"
+                    name={bedroomsField}
+                    options={bedroomsOptions}
+                    disableClearable
+                />
+
+                <Space />
+
+                <FormDropdownField
+                    label="Bathrooms"
+                    name={bathroomsField}
+                    options={bathroomOptions}
+                    disableClearable
+                />
+            </Box>
         </Box>
     );
 };

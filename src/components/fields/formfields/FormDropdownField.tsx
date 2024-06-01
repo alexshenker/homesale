@@ -10,7 +10,10 @@ import { Props as DropdownProps } from "../Dropdown";
 type Props = Omit<ControllerProps, "render"> &
     Pick<TextFieldProps, "label" | "required"> & {
         render?: never; //Without this, ControllerProps requires render
-    } & Pick<DropdownProps<DropdownOption>, "options" | "onKeyDown"> & {
+    } & Pick<
+        DropdownProps<DropdownOption>,
+        "options" | "onKeyDown" | "disableClearable"
+    > & {
         isLoading?: boolean;
     };
 
@@ -20,6 +23,7 @@ const FormDropdownField = ({
     options,
     onKeyDown,
     isLoading,
+    disableClearable,
     ...controllerProps
 }: Props): JSX.Element => {
     return (
@@ -34,7 +38,7 @@ const FormDropdownField = ({
                         onChange={
                             ((_, val) =>
                                 field.onChange(
-                                    val,
+                                    val
                                 )) as ControllerRenderProps["onChange"]
                         }
                         label={label}
@@ -44,6 +48,7 @@ const FormDropdownField = ({
                         options={options}
                         required={required}
                         onKeyDown={onKeyDown}
+                        disableClearable={disableClearable}
                     />
                 );
             }}
