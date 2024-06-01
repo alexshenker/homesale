@@ -1,10 +1,30 @@
 import { Box } from "@mui/material";
 import FormDropdownField from "@/components/fields/formfields/FormDropdownField";
-import { bathroomsField, bedroomsField } from "../PropertyEditForm";
+import {
+    bathroomsField,
+    bedroomsField,
+    squareFeetField,
+} from "../PropertyEditForm";
+import FormTextField from "@/components/fields/formfields/FormTextField";
 
 const PropertyDetails = (): JSX.Element => {
     return (
         <Box>
+            <FormTextField
+                name={squareFeetField}
+                label="Square Footage"
+                rules={{
+                    validate: {
+                        isNumber: (v) => {
+                            const numberPattern = /^(0|[1-9]\d*)(\.\d+)?$/;
+                            return numberPattern.test(v)
+                                ? true
+                                : "Please enter a valid number";
+                        },
+                    },
+                }}
+            />
+
             <FormDropdownField
                 label="Bedrooms"
                 name={bedroomsField}
