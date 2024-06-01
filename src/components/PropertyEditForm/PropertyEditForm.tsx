@@ -1,32 +1,52 @@
 "use client";
 
-import useProperty from "@/lib/hooks/properties/useProperty";
-import { PropertyId } from "@/opaqueIdTypes";
-import Loading from "../ui/Loading";
-import Text from "../ui/text/Text";
+import { useState } from "react";
+import ListingType from "./Subforms/ListingType";
+import { Button } from "@mui/material";
+import { GetPropertyRes } from "@/lib/db/properties/getProperty";
 
-const propertyFormPages = [""] as const;
+export type SubformTitle = "Listing Type";
 
-export type PropertyFormPage = (typeof propertyFormPages)[number];
+export type PropertyFormPage = {
+    page: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+    title: SubformTitle;
+};
+
+const propertyFormPages: PropertyFormPage[] = [
+    { page: 1, title: "Listing Type" },
+] as const;
 
 interface Props {
-    propertyId: PropertyId;
+    property: NonNullable<GetPropertyRes>;
 }
 
-const PropertyEditForm = (props: Props): JSX.Element => {
-    const property = useProperty(props.propertyId);
-
-    if (property.isLoading) {
-        return <Loading />;
-    }
-
-    if (property.hasError) {
-        return <Text type="error">Failed to get property</Text>;
-    }
+const PropertyEditForm = ({ property }: Props): JSX.Element => {
+    const [page, setPage] = useState<PropertyFormPage["page"]>(1);
 
     return (
         <div>
-            <div></div>
+            <div>
+                {propertyFormPages.map((p) => {
+                    return (
+                        <Button key={p.title} onClick={() => setPage(p.page)}>
+                            {p.title}
+                        </Button>
+                    );
+                })}
+            </div>
+
+            {(() => {
+                switch (page) {
+                    case 1: {
+                        return (
+                            <ListingType
+                                nextPage={() => setPage(2)}
+                                property={property}
+                            />
+                        );
+                    }
+                }
+            })()}
         </div>
     );
 };

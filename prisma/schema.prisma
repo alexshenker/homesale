@@ -98,6 +98,8 @@ model Property {
   rentPrice           Float?
   leaseDurationMonths Int?
 
+  listing_type ListingType?
+
   annual_property_tax Float?
 
   HOA_monthly_fee         Float?
@@ -155,6 +157,11 @@ model Property {
   updatedAt DateTime @updatedAt @db.Timestamptz()
 
   @@unique([street_address, apartment, zipCode, zipCodeExt, city, state])
+}
+
+enum ListingType {
+  sell
+  rent
 }
 
 enum Pets {

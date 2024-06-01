@@ -1,4 +1,4 @@
-import getProperty from "@/lib/db/properties/getProperty";
+import getProperty from "@/lib/requests/properties/getProperty";
 import { PropertyId } from "@/opaqueIdTypes";
 import makeHookResponse from "@/utils/public/hooks/makeHookResponse";
 import { useQuery } from "@tanstack/react-query";
