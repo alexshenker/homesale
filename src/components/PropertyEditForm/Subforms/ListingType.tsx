@@ -1,7 +1,8 @@
 import FormRadioField from "@/components/fields/formfields/FormRadioField";
+import Button from "@/components/ui/button/Button";
 import { GetPropertyRes } from "@/lib/db/properties/getProperty";
 import { formProps } from "@/utils/constants/formProps";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { ListingType as ListingTypeT } from "@prisma/client";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -40,6 +41,8 @@ const ListingType = ({
         },
     });
 
+    const { formState } = methods;
+
     return (
         <div>
             <FormProvider {...methods}>
@@ -57,7 +60,9 @@ const ListingType = ({
                     <Button disabled>Previous Page</Button>
                 )}
                 {nextPage ? (
-                    <Button onClick={nextPage}>Next Page</Button>
+                    <Button onClick={nextPage} disabled={!formState.isValid}>
+                        Next Page
+                    </Button>
                 ) : (
                     <Button disabled>Next Page</Button>
                 )}
