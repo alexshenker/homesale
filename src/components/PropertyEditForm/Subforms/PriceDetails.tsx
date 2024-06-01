@@ -57,7 +57,7 @@ const PriceDetails = ({
                     <Box width="200px">
                         <FormAmountField
                             name={salePriceField}
-                            startAdornment={"$"}
+                            startAdornment={<Box paddingRight={0.5}>$</Box>}
                             label="Price"
                         />
 
@@ -65,7 +65,7 @@ const PriceDetails = ({
 
                         <FormAmountField
                             name={propertyTaxField}
-                            startAdornment={"$"}
+                            startAdornment={<Box paddingRight={0.5}>$</Box>}
                             label="Annual Property Tax"
                         />
                     </Box>
@@ -86,7 +86,9 @@ const PriceDetails = ({
                                 <Box width="200px">
                                     <FormAmountField
                                         name={hoaMonthlyField}
-                                        startAdornment={"$"}
+                                        startAdornment={
+                                            <Box paddingRight={0.5}>$</Box>
+                                        }
                                         label="Monthly HOA Fee"
                                         endAdornment={
                                             <Text
@@ -124,7 +126,7 @@ const PriceDetails = ({
                 <Box width={"200px"}>
                     <FormAmountField
                         name={rentPriceField}
-                        startAdornment={"$"}
+                        startAdornment={<Box paddingRight={0.5}>$</Box>}
                         label="Monthly Rent"
                         endAdornment={
                             <Text
