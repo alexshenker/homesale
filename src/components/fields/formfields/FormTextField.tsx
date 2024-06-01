@@ -48,7 +48,7 @@ const FormTextField = ({
                         }}
                         {...(formatValue
                             ? {
-                                  onChange: (e) => {
+                                  onBlur: (e) => {
                                       field.onChange(
                                           formatValue(e.target.value)
                                       );

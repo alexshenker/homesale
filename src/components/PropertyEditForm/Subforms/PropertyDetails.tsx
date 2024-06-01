@@ -5,27 +5,17 @@ import {
     bedroomsField,
     squareFeetField,
 } from "../PropertyEditForm";
-import FormTextField from "@/components/fields/formfields/FormTextField";
 import Space from "@/components/ui/Space";
 import Text from "@/components/ui/text/Text";
+import FormAmountField from "@/components/fields/formfields/FormAmountField";
 
 const PropertyDetails = (): JSX.Element => {
     return (
         <Box>
             <Box width="125px">
-                <FormTextField
+                <FormAmountField
                     name={squareFeetField}
                     label="Square Footage"
-                    rules={{
-                        validate: {
-                            isNumber: (v) => {
-                                const numberPattern = /^(0|[1-9]\d*)(\.\d+)?$/;
-                                return numberPattern.test(v)
-                                    ? true
-                                    : "Please enter a valid number";
-                            },
-                        },
-                    }}
                     endAdornment={
                         <Box padding={1}>
                             <Text fontSize={"12px"}>sq/ft</Text>

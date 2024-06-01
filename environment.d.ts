@@ -28,6 +28,10 @@ declare global {
     type OmitMod<Obj, Key extends keyof Obj> = {
         [K in keyof Obj as K extends Key ? never : K]: Obj[K];
     };
+
+    type ExcludeUndefined<T> = {
+        [K in keyof T]: Exclude<T[K], undefined>;
+    };
 }
 
 declare module "next-auth/jwt" {
