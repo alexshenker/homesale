@@ -31,6 +31,8 @@ const PropertyDetails = (): JSX.Element => {
                     }
                 />
 
+                <Space />
+
                 <FormAmountField name={acresField} label="Number of Acres" />
 
                 <Space />
@@ -95,7 +97,7 @@ const PropertyDetails = (): JSX.Element => {
 export default PropertyDetails;
 
 const maxBedroom = 10;
-const bedroomOptions = range(0, maxBedroom, 1).map((b) => {
+const bedroomOptions = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, maxBedroom].map((b) => {
     const label = b === 0 ? "Studio" : b === maxBedroom ? `${b}+` : `${b}`;
     return {
         value: b,
@@ -114,7 +116,27 @@ export const getBedroomOption = (num: number | null): BedroomOption | null => {
 };
 
 const maxBathroom = 10;
-const bathroomOptions = range(1, maxBathroom, 0.5).map((b) => {
+const bathroomOptions = [
+    1,
+    1.5,
+    2,
+    2.5,
+    3,
+    3.5,
+    4,
+    4.5,
+    5,
+    5.5,
+    6,
+    6.5,
+    7,
+    7.5,
+    8,
+    8.5,
+    9,
+    9.5,
+    maxBathroom,
+].map((b) => {
     return {
         value: b,
         label: b === maxBathroom ? `${b}+` : `${b}`,
@@ -137,9 +159,11 @@ export type YearOption = { label: string; value: number };
 
 export const yearOptions: YearOption[] = range(
     1800,
-    new Date().getFullYear(),
+    new Date().getFullYear() + 1,
     1
-).map((y) => ({ label: `${y}`, value: y }));
+)
+    .reverse()
+    .map((y) => ({ label: `${y}`, value: y }));
 
 export const getYearOption = (year: number | null): YearOption | null => {
     if (year === null) {
@@ -152,8 +176,7 @@ export const getYearOption = (year: number | null): YearOption | null => {
 export type FloorOption = { label: string; value: number };
 
 const maxFloor = 5;
-
-export const floorOptions: FloorOption[] = range(1, maxFloor, 1).map((f) => {
+export const floorOptions: FloorOption[] = [1, 2, 3, 4, maxFloor].map((f) => {
     return {
         label: f === maxFloor ? `${f}+` : `${f}`,
         value: f,
