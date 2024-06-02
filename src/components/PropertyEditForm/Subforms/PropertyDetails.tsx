@@ -71,6 +71,7 @@ const PropertyDetails = (): JSX.Element => {
                         <FormRadioField
                             name={basementField}
                             options={["No", "Yes"]}
+                            row
                         />
                     </Box>
 

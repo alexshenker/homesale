@@ -7,6 +7,7 @@ type Props<T extends string> = Omit<ControllerProps, "render"> &
 const FormRadioField = <T extends string>({
     options,
     required,
+    row,
     ...controllerProps
 }: Props<T>): JSX.Element => {
     return (
@@ -16,7 +17,7 @@ const FormRadioField = <T extends string>({
             render={({ field }) => {
                 const { ref: _ref, ...restField } = field;
 
-                return <Radio {...restField} options={options} />;
+                return <Radio {...restField} options={options} row={row} />;
             }}
         />
     );
