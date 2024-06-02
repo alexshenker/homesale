@@ -44,7 +44,7 @@ export default async function RootLayout({
                                 }
                             >
                                 <Stack
-                                    maxWidth={1100}
+                                    maxWidth={1000}
                                     width="100%"
                                     height="100%"
                                     borderRadius={"20px"}

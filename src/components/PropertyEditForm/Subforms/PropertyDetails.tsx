@@ -16,80 +16,81 @@ import FormAmountField from "@/components/fields/formfields/FormAmountField";
 import { range } from "lodash";
 import FormRadioField from "@/components/fields/formfields/FormRadioField";
 import Label from "@/components/ui/label/Label";
+import Wrap from "@/components/Wrap";
 
 const PropertyDetails = (): JSX.Element => {
     return (
-        <Box>
-            <Box width="125px">
-                <FormAmountField
-                    name={squareFeetField}
-                    label="Square Footage"
-                    endAdornment={
-                        <Box padding={1}>
-                            <Text fontSize={"12px"}>sq/ft</Text>
-                        </Box>
-                    }
-                />
+        <Box maxWidth={"600px"}>
+            <Wrap cols={2} xsCols={1}>
+                <Box maxWidth={"250px"}>
+                    <FormAmountField
+                        name={squareFeetField}
+                        label="Square Footage"
+                        endAdornment={
+                            <Box padding={1}>
+                                <Text fontSize={"12px"}>sq/ft</Text>
+                            </Box>
+                        }
+                    />
 
-                <Space />
+                    <Space />
 
-                <FormAmountField name={acresField} label="Number of Acres" />
+                    <FormAmountField
+                        name={acresField}
+                        label="Number of Acres"
+                    />
 
-                <Space />
+                    <Space />
 
-                <FormDropdownField
-                    label="Bedrooms"
-                    name={bedroomsField}
-                    options={bedroomOptions}
-                    disableClearable
-                />
+                    <FormDropdownField
+                        label="Bedrooms"
+                        name={bedroomsField}
+                        options={bedroomOptions}
+                    />
 
-                <Space />
+                    <Space />
 
-                <FormDropdownField
-                    label="Bathrooms"
-                    name={bathroomsField}
-                    options={bathroomOptions}
-                    disableClearable
-                />
-
-                <Space />
-
-                <FormDropdownField
-                    label="Floors"
-                    name={numberOfFloorsField}
-                    options={floorOptions}
-                    disableClearable
-                />
-
-                <Space />
-
-                <Box>
-                    <Label>Is there a basement?</Label>
-                    <FormRadioField
-                        name={basementField}
-                        options={["No", "Yes"]}
+                    <FormDropdownField
+                        label="Bathrooms"
+                        name={bathroomsField}
+                        options={bathroomOptions}
                     />
                 </Box>
 
-                <Space />
+                <Box maxWidth={"250px"}>
+                    <FormDropdownField
+                        label="Floors"
+                        name={numberOfFloorsField}
+                        options={floorOptions}
+                    />
 
-                <FormDropdownField
-                    label="Year Built"
-                    name={yearBuiltField}
-                    options={yearOptions}
-                    disableClearable
-                />
+                    <Space />
 
-                <Space />
+                    <Box>
+                        <Label>Is there a basement?</Label>
+                        <FormRadioField
+                            name={basementField}
+                            options={["No", "Yes"]}
+                        />
+                    </Box>
 
-                <FormDropdownField
-                    label="Last Roof Replacement Year"
-                    name={lastRoofReplacementYearField}
-                    options={yearOptions}
-                    disableClearable
-                />
-            </Box>
+                    <Space />
+
+                    <FormDropdownField
+                        label="Year Built"
+                        name={yearBuiltField}
+                        options={yearOptions}
+                    />
+
+                    <Space />
+
+                    <FormDropdownField
+                        label="Last Roof Replacement Year"
+                        name={lastRoofReplacementYearField}
+                        options={yearOptions}
+                    />
+                </Box>
+            </Wrap>
         </Box>
     );
 };
