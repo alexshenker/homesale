@@ -114,14 +114,16 @@ model Property {
   utilities      Utilities[]
   otherUtilities String?
 
-  squareFeet              Int?
+  squareFeet Int?
+  acres      Int?
+
   bedrooms                Int?
   bathrooms               Float?
   numberOfFloors          Int?
   basement                Boolean?
-  yearBuilt               Int?
-  lastRoofReplacementYear Int?
-  pets                    Pets?
+  yearBuilt               Int? //1998
+  lastRoofReplacementYear Int? //1998
+  pets                    Pets[]
   dateAvailable           DateTime?
 
   //Media
@@ -142,6 +144,8 @@ model Property {
   creator_confirmed_management_permission         Boolean   @default(false) //Creator of property must confirm they are the owner or permitted to manage the property by the owner
   creator_confirmed_management_permission_on_date DateTime?
 
+  listing_status ListingStatus?
+
   //ADDRESS
   street_address String
   apartment      String?
@@ -159,17 +163,24 @@ model Property {
   @@unique([street_address, apartment, zipCode, zipCodeExt, city, state])
 }
 
+enum ListingStatus {
+  for_sale
+  for_rent
+  sold
+  pending
+  rented
+}
+
 enum ListingType {
   sell
   rent
 }
 
 enum Pets {
-  No
+  None
   Cats
   SmallDogs
   LargeDogs
-  All
 }
 
 enum NamePrefix {

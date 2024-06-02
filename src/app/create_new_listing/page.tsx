@@ -121,11 +121,11 @@ const CreateNewListing = (): JSX.Element => {
                 },
             });
 
-            toast.create("New property created", "success");
+            toast.success("New property created");
 
             router.push(routes[edit_listing][$propertyid](property.id).$);
         } catch {
-            toast.create("Failed to create property", "error");
+            toast.error("Failed to create property");
         } finally {
             setLoading(false);
         }

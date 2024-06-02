@@ -18,6 +18,8 @@ const makeToastId = (): ToastId => {
 
 export interface ToastContext {
     create: AddToast;
+    success: (message: string) => void;
+    error: (message: string) => void;
     remove: RemoveToast;
 }
 
@@ -58,7 +60,12 @@ const ToastProvider = (
 
     return (
         <toastContext.Provider
-            value={{ create: addToast, remove: removeToast }}
+            value={{
+                create: addToast,
+                success: (m: string) => addToast(m, "success"),
+                error: (m: string) => addToast(m, "error"),
+                remove: removeToast,
+            }}
         >
             <ToastContainer toasts={toasts} />
             {props.children}

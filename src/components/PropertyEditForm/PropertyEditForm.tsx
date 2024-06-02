@@ -10,8 +10,12 @@ import exhaustiveSwitch from "@/utils/public/exhaustiveSwitch";
 import PropertyDetails, {
     BathroomOption,
     BedroomOption,
+    FloorOption,
+    YearOption,
     getBathroomOption,
     getBedroomOption,
+    getFloorOption,
+    getYearOption,
 } from "./Subforms/PropertyDetails";
 import Button from "../ui/button/Button";
 import { Box } from "@mui/material";
@@ -56,6 +60,11 @@ export const propertyTaxField = "propertyTax";
 export const hoaMonthlyField = "hoaMonthly";
 export const hoaBylawsDocumentField = "hoaBylawsDocument";
 export const leaseTermMonthsField = "leaseTermMonths";
+export const numberOfFloorsField = "numberOfFloors";
+export const basementField = "basement";
+export const yearBuiltField = "yearBuilt";
+export const lastRoofReplacementYearField = "lastRoofReplacementYear";
+export const acresField = "acres";
 
 export interface PropertyForm {
     //1
@@ -66,6 +75,11 @@ export interface PropertyForm {
     [squareFeetField]: string | null;
     [bedroomsField]: BedroomOption | null;
     [bathroomsField]: BathroomOption | null;
+    [numberOfFloorsField]: FloorOption | null;
+    [basementField]: "Yes" | "No" | null;
+    [yearBuiltField]: YearOption | null; //1998
+    [lastRoofReplacementYearField]: YearOption | null;
+    [acresField]: string | null;
 
     //3
     [salePriceField]: string | null;
@@ -99,6 +113,11 @@ const PropertyEditForm = ({
         rentPrice,
         HOA_monthly_fee,
         leaseDurationMonths,
+        numberOfFloors,
+        basement,
+        yearBuilt,
+        lastRoofReplacementYear,
+        acres,
     } = property;
 
     const toast = useToast();
@@ -111,6 +130,14 @@ const PropertyEditForm = ({
             [squareFeetField]: toNumString(squareFeet),
             [bedroomsField]: getBedroomOption(bedrooms),
             [bathroomsField]: getBathroomOption(bathrooms),
+            [numberOfFloorsField]: getFloorOption(numberOfFloors),
+            [basementField]:
+                basement === true ? "Yes" : basement === false ? "No" : null,
+            [yearBuiltField]: getYearOption(yearBuilt),
+            [lastRoofReplacementYearField]: getYearOption(
+                lastRoofReplacementYear
+            ),
+            [acresField]: toNumString(acres),
 
             [salePriceField]: toNumString(salePrice),
             [propertyTaxField]: toNumString(annual_property_tax),
@@ -122,16 +149,21 @@ const PropertyEditForm = ({
         };
     }, [
         HOA_monthly_fee,
+        acres,
         annual_property_tax,
+        basement,
         bathrooms,
         bedrooms,
         hoaBylawsDocument,
+        lastRoofReplacementYear,
         leaseDurationMonths,
         listing_type,
+        numberOfFloors,
         propertyType,
         rentPrice,
         salePrice,
         squareFeet,
+        yearBuilt,
     ]);
 
     const methods = useForm<PropertyForm>({
@@ -186,9 +218,8 @@ const PropertyEditForm = ({
                                 <PriceDetails
                                     formValues={formValues}
                                     handleMissingListingType={() => {
-                                        toast.create(
-                                            "Please select the listing type",
-                                            "error"
+                                        toast.error(
+                                            "Please select the listing type"
                                         );
                                         setPage(1);
                                     }}
