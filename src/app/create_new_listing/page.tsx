@@ -168,7 +168,7 @@ const CreateNewListing = (): JSX.Element => {
             </Box>
             <Box
                 width="100%"
-                maxWidth={"350px"}
+                maxWidth={"405px"}
                 minWidth="180px"
                 position="absolute"
                 top="0px"
