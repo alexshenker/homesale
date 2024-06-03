@@ -26,9 +26,17 @@ import Space from "../ui/Space";
 import PriceDetails from "./Subforms/PriceDetails";
 import useToast from "../ui/Toast/useToast";
 
-export type SubformTitle = "Listing Type" | "Property Details" | "Pricing";
+export type SubformTitle =
+    | "Listing Type"
+    | "Property Details"
+    | "Pricing"
+    | "Amenities"
+    | "Media"
+    | "Additional Info"
+    | "Documents"
+    | "Preview";
 
-const pageNumbers = [1, 2, 3, 4, 5] as const;
+const pageNumbers = [1, 2, 3, 4, 5, 6, 7, 8] as const;
 type PageNumber = (typeof pageNumbers)[number];
 
 const maxPageNumber = Math.max(...pageNumbers);
@@ -42,6 +50,11 @@ const propertyFormPages: PropertyFormPage[] = [
     { page: 1, title: "Listing Type" },
     { page: 2, title: "Property Details" },
     { page: 3, title: "Pricing" },
+    { page: 4, title: "Amenities" },
+    { page: 5, title: "Media" },
+    { page: 6, title: "Additional Info" },
+    { page: 7, title: "Documents" },
+    { page: 8, title: "Preview" },
 ] as const;
 
 interface Props {
@@ -233,6 +246,15 @@ const PropertyEditForm = ({
                             return;
                         }
                         case 5: {
+                            return;
+                        }
+                        case 6: {
+                            return;
+                        }
+                        case 7: {
+                            return;
+                        }
+                        case 8: {
                             return;
                         }
                         default: {
