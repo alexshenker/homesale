@@ -301,7 +301,7 @@ const CreateNewListing = (): JSX.Element => {
                 <Space />
 
                 <Button onClick={submit} disabled={submitDisabled}>
-                    Submit
+                    Continue
                 </Button>
             </Box>
         </Box>
