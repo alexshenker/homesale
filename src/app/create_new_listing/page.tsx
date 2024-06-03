@@ -1,5 +1,6 @@
 "use client";
 
+import LawnImage from "@/components/LawnImage";
 import Radio from "@/components/fields/Radio";
 import TextField, {
     textFieldBorderRadius,
@@ -145,7 +146,12 @@ const CreateNewListing = (): JSX.Element => {
         place === null || loading || isNil(auth.data) || listingType === null;
 
     if (auth.isLoading) {
-        return <Loading />;
+        return (
+            <Box position="relative">
+                <Loading />
+                <LawnImage />
+            </Box>
+        );
     }
 
     if (auth.hasError || auth.data === null) {
@@ -155,29 +161,8 @@ const CreateNewListing = (): JSX.Element => {
     return (
         <Box position="relative">
             {loading && <Loading />}
-            <Box
-                sx={{
-                    display: "inline-block",
-                    "&::before": {
-                        content: '""',
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        background:
-                            "linear-gradient(to bottom, rgba(255, 255, 255, 1) 10%, rgba(255, 255, 255, 0.2) 60%)",
-                    },
-                }}
-            >
-                <Image
-                    src="/images/lawn_3.webp"
-                    width={2048}
-                    height={2048}
-                    alt="lawn"
-                    objectFit="contain"
-                />
-            </Box>
+            <LawnImage />
+
             <Box
                 width="100%"
                 maxWidth={"405px"}

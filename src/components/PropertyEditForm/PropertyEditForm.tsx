@@ -3,7 +3,6 @@
 import { useMemo, useState } from "react";
 
 import { GetPropertyRes } from "@/lib/db/properties/getProperty";
-import exhaustiveSwitch from "@/utils/public/exhaustiveSwitch";
 import PropertyDetails, {
     BathroomOption,
     BedroomOption,
@@ -22,35 +21,21 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { formProps } from "@/utils/constants/formProps";
 import Space from "../ui/Space";
 import PriceDetails from "./Subforms/PriceDetails";
+import exhaustiveSwitch from "@/utils/public/exhaustiveSwitch";
 
-export type SubformTitle =
-    | "Property Details"
-    | "Pricing"
-    | "Amenities"
-    | "Media"
-    | "Additional Info"
-    | "Documents"
-    | "Preview";
-
-const pageNumbers = [1, 2, 3, 4, 5, 6, 7] as const;
-type PageNumber = (typeof pageNumbers)[number];
-
-const maxPageNumber = Math.max(...pageNumbers);
-
-export type PropertyFormPage = {
-    page: PageNumber;
-    title: SubformTitle;
-};
-
-const propertyFormPages: PropertyFormPage[] = [
-    { page: 1, title: "Property Details" },
-    { page: 2, title: "Pricing" },
-    { page: 3, title: "Amenities" },
-    { page: 4, title: "Media" },
-    { page: 5, title: "Additional Info" },
-    { page: 6, title: "Documents" },
-    { page: 7, title: "Preview" },
+const subforms = [
+    "Property Details",
+    "Description",
+    "Pricing",
+    "Amenities",
+    "Media",
+    "Documents",
+    "Preview",
 ] as const;
+
+export type Subform = (typeof subforms)[number];
+
+const maxPageIndex = subforms.length - 1;
 
 interface Props {
     property: NonNullable<GetPropertyRes>;
@@ -173,7 +158,7 @@ const PropertyEditForm = ({
         defaultValues: defaultValues,
     });
     methods.setValue;
-    const [page, setPage] = useState<PropertyFormPage["page"]>(1);
+    const [pageIndex, setPageIndex] = useState<number>(0);
 
     const formValues = useWatch({
         control: methods.control,
@@ -183,16 +168,16 @@ const PropertyEditForm = ({
     return (
         <div>
             <div>
-                {propertyFormPages.map((p) => {
+                {subforms.map((f, idx) => {
                     return (
                         <Button
-                            key={p.title}
-                            onClick={() => setPage(p.page)}
-                            {...(p.page === page
+                            key={f}
+                            onClick={() => setPageIndex(idx)}
+                            {...(idx === pageIndex
                                 ? { variant: "outlined" }
                                 : {})}
                         >
-                            {p.title}
+                            {f}
                         </Button>
                     );
                 })}
@@ -204,11 +189,16 @@ const PropertyEditForm = ({
 
             <FormProvider {...methods}>
                 {(() => {
-                    switch (page) {
-                        case 1: {
+                    const curForm = subforms[pageIndex];
+
+                    switch (curForm) {
+                        case "Property Details": {
                             return <PropertyDetails />;
                         }
-                        case 2: {
+                        case "Description": {
+                            return;
+                        }
+                        case "Pricing": {
                             return (
                                 <PriceDetails
                                     formValues={formValues}
@@ -219,23 +209,20 @@ const PropertyEditForm = ({
                                 />
                             );
                         }
-                        case 3: {
+                        case "Amenities": {
                             return;
                         }
-                        case 4: {
+                        case "Media": {
                             return;
                         }
-                        case 5: {
+                        case "Documents": {
                             return;
                         }
-                        case 6: {
-                            return;
-                        }
-                        case 7: {
+                        case "Preview": {
                             return;
                         }
                         default: {
-                            return exhaustiveSwitch(page);
+                            return exhaustiveSwitch(curForm);
                         }
                     }
                 })()}
@@ -245,15 +232,15 @@ const PropertyEditForm = ({
 
             <Box display="flex" justifyContent={"space-between"}>
                 <Button
-                    onClick={() => setPage((page - 1) as PageNumber)}
-                    disabled={page === 1}
+                    onClick={() => setPageIndex(pageIndex - 1)}
+                    disabled={pageIndex === 0}
                 >
                     {"< Previous"}
                 </Button>
 
                 <Button
-                    onClick={() => setPage((page + 1) as PageNumber)}
-                    disabled={page === maxPageNumber}
+                    onClick={() => setPageIndex(pageIndex + 1)}
+                    disabled={pageIndex === maxPageIndex}
                 >
                     {"Next >"}
                 </Button>

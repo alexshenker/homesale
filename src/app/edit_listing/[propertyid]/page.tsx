@@ -1,5 +1,6 @@
 "use client";
 
+import LawnImage from "@/components/LawnImage";
 import PropertyEditForm from "@/components/PropertyEditForm/PropertyEditForm";
 import Loading from "@/components/ui/Loading";
 import Text from "@/components/ui/text/Text";
@@ -7,6 +8,7 @@ import useProperty from "@/lib/hooks/properties/useProperty";
 import { PropertyId } from "@/opaqueIdTypes";
 import useUrlToFile from "@/utils/public/hooks/useUrlToFile";
 import { $propertyid } from "@/utils/public/routes";
+import { Box } from "@mui/material";
 import { useParams } from "next/navigation";
 
 const Page = (): JSX.Element => {
@@ -24,7 +26,12 @@ const Page = (): JSX.Element => {
     );
 
     if (property.isLoading || hoaBylawsDocument.isLoading) {
-        return <Loading />;
+        return (
+            <Box position="relative">
+                <Loading />
+                <LawnImage />
+            </Box>
+        );
     }
 
     if (property.hasError || hoaBylawsDocument.hasError) {
