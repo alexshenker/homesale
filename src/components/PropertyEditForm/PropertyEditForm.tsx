@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { GetPropertyRes } from "@/lib/db/properties/getProperty";
 import PropertyDetails, {
@@ -22,6 +22,11 @@ import { formProps } from "@/utils/constants/formProps";
 import Space from "../ui/Space";
 import PriceDetails from "./Subforms/PriceDetails";
 import exhaustiveSwitch from "@/utils/public/exhaustiveSwitch";
+import Description from "./Subforms/Description";
+import AmenitiesPage from "./Subforms/AmenitiesPage";
+import Media from "./Subforms/Media";
+import Documents from "./Subforms/Documents";
+import Preview from "./Subforms/Preview";
 
 const subforms = [
     "Property Details",
@@ -58,12 +63,11 @@ export const basementField = "basement";
 export const yearBuiltField = "yearBuilt";
 export const lastRoofReplacementYearField = "lastRoofReplacementYear";
 export const acresField = "acres";
+export const descriptionField = "description";
 
 export interface PropertyForm {
-    //1
+    //Property details
     [propertyTypeField]: PropertyTypeOption | null;
-
-    //2
     [squareFeetField]: string | null;
     [bedroomsField]: BedroomOption | null;
     [bathroomsField]: BathroomOption | null;
@@ -73,7 +77,10 @@ export interface PropertyForm {
     [lastRoofReplacementYearField]: YearOption | null;
     [acresField]: string | null;
 
-    //3
+    //Description
+    [descriptionField]: string | null;
+
+    //Pricing
     [salePriceField]: string | null;
     [propertyTaxField]: string | null;
     [hoaMonthlyField]: string | null;
@@ -109,12 +116,12 @@ const PropertyEditForm = ({
         yearBuilt,
         lastRoofReplacementYear,
         acres,
+        description,
     } = property;
 
     const defaultValues: PropertyForm = useMemo(() => {
         return {
             [propertyTypeField]: getPropertyTypeOption(propertyType),
-
             [squareFeetField]: toNumString(squareFeet),
             [bedroomsField]: getBedroomOption(bedrooms),
             [bathroomsField]: getBathroomOption(bathrooms),
@@ -126,14 +133,13 @@ const PropertyEditForm = ({
                 lastRoofReplacementYear
             ),
             [acresField]: toNumString(acres),
-
             [salePriceField]: toNumString(salePrice),
             [propertyTaxField]: toNumString(annual_property_tax),
             [hoaMonthlyField]: toNumString(HOA_monthly_fee),
             [rentPriceField]: toNumString(rentPrice),
             [leaseTermMonthsField]: toNumString(leaseDurationMonths),
-
             [hoaBylawsDocumentField]: hoaBylawsDocument,
+            [descriptionField]: description,
         };
     }, [
         HOA_monthly_fee,
@@ -142,6 +148,7 @@ const PropertyEditForm = ({
         basement,
         bathrooms,
         bedrooms,
+        description,
         hoaBylawsDocument,
         lastRoofReplacementYear,
         leaseDurationMonths,
@@ -196,7 +203,7 @@ const PropertyEditForm = ({
                             return <PropertyDetails />;
                         }
                         case "Description": {
-                            return;
+                            return <Description />;
                         }
                         case "Pricing": {
                             return (
@@ -210,16 +217,16 @@ const PropertyEditForm = ({
                             );
                         }
                         case "Amenities": {
-                            return;
+                            return <AmenitiesPage />;
                         }
                         case "Media": {
-                            return;
+                            return <Media />;
                         }
                         case "Documents": {
-                            return;
+                            return <Documents />;
                         }
                         case "Preview": {
-                            return;
+                            return <Preview />;
                         }
                         default: {
                             return exhaustiveSwitch(curForm);

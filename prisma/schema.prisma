@@ -92,7 +92,8 @@ model Property {
   creatorId String //User who added this property
   creator   User   @relation(fields: [creatorId], references: [id])
 
-  published Boolean @default(false)
+  published      Boolean   @default(false)
+  published_last DateTime?
 
   salePrice           Float?
   rentPrice           Float?
@@ -144,7 +145,8 @@ model Property {
   creator_confirmed_management_permission         Boolean   @default(false) //Creator of property must confirm they are the owner or permitted to manage the property by the owner
   creator_confirmed_management_permission_on_date DateTime?
 
-  listing_status ListingStatus?
+  listing_status              ListingStatus?
+  listing_status_last_updated DateTime?
 
   //ADDRESS
   street_address String
@@ -159,8 +161,6 @@ model Property {
 
   createdAt DateTime @default(now()) @db.Timestamptz()
   updatedAt DateTime @updatedAt @db.Timestamptz()
-
-  @@unique([listing_type, street_address, apartment, zipCode, zipCodeExt, city, state])
 }
 
 enum ListingStatus {
@@ -168,6 +168,7 @@ enum ListingStatus {
   for_rent
   sold
   pending
+  off_market
   rented
 }
 
