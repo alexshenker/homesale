@@ -175,10 +175,12 @@ const CreateNewListing = (): JSX.Element => {
                 padding={4}
             >
                 <Space />
-                <Text fontSize={"18px"}>
-                    What is the address of your property?
+                <Text fontSize={"18px"}>Lets get started!</Text>
+                <Space h={5} />
+                <Text fontSize={"16px"}>
+                    First, what is the address of your property?
                 </Text>
-                <Space />
+                <Space h={12} />
                 <ClickAwayListener
                     onClickAway={() => {
                         setShowDropdown(false);
