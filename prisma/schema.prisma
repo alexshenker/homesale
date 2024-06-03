@@ -160,7 +160,7 @@ model Property {
   createdAt DateTime @default(now()) @db.Timestamptz()
   updatedAt DateTime @updatedAt @db.Timestamptz()
 
-  @@unique([street_address, apartment, zipCode, zipCodeExt, city, state])
+  @@unique([listing_type, street_address, apartment, zipCode, zipCodeExt, city, state])
 }
 
 enum ListingStatus {
