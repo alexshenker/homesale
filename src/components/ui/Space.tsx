@@ -1,19 +1,19 @@
 import { Box } from "@mui/material";
 
 interface Props {
-  h?: number;
+    h?: number;
 }
 
-const defaultH = 25;
+const defaultH = 20;
 
 const Space = (props: Props): JSX.Element => {
-  return (
-    <Box
-      width={"100%"}
-      height={`${props.h ?? defaultH}px`}
-      minHeight={`${props.h ?? defaultH}px`}
-    />
-  );
+    return (
+        <Box
+            width={"100%"}
+            height={`${props.h ?? defaultH}px`}
+            minHeight={`${props.h ?? defaultH}px`}
+        />
+    );
 };
 
 export default Space;
