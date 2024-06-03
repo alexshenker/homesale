@@ -98,7 +98,7 @@ model Property {
   rentPrice           Float?
   leaseDurationMonths Int?
 
-  listing_type ListingType?
+  listing_type ListingType
 
   annual_property_tax Float?
 

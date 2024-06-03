@@ -1,5 +1,6 @@
 "use client";
 
+import Radio from "@/components/fields/Radio";
 import TextField, {
     textFieldBorderRadius,
 } from "@/components/fields/TextField";
@@ -25,6 +26,7 @@ import {
     stackClasses,
     typographyClasses,
 } from "@mui/material";
+import { ListingType } from "@prisma/client";
 import { debounce, isNil } from "lodash";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
@@ -37,6 +39,8 @@ const CreateNewListing = (): JSX.Element => {
     const router = useRouter();
 
     const [placeId, setPlaceId] = useState<MapboxPlaceId | null>(null);
+
+    const [listingType, setListingType] = useState<ListingType | null>(null);
 
     const [address, setAddress] = useState("");
 
@@ -102,6 +106,11 @@ const CreateNewListing = (): JSX.Element => {
             return;
         }
 
+        if (listingType === null) {
+            toast.error("Missing listing type");
+            return;
+        }
+
         setLoading(true);
 
         const { context } = place.properties;
@@ -118,6 +127,7 @@ const CreateNewListing = (): JSX.Element => {
                     longitude: place.geometry.coordinates[0],
                     latitude: place.geometry.coordinates[1],
                     ...(apt.length > 0 ? { apartment: apt } : {}),
+                    listing_type: listingType,
                 },
             });
 
@@ -131,7 +141,8 @@ const CreateNewListing = (): JSX.Element => {
         }
     };
 
-    const submitDisabled = place === null || loading || isNil(auth.data);
+    const submitDisabled =
+        place === null || loading || isNil(auth.data) || listingType === null;
 
     if (auth.isLoading) {
         return <Loading />;
@@ -143,6 +154,7 @@ const CreateNewListing = (): JSX.Element => {
 
     return (
         <Box position="relative">
+            {loading && <Loading />}
             <Box
                 sx={{
                     display: "inline-block",
@@ -154,7 +166,7 @@ const CreateNewListing = (): JSX.Element => {
                         width: "100%",
                         height: "100%",
                         background:
-                            "linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.2) 60%)",
+                            "linear-gradient(to bottom, rgba(255, 255, 255, 1) 10%, rgba(255, 255, 255, 0.2) 60%)",
                     },
                 }}
             >
@@ -295,6 +307,21 @@ const CreateNewListing = (): JSX.Element => {
                         placeholder="Apt/Suite..."
                         onChange={(e) => setApt(e.target.value)}
                         label="Apartment/Suite"
+                    />
+                </Box>
+
+                <Space />
+
+                <Box>
+                    <Radio
+                        label="Planning to sell or rent this property?"
+                        value={listingType}
+                        options={Object.values(ListingType)}
+                        onChange={(e) =>
+                            setListingType(e.target.value as ListingType)
+                        }
+                        required
+                        row
                     />
                 </Box>
 

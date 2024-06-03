@@ -4,41 +4,32 @@ import {
     hoaBylawsDocumentField,
     hoaMonthlyField,
     leaseTermMonthsField,
-    listingTypeField,
     propertyTaxField,
     rentPriceField,
     salePriceField,
 } from "../PropertyEditForm";
 import exhaustiveSwitch from "@/utils/public/exhaustiveSwitch";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Text from "@/components/ui/text/Text";
 import FormAmountField from "@/components/fields/formfields/FormAmountField";
 import Space from "@/components/ui/Space";
 import Switch from "@/components/fields/Switch";
 import Label from "@/components/ui/text/Label";
 import FormFileField from "@/components/fields/formfields/FormFileField";
+import { ListingType } from "@prisma/client";
 
 interface Props {
     formValues: PropertyForm;
-    handleMissingListingType: () => void;
     resetHOAFeeField: () => void;
+    listingType: ListingType;
 }
 
 const PriceDetails = ({
     formValues,
-    handleMissingListingType,
     resetHOAFeeField,
+    listingType,
 }: Props): JSX.Element => {
-    const listingType = formValues[listingTypeField];
-
     const [hasHOA, setHasHOA] = useState(formValues[hoaMonthlyField] !== null);
-
-    useEffect(() => {
-        if (listingType === null) {
-            //This means we don't have the info we need for this form
-            handleMissingListingType();
-        }
-    });
 
     const toggleHasHOA = () => {
         if (hasHOA === true) {
@@ -153,15 +144,6 @@ const PriceDetails = ({
                         />
                     </Box>
                 </Box>
-            );
-        }
-
-        case null: {
-            /* User didn't select listing type yet... so we enforce it here */
-            return (
-                <Text type="error">
-                    Please go back and select the listing type
-                </Text>
             );
         }
 

@@ -7,6 +7,7 @@ import {
     bedroomsField,
     lastRoofReplacementYearField,
     numberOfFloorsField,
+    propertyTypeField,
     squareFeetField,
     yearBuiltField,
 } from "../PropertyEditForm";
@@ -16,12 +17,22 @@ import FormAmountField from "@/components/fields/formfields/FormAmountField";
 import { range } from "lodash";
 import FormRadioField from "@/components/fields/formfields/FormRadioField";
 import Wrap from "@/components/Wrap";
+import { PropertyTypes } from "@prisma/client";
 
 const PropertyDetails = (): JSX.Element => {
     return (
         <Box maxWidth={"600px"}>
             <Wrap cols={2} xsCols={1}>
                 <Box maxWidth={"250px"}>
+                    <FormDropdownField
+                        name={propertyTypeField}
+                        label="Property type"
+                        options={propertyTypeOptions}
+                        required
+                    />
+
+                    <Space />
+
                     <FormAmountField
                         name={squareFeetField}
                         label="Square Footage"
@@ -188,4 +199,30 @@ export const getFloorOption = (floor: number | null): FloorOption | null => {
     }
 
     return floorOptions.find((y) => y.value === floor) ?? null;
+};
+
+export type PropertyTypeOption = { value: PropertyTypes; label: string };
+
+export const propertyTypeOptions: PropertyTypeOption[] = [
+    { value: "apartment", label: "Apartment" },
+    { value: "condo", label: "Condo" },
+    { value: "coop", label: "Coop" },
+    { value: "house", label: "House" },
+    { value: "multi_family_home", label: "Multifamily home" },
+    { value: "duplex", label: "Duplex" },
+    { value: "triplex", label: "Triplex" },
+    { value: "townhouse", label: "Townhouse" },
+    // { value: "land", label: "Land" },
+    // { value: "commercial_property", label: "Commercial Property" },
+    // { value: "industrial_property", label: "Industrial Property" },
+];
+
+export const getPropertyTypeOption = (
+    propType: PropertyTypes | null
+): PropertyTypeOption | null => {
+    if (propType === null) {
+        return null;
+    }
+
+    return propertyTypeOptions.find((p) => p.value === propType) ?? null;
 };

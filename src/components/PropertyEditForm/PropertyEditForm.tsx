@@ -1,33 +1,29 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import ListingType, {
-    PropertyTypeOption,
-    getPropertyTypeOption,
-} from "./Subforms/ListingType";
+
 import { GetPropertyRes } from "@/lib/db/properties/getProperty";
 import exhaustiveSwitch from "@/utils/public/exhaustiveSwitch";
 import PropertyDetails, {
     BathroomOption,
     BedroomOption,
     FloorOption,
+    PropertyTypeOption,
     YearOption,
     getBathroomOption,
     getBedroomOption,
     getFloorOption,
+    getPropertyTypeOption,
     getYearOption,
 } from "./Subforms/PropertyDetails";
 import Button from "../ui/button/Button";
 import { Box } from "@mui/material";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { formProps } from "@/utils/constants/formProps";
-import { ListingType as ListingTypeT } from "@prisma/client";
 import Space from "../ui/Space";
 import PriceDetails from "./Subforms/PriceDetails";
-import useToast from "../ui/Toast/useToast";
 
 export type SubformTitle =
-    | "Listing Type"
     | "Property Details"
     | "Pricing"
     | "Amenities"
@@ -36,7 +32,7 @@ export type SubformTitle =
     | "Documents"
     | "Preview";
 
-const pageNumbers = [1, 2, 3, 4, 5, 6, 7, 8] as const;
+const pageNumbers = [1, 2, 3, 4, 5, 6, 7] as const;
 type PageNumber = (typeof pageNumbers)[number];
 
 const maxPageNumber = Math.max(...pageNumbers);
@@ -47,14 +43,13 @@ export type PropertyFormPage = {
 };
 
 const propertyFormPages: PropertyFormPage[] = [
-    { page: 1, title: "Listing Type" },
-    { page: 2, title: "Property Details" },
-    { page: 3, title: "Pricing" },
-    { page: 4, title: "Amenities" },
-    { page: 5, title: "Media" },
-    { page: 6, title: "Additional Info" },
-    { page: 7, title: "Documents" },
-    { page: 8, title: "Preview" },
+    { page: 1, title: "Property Details" },
+    { page: 2, title: "Pricing" },
+    { page: 3, title: "Amenities" },
+    { page: 4, title: "Media" },
+    { page: 5, title: "Additional Info" },
+    { page: 6, title: "Documents" },
+    { page: 7, title: "Preview" },
 ] as const;
 
 interface Props {
@@ -81,7 +76,6 @@ export const acresField = "acres";
 
 export interface PropertyForm {
     //1
-    [listingTypeField]: ListingTypeT | null;
     [propertyTypeField]: PropertyTypeOption | null;
 
     //2
@@ -117,7 +111,6 @@ const PropertyEditForm = ({
 }: Props): JSX.Element => {
     const {
         propertyType,
-        listing_type,
         bedrooms,
         bathrooms,
         squareFeet,
@@ -133,11 +126,8 @@ const PropertyEditForm = ({
         acres,
     } = property;
 
-    const toast = useToast();
-
     const defaultValues: PropertyForm = useMemo(() => {
         return {
-            [listingTypeField]: listing_type,
             [propertyTypeField]: getPropertyTypeOption(propertyType),
 
             [squareFeetField]: toNumString(squareFeet),
@@ -170,7 +160,6 @@ const PropertyEditForm = ({
         hoaBylawsDocument,
         lastRoofReplacementYear,
         leaseDurationMonths,
-        listing_type,
         numberOfFloors,
         propertyType,
         rentPrice,
@@ -199,10 +188,6 @@ const PropertyEditForm = ({
                         <Button
                             key={p.title}
                             onClick={() => setPage(p.page)}
-                            disabled={
-                                p.title === "Pricing" &&
-                                formValues[listingTypeField] === null
-                            }
                             {...(p.page === page
                                 ? { variant: "outlined" }
                                 : {})}
@@ -221,26 +206,21 @@ const PropertyEditForm = ({
                 {(() => {
                     switch (page) {
                         case 1: {
-                            return <ListingType />;
-                        }
-                        case 2: {
                             return <PropertyDetails />;
                         }
-                        case 3: {
+                        case 2: {
                             return (
                                 <PriceDetails
                                     formValues={formValues}
-                                    handleMissingListingType={() => {
-                                        toast.error(
-                                            "Please select the listing type"
-                                        );
-                                        setPage(1);
-                                    }}
                                     resetHOAFeeField={() =>
                                         methods.setValue(hoaMonthlyField, null)
                                     }
+                                    listingType={property.listing_type}
                                 />
                             );
+                        }
+                        case 3: {
+                            return;
                         }
                         case 4: {
                             return;
@@ -252,9 +232,6 @@ const PropertyEditForm = ({
                             return;
                         }
                         case 7: {
-                            return;
-                        }
-                        case 8: {
                             return;
                         }
                         default: {
