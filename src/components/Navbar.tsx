@@ -41,7 +41,8 @@ const Navbar: FC = () => {
                     </Stack>
 
                     <Stack direction={"row"} gap={2} alignItems={"center"}>
-                        {<LinkText href="">Buy/Rent</LinkText>}
+                        {<LinkText href="">Buy</LinkText>}
+                        {<LinkText href="">Rent</LinkText>}
                         {
                             <LinkText href={routes[create_new_listing].$}>
                                 List your home

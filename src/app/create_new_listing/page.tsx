@@ -186,7 +186,7 @@ const CreateNewListing = (): JSX.Element => {
                 >
                     <Box position={"relative"}>
                         <TextField
-                            label="Street address"
+                            label="Address"
                             value={address}
                             onChange={(e) => {
                                 setPlaceId(null);
