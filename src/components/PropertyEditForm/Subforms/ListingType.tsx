@@ -3,6 +3,7 @@ import { ListingType as ListingTypeT, PropertyTypes } from "@prisma/client";
 import { Box } from "@mui/material";
 import { listingTypeField, propertyTypeField } from "../PropertyEditForm";
 import FormDropdownField from "@/components/fields/formfields/FormDropdownField";
+import Space from "@/components/ui/Space";
 
 const ListingType = (): JSX.Element => {
     return (
@@ -10,8 +11,12 @@ const ListingType = (): JSX.Element => {
             <FormRadioField
                 name={listingTypeField}
                 options={Object.values(ListingTypeT)}
+                label="Planning to Sell or Rent?"
                 required
+                row
             />
+
+            <Space />
 
             <Box width={"200px"}>
                 <FormDropdownField

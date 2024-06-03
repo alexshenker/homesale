@@ -15,7 +15,6 @@ import Text from "@/components/ui/text/Text";
 import FormAmountField from "@/components/fields/formfields/FormAmountField";
 import { range } from "lodash";
 import FormRadioField from "@/components/fields/formfields/FormRadioField";
-import Label from "@/components/ui/label/Label";
 import Wrap from "@/components/Wrap";
 
 const PropertyDetails = (): JSX.Element => {
@@ -66,14 +65,12 @@ const PropertyDetails = (): JSX.Element => {
 
                     <Space />
 
-                    <Box>
-                        <Label>Is there a basement?</Label>
-                        <FormRadioField
-                            name={basementField}
-                            options={["No", "Yes"]}
-                            row
-                        />
-                    </Box>
+                    <FormRadioField
+                        name={basementField}
+                        options={["No", "Yes"]}
+                        row
+                        label="Is there a basement?"
+                    />
 
                     <Space />
 

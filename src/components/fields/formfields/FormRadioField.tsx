@@ -8,6 +8,7 @@ const FormRadioField = <T extends string>({
     options,
     required,
     row,
+    label,
     ...controllerProps
 }: Props<T>): JSX.Element => {
     return (
@@ -17,7 +18,15 @@ const FormRadioField = <T extends string>({
             render={({ field }) => {
                 const { ref: _ref, ...restField } = field;
 
-                return <Radio {...restField} options={options} row={row} />;
+                return (
+                    <Radio
+                        {...restField}
+                        options={options}
+                        row={row}
+                        label={label}
+                        required={required}
+                    />
+                );
             }}
         />
     );
