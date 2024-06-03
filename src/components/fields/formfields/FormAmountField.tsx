@@ -1,3 +1,4 @@
+import { isNil } from "lodash";
 import FormTextField from "./FormTextField";
 
 interface Props {
@@ -17,6 +18,10 @@ const FormAmountField = (props: Props): JSX.Element => {
             rules={{
                 validate: {
                     isNumber: (v) => {
+                        if (isNil(v) || v === "") {
+                            return true;
+                        }
+
                         const numberPattern = /^(0|[1-9]\d*)(\.\d+)?$/;
                         return numberPattern.test((v ?? "").replace(/,/g, ""))
                             ? true
@@ -25,8 +30,12 @@ const FormAmountField = (props: Props): JSX.Element => {
                 },
             }}
             formatValue={(v) => {
+                if (isNil(v) || v === "") {
+                    return;
+                }
+
                 const rawValue = v.replace(/[^0-9.]/g, "");
-                
+
                 const numericValue = Number(rawValue);
 
                 return numericValue.toLocaleString("en-US", {

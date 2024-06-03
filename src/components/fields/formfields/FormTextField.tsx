@@ -12,7 +12,7 @@ type Props = Omit<ControllerProps, "render"> &
         hidden?: boolean;
         startAdornment?: React.ReactNode;
         endAdornment?: React.ReactNode;
-        formatValue?: (v: string) => string;
+        formatValue?: (v: string) => string | undefined;
     };
 
 const FormTextField = ({
