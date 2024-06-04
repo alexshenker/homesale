@@ -10,12 +10,16 @@ export const properties = "properties";
 export const create_property = "create_property";
 export const get_property = "get_property";
 export const edit_listing = "edit_listing";
+export const get_users_properties = "get_users_properties";
+
+export const manage = "manage";
 
 export const address_search = "address_search";
 export const Q_address_search_freeform_query = "address_search_freeform_query";
 
 //Dynamic routes
 export const $propertyid = "propertyid";
+export const $userid = "userid";
 
 export const u = (...args: string[]): string => {
     return `/${args.join("/")}`;
@@ -53,6 +57,13 @@ const API = {
                 };
             },
         },
+        [get_users_properties]: {
+            [$userid]: (userId: UserId) => {
+                return {
+                    $: u(api, properties, get_users_properties, userId),
+                };
+            },
+        },
     },
     [address_search]: (searchQuery?: string) => {
         if (searchQuery) {
@@ -77,13 +88,13 @@ const routes = {
     },
     [edit_listing]: {
         [$propertyid]: (propertyId: PropertyId) => {
-            console.log("propertyId:", propertyId);
-            console.log("Generated URL:", u(edit_listing, propertyId));
-
             return {
                 $: u(edit_listing, propertyId),
             };
         },
+    },
+    [manage]: {
+        $: u(manage),
     },
 };
 

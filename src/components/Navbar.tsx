@@ -8,7 +8,7 @@ import colors from "@/utils/public/colors";
 import LinkText from "./ui/text/LinkText/LinkText";
 import { signIn, signOut } from "next-auth/react";
 import useAuth from "@/utils/public/hooks/useAuth";
-import routes, { create_new_listing } from "@/utils/public/routes";
+import routes, { create_new_listing, manage } from "@/utils/public/routes";
 import { isNil } from "lodash";
 
 const Navbar: FC = () => {
@@ -48,7 +48,14 @@ const Navbar: FC = () => {
                                 List your home
                             </LinkText>
                         }
-                        {isNil(auth.data) ? (
+
+                        {<LinkText href={routes[manage].$}>Manage</LinkText>}
+
+                        {auth.isLoading ? (
+                            <></>
+                        ) : auth.hasError ? (
+                            <></>
+                        ) : auth.data === null ? (
                             <LinkText onClick={() => signIn()}>Login</LinkText>
                         ) : (
                             <LinkText onClick={() => signOut()}>
