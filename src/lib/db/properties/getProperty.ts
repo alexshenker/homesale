@@ -1,6 +1,7 @@
 import prismaClient from "@/lib/db";
 import { PropertyId, UserId } from "@/opaqueIdTypes";
 import { JSONString } from "@/utils/public/toJSONString";
+import transformProperty from "@/utils/public/transformProperty";
 import { z } from "zod";
 
 const getProperty = async (propertyId: PropertyId) => {
@@ -11,7 +12,7 @@ const getProperty = async (propertyId: PropertyId) => {
     });
 };
 
-type GetPropertyResUntyped = Awaited<ReturnType<typeof getProperty>>;
+export type GetPropertyResUntyped = Awaited<ReturnType<typeof getProperty>>;
 
 export const GetPropertyRes = z
     .custom<GetPropertyResUntyped>()
@@ -20,12 +21,7 @@ export const GetPropertyRes = z
             return p;
         }
 
-        return {
-            ...p,
-            id: p.id as PropertyId,
-            creatorId: p.creatorId as UserId,
-            description: p.description as JSONString | null,
-        };
+        return transformProperty(p);
     });
 
 export type GetPropertyRes = z.infer<typeof GetPropertyRes>;

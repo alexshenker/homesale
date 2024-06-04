@@ -43,12 +43,10 @@ const Page = (): JSX.Element => {
     }
 
     return (
-        <div>
-            <PropertyEditForm
-                property={property.data}
-                hoaBylawsDocument={hoaBylawsDocument.data}
-            />
-        </div>
+        <PropertyEditForm
+            property={property.data}
+            hoaBylawsDocument={hoaBylawsDocument.data}
+        />
     );
 };
 

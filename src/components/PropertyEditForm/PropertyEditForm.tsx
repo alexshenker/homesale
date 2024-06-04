@@ -23,10 +23,14 @@ import Space from "../ui/Space";
 import PriceDetails from "./Subforms/PriceDetails";
 import exhaustiveSwitch from "@/utils/public/exhaustiveSwitch";
 import Description from "./Subforms/Description";
-import AmenitiesPage from "./Subforms/AmenitiesPage";
+import AmenitiesPage, {
+    AmenityOption,
+    getAmenityOptionsGrouped,
+} from "./Subforms/AmenitiesPage";
 import Media from "./Subforms/Media";
 import Documents from "./Subforms/Documents";
 import Preview from "./Subforms/Preview";
+import { Amenities } from "@prisma/client";
 
 const subforms = [
     "Property Details",
@@ -64,6 +68,8 @@ export const yearBuiltField = "yearBuilt";
 export const lastRoofReplacementYearField = "lastRoofReplacementYear";
 export const acresField = "acres";
 export const descriptionField = "description";
+export const amenitiesField = "amenities";
+export const otherAmenitiesField = "amenitiesOther";
 
 export interface PropertyForm {
     //Property details
@@ -87,6 +93,10 @@ export interface PropertyForm {
     [hoaBylawsDocumentField]: File | null;
     [rentPriceField]: string | null;
     [leaseTermMonthsField]: string | null;
+
+    //Amenities
+    [amenitiesField]: AmenityOption[];
+    [otherAmenitiesField]: string | null;
 }
 
 const toNumString = (num: number | null): string | null => {
@@ -117,6 +127,8 @@ const PropertyEditForm = ({
         lastRoofReplacementYear,
         acres,
         description,
+        amenities,
+        otherAmenities,
     } = property;
 
     const defaultValues: PropertyForm = useMemo(() => {
@@ -140,6 +152,8 @@ const PropertyEditForm = ({
             [leaseTermMonthsField]: toNumString(leaseDurationMonths),
             [hoaBylawsDocumentField]: hoaBylawsDocument,
             [descriptionField]: description,
+            [amenitiesField]: getAmenityOptionsGrouped(amenities),
+            [otherAmenitiesField]: otherAmenities,
         };
     }, [
         HOA_monthly_fee,

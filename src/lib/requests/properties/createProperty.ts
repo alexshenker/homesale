@@ -9,12 +9,16 @@ import routes, {
 import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { MapboxPlaceId } from "../searchAddress/searchAddress";
+import { JSONString } from "@/utils/public/toJSONString";
 
 const PrismaPropertyCreateInput = z
     .custom<OmitMod<Prisma.PropertyCreateInput, "creator">>()
     .transform((p) => ({
         ...p,
         mapboxPlaceId: p.mapboxPlaceId as MapboxPlaceId,
+        description: p.description as JSONString | null,
+        otherAmenities: p.otherAmenities as JSONString | null,
+        otherUtilities: p.otherUtilities as JSONString | null,
     }));
 
 export const PropertyCreateInput = z.object({
