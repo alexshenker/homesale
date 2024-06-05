@@ -74,13 +74,21 @@ const Manage = (): JSX.Element => {
         }
 
         const rowsLocal: Row<Column>[] = propertiesFiltered.data.map((p) => {
+            const propertyRoute = `${routes[edit_listing][$propertyid](p.id).$}`;
+
             return {
                 key: p.id,
-                Address: toFullAddress(p),
+                Address: {
+                    value: (
+                        <LinkText href={propertyRoute}>
+                            {toFullAddress(p)}
+                        </LinkText>
+                    ),
+                    sortValue: toFullAddress(p),
+                },
                 "Listing Type": listingTypeTerm[p.listing_type],
                 "Published Status": publishedStatus[`${p.published}`],
-                onClick: () =>
-                    router.push(`${routes[edit_listing][$propertyid](p.id).$}`),
+                onClick: () => router.push(propertyRoute),
             };
         });
 

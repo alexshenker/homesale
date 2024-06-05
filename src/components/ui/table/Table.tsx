@@ -138,28 +138,35 @@ const Table = <ColName extends string>(props: Props<ColName>): JSX.Element => {
 
                                     return (
                                         <Cell key={key}>
-                                            {cellValueParsed}
+                                            <Box
+                                                display="flex"
+                                                alignItems={"center"}
+                                            >
+                                                {cellValueParsed}
 
-                                            {valueToCopy !== null && (
-                                                <Tooltip
-                                                    title="Copied!"
-                                                    placement="top"
-                                                    reactOnClick
-                                                >
-                                                    <IconButton
-                                                        onClick={() =>
-                                                            copy(valueToCopy)
-                                                        }
+                                                {valueToCopy !== null && (
+                                                    <Tooltip
+                                                        title="Copied!"
+                                                        placement="top"
+                                                        reactOnClick
                                                     >
-                                                        <ContentCopyIcon
-                                                            style={{
-                                                                width: "13px",
-                                                                height: "13px",
-                                                            }}
-                                                        />
-                                                    </IconButton>
-                                                </Tooltip>
-                                            )}
+                                                        <IconButton
+                                                            onClick={() =>
+                                                                copy(
+                                                                    valueToCopy
+                                                                )
+                                                            }
+                                                        >
+                                                            <ContentCopyIcon
+                                                                style={{
+                                                                    width: "13px",
+                                                                    height: "13px",
+                                                                }}
+                                                            />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                )}
+                                            </Box>
                                         </Cell>
                                     );
                                 })}
