@@ -139,8 +139,12 @@ const Table = <ColName extends string>(props: Props<ColName>): JSX.Element => {
                                     return (
                                         <Cell key={key}>
                                             <Box
-                                                display="flex"
-                                                alignItems={"center"}
+                                                {...(valueToCopy !== null
+                                                    ? {
+                                                          display: "flex",
+                                                          alignItems: "center",
+                                                      }
+                                                    : {})}
                                             >
                                                 {cellValueParsed}
 

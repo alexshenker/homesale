@@ -1,6 +1,7 @@
 "use client";
 
 import Loading from "@/components/ui/Loading";
+import LoadingTable from "@/components/ui/table/LoadingTable";
 import Table, { Row } from "@/components/ui/table/Table";
 import LinkText from "@/components/ui/text/LinkText/LinkText";
 import Text from "@/components/ui/text/Text";
@@ -100,7 +101,7 @@ const Manage = (): JSX.Element => {
     }, [propertiesFiltered]);
 
     if (properties.isLoading || rows.isLoading) {
-        return <Loading />;
+        return <LoadingTable columns={columns} />;
     }
 
     if (properties.hasError || rows.hasError) {
