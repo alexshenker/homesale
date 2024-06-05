@@ -49,7 +49,9 @@ const Navbar: FC = () => {
                             </LinkText>
                         }
 
-                        {<LinkText href={routes[manage].$}>Manage</LinkText>}
+                        {auth.data?.authenticated && (
+                            <LinkText href={routes[manage].$}>Manage</LinkText>
+                        )}
 
                         {auth.isLoading ? (
                             <></>
