@@ -115,8 +115,8 @@ model Property {
   utilities      Utilities[]
   otherUtilities String?
 
-  squareFeet Int?
-  acres      Int?
+  squareFeet Float?
+  acres      Float?
 
   bedrooms                Int?
   bathrooms               Float?
