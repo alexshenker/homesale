@@ -6,6 +6,8 @@ import {
     PropertyForm,
     creatorConfirmedPermissionField,
     deedDocumentField,
+    ownerIDBackField,
+    ownerIDFrontField,
 } from "../PropertyEditForm";
 import FormCheckboxField from "@/components/fields/formfields/FormCheckboxField";
 import Text from "@/components/ui/text/Text";
@@ -14,6 +16,7 @@ import LinkText from "@/components/ui/text/LinkText/LinkText";
 import { GetPropertyRes } from "@/lib/db/properties/getProperty";
 import { format } from "date-fns";
 import Space from "@/components/ui/Space";
+import FormTextField from "@/components/fields/formfields/FormTextField";
 
 interface Props {
     property: NonNullable<GetPropertyRes>;
@@ -25,7 +28,6 @@ const Documents = (props: Props): JSX.Element => {
     return (
         <Box>
             <Stack>
-                {" "}
                 <FormCheckboxField
                     name={creatorConfirmedPermissionField}
                     disabled={
@@ -87,6 +89,24 @@ const Documents = (props: Props): JSX.Element => {
                     name={deedDocumentField}
                     label="Upload Property Deed"
                 />
+            </Box>
+
+            <Space />
+
+            <Box display="flex" flexWrap={"wrap"} gap={1} maxWidth="500px">
+                <Box width={"45%"}>
+                    <FormFileField
+                        name={ownerIDFrontField}
+                        label="Owner ID Front"
+                    />
+                </Box>
+
+                <Box width={"45%"}>
+                    <FormFileField
+                        name={ownerIDBackField}
+                        label="Owner ID Back"
+                    />
+                </Box>
             </Box>
         </Box>
     );

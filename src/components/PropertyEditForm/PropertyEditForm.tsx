@@ -77,6 +77,8 @@ export const deedDocumentField = "deedDocument";
 export const mainPhotoSrcField = "mainPhotoSrc";
 export const otherPhotosSrcsField = "otherPhotos";
 export const creatorConfirmedPermissionField = "creatorConfirmedPermission";
+export const ownerIDFrontField = "ownerLicenseFront";
+export const ownerIDBackField = "ownerLicenseBack";
 
 export interface PropertyForm {
     //Property details
@@ -112,6 +114,8 @@ export interface PropertyForm {
     //Documents
     [creatorConfirmedPermissionField]: ConfirmPermissionOption | [];
     [deedDocumentField]: File | null;
+    [ownerIDFrontField]: string | null;
+    [ownerIDBackField]: string | null;
 }
 
 const toNumString = (num: number | null): string | null => {
@@ -144,6 +148,8 @@ const PropertyEditForm = (props: Props): JSX.Element => {
         primaryPhoto,
         photos,
         creator_confirmed_management_permission,
+        Owner_ID_front_src,
+        Owner_ID_back_src,
     } = props.property;
 
     const defaultValues: PropertyForm = useMemo(() => {
@@ -176,6 +182,8 @@ const PropertyEditForm = (props: Props): JSX.Element => {
                 creator_confirmed_management_permission === true
                     ? confirmPermissionOptions
                     : [],
+            [ownerIDFrontField]: Owner_ID_front_src,
+            [ownerIDBackField]: Owner_ID_back_src,
         };
     }, [
         HOA_monthly_fee,
@@ -198,6 +206,8 @@ const PropertyEditForm = (props: Props): JSX.Element => {
         photos,
         props.deedDocument,
         creator_confirmed_management_permission,
+        Owner_ID_front_src,
+        Owner_ID_back_src,
     ]);
 
     const methods = useForm<PropertyForm>({
