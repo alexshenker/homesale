@@ -6,6 +6,7 @@ interface Props {
     startAdornment?: React.ReactNode;
     endAdornment?: React.ReactNode;
     label?: React.ReactNode;
+    intOnly?: boolean; //Only integers allowed
 }
 
 const FormAmountField = (props: Props): JSX.Element => {
@@ -22,10 +23,15 @@ const FormAmountField = (props: Props): JSX.Element => {
                             return true;
                         }
 
-                        const numberPattern = /^(0|[1-9]\d*)(\.\d+)?$/;
+                        const numberPattern = props.intOnly
+                            ? /^(0|[1-9]\d*)$/
+                            : /^(0|[1-9]\d*)(\.\d+)?$/;
+
                         return numberPattern.test((v ?? "").replace(/,/g, ""))
                             ? true
-                            : "Please enter a valid number";
+                            : props.intOnly
+                              ? "Please enter a valid integer"
+                              : "Please enter a valid number";
                     },
                 },
             }}

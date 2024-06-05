@@ -141,6 +141,7 @@ const PriceDetails = ({
                                     Months
                                 </Text>
                             }
+                            intOnly
                         />
                     </Box>
                 </Box>
