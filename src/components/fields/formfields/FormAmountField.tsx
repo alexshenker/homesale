@@ -42,6 +42,7 @@ const FormAmountField = (props: Props): JSX.Element => {
                     maximumFractionDigits: 2,
                 });
             }}
+            numbersOnly
         />
     );
 };

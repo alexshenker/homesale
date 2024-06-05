@@ -13,6 +13,7 @@ type Props = Omit<ControllerProps, "render"> &
         startAdornment?: React.ReactNode;
         endAdornment?: React.ReactNode;
         formatValue?: (v: string) => string | undefined;
+        numbersOnly?: boolean;
     };
 
 const FormTextField = ({
@@ -24,6 +25,7 @@ const FormTextField = ({
     startAdornment,
     endAdornment,
     formatValue,
+    numbersOnly,
     ...controllerProps
 }: Props): JSX.Element => {
     return (
@@ -46,6 +48,14 @@ const FormTextField = ({
                             startAdornment,
                             endAdornment,
                         }}
+                        {...(numbersOnly
+                            ? {
+                                  inputProps: {
+                                      inputMode: "decimal",
+                                      pattern: "[0-9]*[.]?[0-9]*",
+                                  },
+                              }
+                            : {})}
                         {...(formatValue
                             ? {
                                   onBlur: (e) => {
