@@ -24,6 +24,6 @@ export const GetUsersPropertiesRes = z
         });
     });
 
-export type GetPropertyRes = z.infer<typeof GetUsersPropertiesRes>;
+export type GetUsersPropertiesRes = z.infer<typeof GetUsersPropertiesRes>;
 
 export default getUsersProperties;
