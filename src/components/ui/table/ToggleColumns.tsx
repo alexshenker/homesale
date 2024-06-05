@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import Text from "../text/Text";
 import { ColsToShow } from "./Table";
+import Switch from "@/components/fields/Switch";
 
 interface Props<ColName extends string> {
     columns: readonly ColName[];
@@ -12,12 +13,11 @@ const ToggleColumns = <ColName extends string>(
     props: Props<ColName>
 ): JSX.Element => {
     return (
-        <Box padding={2}>
+        <Box>
             {props.columns.map((col) => {
                 const on = props.columnsToShow[col];
                 return (
                     <Box
-                        component="button"
                         key={col}
                         display="flex"
                         gap={1}
@@ -28,12 +28,7 @@ const ToggleColumns = <ColName extends string>(
                             });
                         }}
                     >
-                        <Text>{col}:</Text>
-                        {on ? (
-                            <Text type="success">{"On"}</Text>
-                        ) : (
-                            <Text type="error">{"Off"}</Text>
-                        )}
+                        <Switch on={on} label={col}></Switch>
                     </Box>
                 );
             })}
