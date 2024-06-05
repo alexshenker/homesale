@@ -11,7 +11,7 @@ const nextConfig = {
         NEXTAUTH_URL:
             process.env.VERCEL_ENV === "production" &&
             process.env.VERCEL_URL !== undefined
-                ? "https://homesale.vercel.app"
+                ? `https://balabeit.vercel.app`
                 : process.env.VERCEL_URL !== undefined
                   ? `https://${process.env.VERCEL_URL}`
                   : process.env.NEXTAUTH_URL,
@@ -19,7 +19,7 @@ const nextConfig = {
         NEXT_PUBLIC_NEXTAUTH_URL:
             process.env.VERCEL_ENV === "production" &&
             process.env.VERCEL_URL !== undefined
-                ? "https://homesale.vercel.app"
+                ? "https://balabeit.vercel.app"
                 : process.env.VERCEL_URL !== undefined
                   ? `https://${process.env.VERCEL_URL}`
                   : process.env.NEXT_PUBLIC_NEXTAUTH_URL,
