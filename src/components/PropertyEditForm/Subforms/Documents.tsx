@@ -122,15 +122,15 @@ const Documents = (props: Props): JSX.Element => {
 
             <Space />
 
-            <Box display="flex" flexWrap={"wrap"} gap={1} maxWidth="500px">
-                <Box width={"45%"}>
+            <Box display="flex" flexWrap={"wrap"} gap={"8px"} maxWidth="608px">
+                <Box width={"300px"}>
                     <FormFileField
                         name={ownerIDFrontField}
                         label="Owner ID Front"
                     />
                 </Box>
 
-                <Box width={"45%"}>
+                <Box width={"300px"}>
                     <FormFileField
                         name={ownerIDBackField}
                         label="Owner ID Back"
