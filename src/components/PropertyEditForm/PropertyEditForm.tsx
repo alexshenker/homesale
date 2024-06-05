@@ -28,9 +28,11 @@ import AmenitiesPage, {
     getAmenityOptionsGrouped,
 } from "./Subforms/AmenitiesPage";
 import Media from "./Subforms/Media";
-import Documents from "./Subforms/Documents";
+import Documents, {
+    ConfirmPermissionOption,
+    confirmPermissionOptions,
+} from "./Subforms/Documents";
 import Preview from "./Subforms/Preview";
-import { Amenities } from "@prisma/client";
 
 const subforms = [
     "Property Details",
@@ -49,6 +51,7 @@ const maxPageIndex = subforms.length - 1;
 interface Props {
     property: NonNullable<GetPropertyRes>;
     hoaBylawsDocument: File | null;
+    deedDocument: File | null;
 }
 
 export const listingTypeField = "listingType";
@@ -70,6 +73,10 @@ export const acresField = "acres";
 export const descriptionField = "description";
 export const amenitiesField = "amenities";
 export const otherAmenitiesField = "amenitiesOther";
+export const deedDocumentField = "deedDocument";
+export const mainPhotoSrcField = "mainPhotoSrc";
+export const otherPhotosSrcsField = "otherPhotos";
+export const creatorConfirmedPermissionField = "creatorConfirmedPermission";
 
 export interface PropertyForm {
     //Property details
@@ -97,6 +104,14 @@ export interface PropertyForm {
     //Amenities
     [amenitiesField]: AmenityOption[];
     [otherAmenitiesField]: string | null;
+
+    //Media
+    [mainPhotoSrcField]: string | null;
+    [otherPhotosSrcsField]: string[];
+
+    //Documents
+    [creatorConfirmedPermissionField]: ConfirmPermissionOption | [];
+    [deedDocumentField]: File | null;
 }
 
 const toNumString = (num: number | null): string | null => {
@@ -107,10 +122,7 @@ const toNumString = (num: number | null): string | null => {
     return `${num}`;
 };
 
-const PropertyEditForm = ({
-    property,
-    hoaBylawsDocument,
-}: Props): JSX.Element => {
+const PropertyEditForm = (props: Props): JSX.Element => {
     const {
         propertyType,
         bedrooms,
@@ -129,7 +141,10 @@ const PropertyEditForm = ({
         description,
         amenities,
         otherAmenities,
-    } = property;
+        primaryPhoto,
+        photos,
+        creator_confirmed_management_permission,
+    } = props.property;
 
     const defaultValues: PropertyForm = useMemo(() => {
         return {
@@ -150,10 +165,17 @@ const PropertyEditForm = ({
             [hoaMonthlyField]: toNumString(HOA_monthly_fee),
             [rentPriceField]: toNumString(rentPrice),
             [leaseTermMonthsField]: toNumString(leaseDurationMonths),
-            [hoaBylawsDocumentField]: hoaBylawsDocument,
+            [hoaBylawsDocumentField]: props.hoaBylawsDocument,
             [descriptionField]: description,
             [amenitiesField]: getAmenityOptionsGrouped(amenities),
             [otherAmenitiesField]: otherAmenities,
+            [deedDocumentField]: props.deedDocument,
+            [mainPhotoSrcField]: primaryPhoto,
+            [otherPhotosSrcsField]: photos,
+            [creatorConfirmedPermissionField]:
+                creator_confirmed_management_permission === true
+                    ? confirmPermissionOptions
+                    : [],
         };
     }, [
         HOA_monthly_fee,
@@ -163,7 +185,7 @@ const PropertyEditForm = ({
         bathrooms,
         bedrooms,
         description,
-        hoaBylawsDocument,
+        props.hoaBylawsDocument,
         lastRoofReplacementYear,
         leaseDurationMonths,
         numberOfFloors,
@@ -172,6 +194,10 @@ const PropertyEditForm = ({
         salePrice,
         squareFeet,
         yearBuilt,
+        primaryPhoto,
+        photos,
+        props.deedDocument,
+        creator_confirmed_management_permission,
     ]);
 
     const methods = useForm<PropertyForm>({
@@ -226,7 +252,7 @@ const PropertyEditForm = ({
                                     resetHOAFeeField={() =>
                                         methods.setValue(hoaMonthlyField, null)
                                     }
-                                    listingType={property.listing_type}
+                                    listingType={props.property.listing_type}
                                 />
                             );
                         }
@@ -237,7 +263,7 @@ const PropertyEditForm = ({
                             return <Media />;
                         }
                         case "Documents": {
-                            return <Documents />;
+                            return <Documents property={props.property} />;
                         }
                         case "Preview": {
                             return <Preview />;

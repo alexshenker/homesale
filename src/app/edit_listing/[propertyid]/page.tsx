@@ -25,7 +25,20 @@ const Page = (): JSX.Element => {
             : null
     );
 
-    if (property.isLoading || hoaBylawsDocument.isLoading) {
+    const deedDocument = useUrlToFile(
+        property?.data?.Deed_src
+            ? {
+                  url: property.data.Deed_src,
+                  fileName: "Deed_Document",
+              }
+            : null
+    );
+
+    if (
+        property.isLoading ||
+        hoaBylawsDocument.isLoading ||
+        deedDocument.isLoading
+    ) {
         return (
             <Box position="relative">
                 <Loading />
@@ -34,7 +47,11 @@ const Page = (): JSX.Element => {
         );
     }
 
-    if (property.hasError || hoaBylawsDocument.hasError) {
+    if (
+        property.hasError ||
+        hoaBylawsDocument.hasError ||
+        deedDocument.hasError
+    ) {
         return <Text type="error">Failed to get property</Text>;
     }
 
@@ -46,6 +63,7 @@ const Page = (): JSX.Element => {
         <PropertyEditForm
             property={property.data}
             hoaBylawsDocument={hoaBylawsDocument.data}
+            deedDocument={deedDocument.data}
         />
     );
 };

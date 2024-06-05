@@ -11,6 +11,7 @@ type Props<T extends string, O extends Option<T>> = Omit<
 const FormCheckboxField = <T extends string, O extends Option<T>>({
     options,
     label,
+    disabled,
     ...controllerProps
 }: Props<T, O>): JSX.Element => {
     return (
@@ -25,6 +26,7 @@ const FormCheckboxField = <T extends string, O extends Option<T>>({
                         {...restField}
                         options={options}
                         label={label}
+                        disabled={disabled}
                     />
                 );
             }}

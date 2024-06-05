@@ -15,9 +15,10 @@ export type Option<T extends string> = {
 
 export type CheckboxProps<T extends string, O extends Option<T>> = {
     value: O[];
-    options: O[];
+    options: O[] | readonly O[];
     label?: React.ReactNode;
     onChange: (val: O[]) => void;
+    disabled?: boolean;
 };
 
 const Checkboxes = <T extends string, O extends Option<T>>(
@@ -40,6 +41,10 @@ const Checkboxes = <T extends string, O extends Option<T>>(
                                     name={o.label}
                                     checked={checked}
                                     onChange={() => {
+                                        if (props.disabled === true) {
+                                            return;
+                                        }
+
                                         if (checked) {
                                             props.onChange(
                                                 props.value.filter(
@@ -50,9 +55,18 @@ const Checkboxes = <T extends string, O extends Option<T>>(
                                             props.onChange([...props.value, o]);
                                         }
                                     }}
+                                    disabled={props.disabled}
                                 />
                             }
-                            label={<Text>{o.label}</Text>}
+                            label={
+                                <Text
+                                    type={
+                                        props.disabled ? "neutral" : undefined
+                                    }
+                                >
+                                    {o.label}
+                                </Text>
+                            }
                         />
                     );
                 })}
