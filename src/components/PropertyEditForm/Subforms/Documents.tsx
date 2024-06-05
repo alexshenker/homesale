@@ -6,8 +6,11 @@ import {
     PropertyForm,
     creatorConfirmedPermissionField,
     deedDocumentField,
+    ownerFirstnameField,
     ownerIDBackField,
     ownerIDFrontField,
+    ownerLastnameField,
+    ownerMiddlenameField,
 } from "../PropertyEditForm";
 import FormCheckboxField from "@/components/fields/formfields/FormCheckboxField";
 import Text from "@/components/ui/text/Text";
@@ -81,6 +84,32 @@ const Documents = (props: Props): JSX.Element => {
                         </Text>
                     )}
             </Stack>
+
+            <Space />
+
+            <Box>
+                <Text>
+                    Provide the owner's information as it appears on the Deed
+                </Text>
+                <Stack width={"300px"} gap={1}>
+                    <FormTextField
+                        name={ownerFirstnameField}
+                        label="Owner's First Name"
+                        required
+                    />
+
+                    <FormTextField
+                        name={ownerMiddlenameField}
+                        label="Owner's Middle Name"
+                    />
+
+                    <FormTextField
+                        name={ownerLastnameField}
+                        label="Owner's Last Name"
+                        required
+                    />
+                </Stack>
+            </Box>
 
             <Space />
 

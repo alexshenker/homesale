@@ -79,6 +79,9 @@ export const otherPhotosSrcsField = "otherPhotos";
 export const creatorConfirmedPermissionField = "creatorConfirmedPermission";
 export const ownerIDFrontField = "ownerLicenseFront";
 export const ownerIDBackField = "ownerLicenseBack";
+export const ownerFirstnameField = "ownerFirstname";
+export const ownerLastnameField = "ownerLastname";
+export const ownerMiddlenameField = "ownerMiddlename";
 
 export interface PropertyForm {
     //Property details
@@ -116,6 +119,9 @@ export interface PropertyForm {
     [deedDocumentField]: File | null;
     [ownerIDFrontField]: string | null;
     [ownerIDBackField]: string | null;
+    [ownerFirstnameField]: string | null;
+    [ownerLastnameField]: string | null;
+    [ownerMiddlenameField]: string | null;
 }
 
 const toNumString = (num: number | null): string | null => {
@@ -150,6 +156,9 @@ const PropertyEditForm = (props: Props): JSX.Element => {
         creator_confirmed_management_permission,
         Owner_ID_front_src,
         Owner_ID_back_src,
+        Owner_first,
+        Owner_last,
+        Owner_middle,
     } = props.property;
 
     const defaultValues: PropertyForm = useMemo(() => {
@@ -184,6 +193,9 @@ const PropertyEditForm = (props: Props): JSX.Element => {
                     : [],
             [ownerIDFrontField]: Owner_ID_front_src,
             [ownerIDBackField]: Owner_ID_back_src,
+            [ownerFirstnameField]: Owner_first,
+            [ownerLastnameField]: Owner_last,
+            [ownerMiddlenameField]: Owner_middle,
         };
     }, [
         HOA_monthly_fee,
@@ -208,6 +220,9 @@ const PropertyEditForm = (props: Props): JSX.Element => {
         creator_confirmed_management_permission,
         Owner_ID_front_src,
         Owner_ID_back_src,
+        Owner_first,
+        Owner_last,
+        Owner_middle,
     ]);
 
     const methods = useForm<PropertyForm>({
