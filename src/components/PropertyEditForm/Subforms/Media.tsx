@@ -4,13 +4,23 @@ import { imgExtensions } from "@/utils/constants/extensions";
 import { Box } from "@mui/material";
 import { FC, useState } from "react";
 import { mainPhotoSrcField } from "../PropertyEditForm";
+import { GetPropertyRes } from "@/lib/db/properties/getProperty";
 
-interface Props {}
+interface Props {
+    property: NonNullable<GetPropertyRes>;
+}
 
 const Media = (props: Props): JSX.Element => {
+    const [primaryPhoto, setPrimaryPhoto] = useState<File | null>(null);
+
     return (
         <Box>
-            <FormFileField name={mainPhotoSrcField} accept={imgExtensions} />
+            <FileField
+                value={primaryPhoto}
+                onChange={setPrimaryPhoto}
+                accept={imgExtensions}
+                label="test"
+            />
         </Box>
     );
 };

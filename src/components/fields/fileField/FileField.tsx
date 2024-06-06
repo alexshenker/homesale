@@ -17,6 +17,7 @@ import colors from "@/utils/public/colors";
 import Text from "@/components/ui/text/Text";
 import Chip from "../Chip";
 import { Extension } from "@/utils/constants/extensions";
+import Label from "@/components/ui/label/Label";
 
 export type Props = Pick<
     TextFieldProps,
@@ -126,6 +127,7 @@ const FileField = ({
 
     return (
         <>
+            {label !== undefined && <Label>{label}</Label>}
             <Box
                 position="relative"
                 style={{ width: w, height: h }}
@@ -158,7 +160,7 @@ const FileField = ({
                     <Stack justifyContent={"center"}>
                         {isNil(props.value) ? (
                             <Text type="neutral" textAlign={"center"}>
-                                {label ?? placeholder ?? ""}
+                                {placeholder ?? ""}
                             </Text>
                         ) : props.multiple ? (
                             <Stack direction={"row"} gap={1} flexWrap={"wrap"}>

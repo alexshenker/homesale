@@ -285,7 +285,7 @@ const PropertyEditForm = (props: Props): JSX.Element => {
                             return <AmenitiesPage />;
                         }
                         case "Media": {
-                            return <Media />;
+                            return <Media property={props.property} />;
                         }
                         case "Documents": {
                             return <Documents property={props.property} />;
