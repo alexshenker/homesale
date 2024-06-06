@@ -3,14 +3,23 @@ const jpegExt = "jpeg";
 const jpgExt = "jpg";
 const pngExt = "png";
 const pdfExt = "pdf";
+const webPExt = "webp";
 
-const extensionFileTypes = [svgExt, jpegExt, jpgExt, pngExt, pdfExt] as const;
+const extensionFileTypes = [
+    svgExt,
+    jpegExt,
+    jpgExt,
+    pngExt,
+    pdfExt,
+    webPExt,
+] as const;
 
 export const imgExtensions = [
     `.${svgExt}`,
     `.${jpegExt}`,
     `.${jpgExt}`,
     `.${pngExt}`,
+    `.${webPExt}`,
 ] as const;
 
 type ExtensionFileType = (typeof extensionFileTypes)[number];
@@ -27,6 +36,7 @@ export const extToContentType: Record<ExtensionFileType, string> = {
     [jpgExt]: "image/jpeg",
     [pngExt]: "image/png",
     [pdfExt]: "application/pdf",
+    [webPExt]: "image/webp",
 };
 
 const extensions = [`.${pdfExt}`, ...imgExtensions] as const;

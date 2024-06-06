@@ -22,7 +22,7 @@ export type Props = Pick<
     TextFieldProps,
     "label" | "placeholder" | "helperText" | "disabled" | "error" | "required"
 > & {
-    accept?: Extension[];
+    accept?: Extension[] | readonly Extension[];
     disablePreview?: boolean;
 } & (
         | {
@@ -243,7 +243,6 @@ const FileField = ({
                     files={
                         Array.isArray(props.value) ? props.value : [props.value]
                     }
-                    removeFile={removeFile}
                 />
             )}
         </>

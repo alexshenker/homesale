@@ -5,7 +5,7 @@ import { useResizeObserver } from "usehooks-ts";
 
 interface Props {
     files: File[] | string[];
-    removeFile: (fileName: string) => void;
+    removeFile?: (fileName: string) => void;
 }
 
 const Preview = (props: Props): JSX.Element => {
@@ -25,9 +25,7 @@ const Preview = (props: Props): JSX.Element => {
         return props.files.filter(
             (f) =>
                 typeof f === "string" ||
-                imgExtensions.some((ex) =>
-                    f.type.endsWith(ex.replace(".", "")),
-                ),
+                imgExtensions.some((ex) => f.type.endsWith(ex.replace(".", "")))
         );
     }, [props.files]);
 
@@ -41,9 +39,15 @@ const Preview = (props: Props): JSX.Element => {
                 return (
                     <div
                         key={typeof f === "string" ? f : f.name}
-                        onClick={() =>
-                            props.removeFile(typeof f === "string" ? f : f.name)
-                        }
+                        onClick={() => {
+                            if (props.removeFile === undefined) {
+                                return;
+                            } else {
+                                props.removeFile(
+                                    typeof f === "string" ? f : f.name
+                                );
+                            }
+                        }}
                     >
                         <Image
                             src={
