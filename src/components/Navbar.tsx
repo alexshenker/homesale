@@ -8,7 +8,12 @@ import colors from "@/utils/public/colors";
 import LinkText from "./ui/text/LinkText/LinkText";
 import { signIn, signOut } from "next-auth/react";
 import useAuth from "@/utils/public/hooks/useAuth";
-import routes, { create_new_listing, manage } from "@/utils/public/routes";
+import routes, {
+    buy,
+    create_new_listing,
+    manage,
+    rent,
+} from "@/utils/public/routes";
 import { isNil } from "lodash";
 
 const Navbar: FC = () => {
@@ -41,8 +46,10 @@ const Navbar: FC = () => {
                     </Stack>
 
                     <Stack direction={"row"} gap={2} alignItems={"center"}>
-                        {<LinkText href="">Buy</LinkText>}
-                        {<LinkText href="">Rent</LinkText>}
+                        {<LinkText href={routes[buy].$}>Buy</LinkText>}
+
+                        {<LinkText href={routes[rent].$}>Rent</LinkText>}
+
                         {
                             <LinkText href={routes[create_new_listing].$}>
                                 List your home

@@ -12,6 +12,9 @@ export const get_property = "get_property";
 export const edit_listing = "edit_listing";
 export const get_users_properties = "get_users_properties";
 
+export const buy = "buy";
+export const rent = "rent";
+
 export const manage = "manage";
 
 export const address_search = "address_search";
@@ -95,6 +98,12 @@ const routes = {
     },
     [manage]: {
         $: u(manage),
+    },
+    [buy]: {
+        $: u(buy),
+    },
+    [rent]: {
+        $: u(rent),
     },
 };
 
