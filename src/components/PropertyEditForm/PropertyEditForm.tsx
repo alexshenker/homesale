@@ -255,8 +255,6 @@ const PropertyEditForm = (props: Props): JSX.Element => {
                 })}
             </div>
 
-            {/* Using visibility allows us to keep users form edits without api call */}
-
             <Space />
 
             <FormProvider {...methods}>
