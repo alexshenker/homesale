@@ -53,11 +53,9 @@ const Navbar: FC = () => {
                             <LinkText href={routes[manage].$}>Manage</LinkText>
                         )}
 
-                        {auth.isLoading ? (
+                        {auth.hasError ? (
                             <></>
-                        ) : auth.hasError ? (
-                            <></>
-                        ) : auth.data === null ? (
+                        ) : auth.isLoading || auth.data === null ? (
                             <LinkText onClick={() => signIn()}>Login</LinkText>
                         ) : (
                             <LinkText onClick={() => signOut()}>
