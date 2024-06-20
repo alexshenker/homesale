@@ -9,6 +9,8 @@
     --primary80: #a29a87;
 
     --neutral: #565855;
+
+    --error: red;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,6 +20,8 @@
 
 :root {
     --text: var(--neutral);
+
+    --icon: var(--neutral);
 
     --background: var(--primary0);
 

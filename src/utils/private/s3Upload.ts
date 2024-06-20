@@ -18,6 +18,10 @@ const s3Upload = async (key: string, file: File) => {
         );
     }
 
+    if (!isValidExtension(ext)) {
+        throw new Error(`Invalid extension: ${ext}`);
+    }
+
     try {
         const s3Params: PutObjectCommandInput = {
             Bucket: s3BucketName,

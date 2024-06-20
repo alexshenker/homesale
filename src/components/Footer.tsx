@@ -11,7 +11,7 @@ const Footer = (): JSX.Element => {
 
     return (
         <footer
-            style={{ backgroundColor: colors.backgroundBrand }}
+            style={{ backgroundColor: colors.background }}
             className="p-2 text-center"
         >
             <Text variant="caption" overlay>

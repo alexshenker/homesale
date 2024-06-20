@@ -16,9 +16,15 @@ const PrismaPropertyCreateInput = z
     .transform((p) => ({
         ...p,
         mapboxPlaceId: p.mapboxPlaceId as MapboxPlaceId,
-        description: p.description as JSONString | null,
-        otherAmenities: p.otherAmenities as JSONString | null,
-        otherUtilities: p.otherUtilities as JSONString | null,
+        ...(p.description !== undefined && {
+            description: p.description as JSONString | null,
+        }),
+        ...(p.otherAmenities !== undefined && {
+            otherAmenities: p.otherAmenities as JSONString | null,
+        }),
+        ...(p.otherUtilities !== undefined && {
+            otherUtilities: p.otherUtilities as JSONString | null,
+        }),
     }));
 
 export const PropertyCreateInput = z.object({

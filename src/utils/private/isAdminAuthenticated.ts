@@ -1,5 +1,5 @@
 import "server-only";
-import { getAuthSession } from "@/app/api/auth/[...nextauth]/route";
+import { getAuthSession } from "./authOptions";
 
 const isAdminAuthenticated = async () => {
     const auth = await getAuthSession();

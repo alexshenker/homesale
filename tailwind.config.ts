@@ -17,10 +17,12 @@ export default {
         },
         extend: {
             colors: {
+                error: "var(--error)",
                 text: "var(--text)",
                 background: "var(--background)",
                 surface: "var(--surface)",
                 border: "var(--border)",
+                icon: "var(--icon)",
             },
         },
     },
