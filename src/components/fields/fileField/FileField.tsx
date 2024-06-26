@@ -19,6 +19,7 @@ import Chip from "../Chip";
 import { Extension } from "@/utils/constants/extensions";
 import Label from "@/components/ui/label/Label";
 import Space from "@/components/ui/Space";
+import Loading from "@/components/ui/Loading";
 
 export type Props = Pick<
     TextFieldProps,
@@ -26,6 +27,7 @@ export type Props = Pick<
 > & {
     accept?: Extension[] | readonly Extension[];
     disablePreview?: boolean;
+    loading?: boolean;
 } & (
         | {
               multiple?: false;
@@ -142,6 +144,7 @@ const FileField = ({
                 onDragOver={onDragOver}
                 onDrop={onDrop}
             >
+                {props.loading === true && <Loading />}
                 {!isNil(props.value) && (
                     <Box className={"absolute flex justify-end w-full"}>
                         <Box className={"p-1"} zIndex={zIndex}>
