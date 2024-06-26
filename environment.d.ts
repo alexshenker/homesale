@@ -32,6 +32,10 @@ declare global {
     type ExcludeUndefined<T> = {
         [K in keyof T]: Exclude<T[K], undefined>;
     };
+
+    function typedKeys<T>(obj: T): (keyof T)[] {
+        return Object.keys(obj) as (keyof T)[];
+    }
 }
 
 declare module "next-auth/jwt" {

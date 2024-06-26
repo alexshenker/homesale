@@ -21,7 +21,9 @@ interface Props {
     property: NonNullable<GetPropertyRes>;
 }
 
-type id = `${number}`;
+type localPhotoId = `${number}`;
+
+type OtherPhotos = Record<localPhotoId, File | null>;
 
 const maxNumberOfPhotos = 6; //Not including primary photo
 
@@ -39,7 +41,7 @@ const Media = (props: Props): JSX.Element => {
             : null
     );
 
-    const [otherPhotos, setOtherPhotos] = useState<Record<id, File | null>>({});
+    const [otherPhotos, setOtherPhotos] = useState<OtherPhotos>({});
 
     useEffect(() => {
         if (Object.keys(otherPhotos).length > 0) {
@@ -72,7 +74,7 @@ const Media = (props: Props): JSX.Element => {
 
             const allElements = [...photoFiles, ...fillerItems];
 
-            const photoObject: Record<id, File | null> = {};
+            const photoObject: OtherPhotos = {};
 
             allElements.forEach((f, idx) => {
                 photoObject[`${idx + 1}`] = f;
@@ -103,7 +105,7 @@ const Media = (props: Props): JSX.Element => {
         setPrimaryPhoto(photo);
     };
 
-    const updateOtherPhoto = (photo: File | null, key: id) => {
+    const updateOtherPhoto = (photo: File | null, key: localPhotoId) => {
         if ((photo?.size ?? 0) > maximumSize) {
             toast.error(`File size should not exceed ${maxSizeMB}MB`);
             return;
@@ -128,13 +130,13 @@ const Media = (props: Props): JSX.Element => {
             />
             <Space />
             <Wrap cols={3} smCols={2} xsCols={1}>
-                {Object.keys(otherPhotos).map((key) => {
+                {typedKeys(otherPhotos).map((key) => {
                     return (
                         <FileField
                             key={`Photo ${key}`}
-                            value={otherPhotos[key as id]}
+                            value={otherPhotos[key]}
                             onChange={(file) => {
-                                updateOtherPhoto(file, key as id);
+                                updateOtherPhoto(file, key);
                             }}
                             accept={imgExtensions}
                             label={`Photo ${key}`}
