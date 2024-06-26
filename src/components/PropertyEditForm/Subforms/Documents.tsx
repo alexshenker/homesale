@@ -26,15 +26,12 @@ interface Props {
 }
 
 const Documents = (props: Props): JSX.Element => {
-    const [enablePermissionEdit, setEnablePermissionEdit] = useState(false);
-
     return (
         <Box>
             <Stack>
                 <FormCheckboxField
                     name={creatorConfirmedPermissionField}
                     disabled={
-                        enablePermissionEdit === false ||
                         props.property
                             .creator_confirmed_management_permission === true
                     }
@@ -51,22 +48,6 @@ const Documents = (props: Props): JSX.Element => {
                                 *Note, once checked & saved, this cannot be
                                 undone*
                             </Text>
-                            {props.property
-                                .creator_confirmed_management_permission !==
-                                true && (
-                                <LinkText
-                                    onClick={() =>
-                                        setEnablePermissionEdit(
-                                            !enablePermissionEdit
-                                        )
-                                    }
-                                    sx={{
-                                        textDecoration: "underline",
-                                    }}
-                                >
-                                    Edit
-                                </LinkText>
-                            )}
                         </Box>
                     }
                     options={confirmPermissionOptions}
@@ -91,6 +72,7 @@ const Documents = (props: Props): JSX.Element => {
                 <Text>
                     Provide the owner's information as it appears on the Deed
                 </Text>
+                <Space h={5} />
                 <Stack width={"300px"} gap={1}>
                     <FormTextField
                         name={ownerFirstnameField}

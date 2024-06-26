@@ -29,8 +29,8 @@ export default async function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en">
-            <body className={toClassName("relative")}>
+        <html>
+            <body>
                 <SessionProvider>
                     <TanstackProvider>
                         <ToastProvider>
@@ -48,6 +48,7 @@ export default async function RootLayout({
                                         paddingTop: "40px",
                                         paddingLeft: "20px",
                                         paddingRight: "20px",
+                                        paddingBottom: "20px",
                                     }}
                                     flexGrow={1}
                                 >

@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 
 interface Props {
+    /** default = 20 */
     h?: number;
 }
 

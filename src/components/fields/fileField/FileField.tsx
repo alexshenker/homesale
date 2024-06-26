@@ -18,6 +18,7 @@ import Text from "@/components/ui/text/Text";
 import Chip from "../Chip";
 import { Extension } from "@/utils/constants/extensions";
 import Label from "@/components/ui/label/Label";
+import Space from "@/components/ui/Space";
 
 export type Props = Pick<
     TextFieldProps,
@@ -39,7 +40,7 @@ export type Props = Pick<
     );
 
 const w = "100%";
-const h = "80px";
+const height = "80px";
 const zIndex = 10;
 
 const FileField = ({
@@ -130,7 +131,7 @@ const FileField = ({
             {label !== undefined && <Label>{label}</Label>}
             <Box
                 position="relative"
-                style={{ width: w, height: h }}
+                style={{ width: w, height: height }}
                 sx={{
                     border: `1px solid ${colors.border}`,
                     "&:hover": {
@@ -160,7 +161,7 @@ const FileField = ({
                     <Stack justifyContent={"center"}>
                         {isNil(props.value) ? (
                             <Text type="neutral" textAlign={"center"}>
-                                {placeholder ?? ""}
+                                {placeholder ?? "Click or Drag"}
                             </Text>
                         ) : props.multiple ? (
                             <Stack direction={"row"} gap={1} flexWrap={"wrap"}>
@@ -228,7 +229,7 @@ const FileField = ({
                 <ButtonBase
                     component="label"
                     className="overflow-hidden"
-                    style={{ width: w, height: h }}
+                    style={{ width: w, height: height }}
                 >
                     <input
                         ref={inputRef}
@@ -241,11 +242,18 @@ const FileField = ({
             </Box>
 
             {props.disablePreview !== true && !isNil(props.value) && (
-                <Preview
-                    files={
-                        Array.isArray(props.value) ? props.value : [props.value]
-                    }
-                />
+                <>
+                    <Space h={5} />
+                    <Box>
+                        <Preview
+                            files={
+                                Array.isArray(props.value)
+                                    ? props.value
+                                    : [props.value]
+                            }
+                        />
+                    </Box>
+                </>
             )}
         </>
     );

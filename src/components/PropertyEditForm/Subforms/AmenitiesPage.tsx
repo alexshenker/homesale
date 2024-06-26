@@ -1,18 +1,15 @@
 "use client";
 
-import Checkbox from "@/components/fields/Checkbox";
 import FormCheckboxField from "@/components/fields/formfields/FormCheckboxField";
 import amenityToLabel from "@/utils/constants/amenityToLabel";
-import { Box, Stack } from "@mui/material";
+import { Box } from "@mui/material";
 import { Amenities } from "@prisma/client";
 import { amenitiesField, otherAmenitiesField } from "../PropertyEditForm";
 import exhaustiveSwitch from "@/utils/public/exhaustiveSwitch";
 import FormTextArea from "@/components/fields/formfields/FormTextArea";
 import Space from "@/components/ui/Space";
 
-interface Props {}
-
-const AmenitiesPage = (props: Props): JSX.Element => {
+const AmenitiesPage = (): JSX.Element => {
     return (
         <Box>
             <Box maxWidth="300px">
@@ -36,6 +33,7 @@ const AmenitiesPage = (props: Props): JSX.Element => {
                 {amenityGroups.map((g) => {
                     return (
                         <FormCheckboxField
+                            key={g}
                             name={amenitiesField}
                             options={groupToOptions(g)}
                             label={g}
