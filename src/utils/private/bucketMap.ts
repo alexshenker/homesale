@@ -1,3 +1,4 @@
+import { PropertyId } from "@/opaqueIdTypes";
 import "server-only";
 
 export const s3BucketName = process.env.WASABI_BUCKET_NAME;
@@ -37,7 +38,40 @@ export const normalizeFileName = (fileName: string): string => {
         .replace("--", "-");
 };
 
+const S3properties = "properties";
+const S3primary_photo = "primary_photo";
+const $S3propertyId = "property_id";
+
+type PhotoNumber = 1 | 2 | 3 | 4 | 5 | 6; //6 is max number
+type PhotoFileName = `photo_${PhotoNumber}`;
+const $S3photo_file_name = "photo_file_name"; //PhotoNumber
+
 /** The complete directory structure in wasabi */
-const bucketMap = {};
+const bucketMap = {
+    [S3properties]: {
+        [$S3propertyId]: (propId: PropertyId) => ({
+            $: key(S3properties, propId),
+            [S3primary_photo]: {
+                $: key(S3properties, propId, S3primary_photo),
+            },
+            [$S3photo_file_name]: (name: PhotoFileName) => ({
+                $: key(S3properties, propId, name),
+            }),
+        }),
+    },
+};
+
+export const bucketFunc = {
+    propertyBucketPath: (propId: PropertyId) =>
+        bucketMap[S3properties][$S3propertyId](propId).$,
+
+    primaryPhotoBucketPath: (propId: PropertyId) =>
+        bucketMap[S3properties][$S3propertyId](propId)[S3primary_photo].$,
+
+    propertyPhotoBucketPath: (propId: PropertyId, fileName: PhotoFileName) =>
+        bucketMap[S3properties][$S3propertyId](propId)[$S3photo_file_name](
+            fileName
+        ).$,
+};
 
 export default bucketMap;
