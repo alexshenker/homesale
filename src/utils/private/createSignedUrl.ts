@@ -6,15 +6,22 @@ import { minutes } from "milliseconds";
 import s3 from "./s3";
 import getWasabiKeyFromUrl from "./getWasabiKeyFromSrc";
 import exhaustiveSwitch from "../public/exhaustiveSwitch";
+import { z } from "zod";
 
 export type SignedUrlMethod = "GET" | "PUT";
 
+const urlString = z.string().url();
+
+const isUrl = (st: string): boolean => {
+    return urlString.safeParse(st).success;
+};
+
 const createSignedUrl = async (
-    urlToChange: string,
+    urlOrKey: string,
     method: SignedUrlMethod,
     expirationInMinutes: number = 10
 ): Promise<string> => {
-    const key = getWasabiKeyFromUrl(urlToChange);
+    const key = isUrl(urlOrKey) ? getWasabiKeyFromUrl(urlOrKey) : urlOrKey;
 
     const command = (() => {
         switch (method) {

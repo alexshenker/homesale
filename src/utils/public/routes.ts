@@ -12,6 +12,8 @@ export const get_property = "get_property";
 export const edit_listing = "edit_listing";
 export const get_users_properties = "get_users_properties";
 
+export const upload_property_documents = "upload_property_documents";
+
 export const buy = "buy";
 export const rent = "rent";
 
@@ -66,6 +68,9 @@ const API = {
                     $: u(api, properties, get_users_properties, userId),
                 };
             },
+        },
+        [upload_property_documents]: {
+            $: u(api, properties, upload_property_documents),
         },
     },
     [address_search]: (searchQuery?: string) => {

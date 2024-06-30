@@ -40,6 +40,7 @@ export const normalizeFileName = (fileName: string): string => {
 
 const S3properties = "properties";
 const S3primary_photo = "primary_photo";
+
 const $S3propertyId = "property_id";
 
 type PhotoNumber = 1 | 2 | 3 | 4 | 5 | 6; //6 is max number
@@ -65,10 +66,10 @@ export const bucketFunc = {
     propertyBucketPath: (propId: PropertyId) =>
         bucketMap[S3properties][$S3propertyId](propId).$,
 
-    primaryPhotoBucketPath: (propId: PropertyId) =>
+    propertyPrimaryPhotoFilePath: (propId: PropertyId) =>
         bucketMap[S3properties][$S3propertyId](propId)[S3primary_photo].$,
 
-    propertyPhotoBucketPath: (propId: PropertyId, fileName: PhotoFileName) =>
+    propertyPhotoFilePath: (propId: PropertyId, fileName: PhotoFileName) =>
         bucketMap[S3properties][$S3propertyId](propId)[$S3photo_file_name](
             fileName
         ).$,
