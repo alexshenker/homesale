@@ -64,6 +64,8 @@ const uploadPropertyDocuments = async (body: UploadPropertyDocumentBody) => {
             throw new Error("File does not exist");
         }
 
+        //We get a signed URL in order to upload directly to wasabi from the browser to avoid
+        //file size limits of doing it via the server
         try {
             await fetch(parsedUrl.data, {
                 method: "PUT",
@@ -72,7 +74,6 @@ const uploadPropertyDocuments = async (body: UploadPropertyDocumentBody) => {
                 },
                 body: file,
             });
-            
         } catch {
             throw new Error(
                 `Failed to upload document with the name "${fileName}"`
