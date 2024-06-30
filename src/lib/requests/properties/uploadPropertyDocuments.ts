@@ -1,5 +1,6 @@
 import { PropertyId } from "@/opaqueIdTypes";
 import { PropertyDocumentName } from "@/utils/private/bucketMap";
+import handleParseError from "@/utils/public/handleParseError";
 import routes, {
     absoluteUrl,
     api,
@@ -52,10 +53,11 @@ const uploadPropertyDocuments = async (body: UploadPropertyDocumentBody) => {
             { method: "PUT", body: JSON.stringify(signedUrlBody) }
         );
 
-        const parsedUrl = SignedUrlRes.safeParse(signedUrl);
+        const parsedUrl = SignedUrlRes.safeParse(await signedUrl.json());
 
         if (parsedUrl.success === false) {
-            throw new Error("Failed to get signed url");
+            console.log(signedUrl);
+            return handleParseError(uploadPropertyDocuments, parsedUrl);
         }
 
         const file = body.files[fileName];

@@ -12,6 +12,9 @@ import Space from "@/components/ui/Space";
 import urlToFile from "@/utils/public/urlToFile";
 import useToast from "@/components/ui/Toast/useToast";
 import typedKeys from "@/utils/public/typedKeys";
+import uploadPropertyDocuments from "@/lib/requests/properties/uploadPropertyDocuments";
+import Button from "@/components/ui/button/Button";
+import Loading from "@/components/ui/Loading";
 
 const KB = 1024;
 const MB = KB * KB;
@@ -32,9 +35,12 @@ const Media = (props: Props): JSX.Element => {
     const [primaryPhoto, setPrimaryPhoto] = useState<File | null>(null);
 
     //Track if we've already fetched the existing saved photos
+    const primaryPhotoFetched = useRef(false);
     const savedPhotosFetched = useRef(false);
 
     const toast = useToast();
+
+    const [loading, setLoading] = useState(false);
 
     const savedPrimaryPhoto = useUrlToFile(
         props.property.primaryPhoto
@@ -86,6 +92,12 @@ const Media = (props: Props): JSX.Element => {
     }, []);
 
     useEffect(() => {
+        if (primaryPhotoFetched.current === true) {
+            return;
+        }
+
+        primaryPhotoFetched.current = true;
+
         if (primaryPhoto !== null) {
             return;
         }
@@ -120,8 +132,33 @@ const Media = (props: Props): JSX.Element => {
         setOtherPhotos(newOtherPhotos);
     };
 
+    const uploadPrimaryPhoto = async () => {
+        if (primaryPhoto === null) {
+            return toast.error("No file was provided");
+        }
+
+        try {
+            setLoading(true);
+
+            await uploadPropertyDocuments({
+                propertyId: props.property.id,
+                files: {
+                    primary_photo: primaryPhoto,
+                },
+            });
+
+            toast.success("Document uploaded");
+        } catch (e) {
+            console.error(e);
+            toast.error("Failed to upload document");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <Box>
+            {loading && <Loading />}
             <FileField
                 value={primaryPhoto}
                 onChange={updatePrimaryPhoto}

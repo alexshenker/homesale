@@ -36,7 +36,8 @@ export async function PUT(req: NextRequest) {
     try {
         const signedUploadUrl = await createSignedUrl(
             propertyDocumentKey,
-            "PUT"
+            "PUT",
+            4
         );
 
         //Update the property doc with the url src
