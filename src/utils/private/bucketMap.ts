@@ -38,26 +38,40 @@ export const normalizeFileName = (fileName: string): string => {
         .replace("--", "-");
 };
 
-const S3properties = "properties";
-const S3primary_photo = "primary_photo";
+export const S3properties = "properties";
+export const S3primary_photo = "primary_photo";
+export const S3deed = "deed";
+export const S3owner_id_front = "owner_id_front";
+export const S3owner_id_back = "owner_id_back";
+export const S3video = "video";
+export const S3HOA_bylaws = "HOA_bylaws";
 
-const $S3propertyId = "property_id";
+export const $S3propertyId = "property_id";
 
-type PhotoNumber = 1 | 2 | 3 | 4 | 5 | 6; //6 is max number
-type PhotoFileName = `photo_${PhotoNumber}`;
-const $S3photo_file_name = "photo_file_name"; //PhotoNumber
+export type PhotoNumber = 1 | 2 | 3 | 4 | 5 | 6; //6 is max number
+export type S3PhotoFileName = `photo_${PhotoNumber}`;
+
+const $property_document_name = "property_document_name";
+
+export type PropertyDocumentName =
+    | typeof S3primary_photo
+    | S3PhotoFileName
+    | typeof S3owner_id_front
+    | typeof S3owner_id_back
+    | typeof S3deed
+    | typeof S3video
+    | typeof S3HOA_bylaws;
 
 /** The complete directory structure in wasabi */
 const bucketMap = {
     [S3properties]: {
         [$S3propertyId]: (propId: PropertyId) => ({
             $: key(S3properties, propId),
-            [S3primary_photo]: {
-                $: key(S3properties, propId, S3primary_photo),
+            [$property_document_name]: (docName: PropertyDocumentName) => {
+                return {
+                    $: key(S3properties, propId, docName),
+                };
             },
-            [$S3photo_file_name]: (name: PhotoFileName) => ({
-                $: key(S3properties, propId, name),
-            }),
         }),
     },
 };
@@ -66,13 +80,11 @@ export const bucketFunc = {
     propertyBucketPath: (propId: PropertyId) =>
         bucketMap[S3properties][$S3propertyId](propId).$,
 
-    propertyPrimaryPhotoFilePath: (propId: PropertyId) =>
-        bucketMap[S3properties][$S3propertyId](propId)[S3primary_photo].$,
-
-    propertyPhotoFilePath: (propId: PropertyId, fileName: PhotoFileName) =>
-        bucketMap[S3properties][$S3propertyId](propId)[$S3photo_file_name](
-            fileName
-        ).$,
+    propertyDocPath: (propId: PropertyId, fileName: PropertyDocumentName) => {
+        return bucketMap[S3properties][$S3propertyId](propId)[
+            $property_document_name
+        ](fileName).$;
+    },
 };
 
 export default bucketMap;

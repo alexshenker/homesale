@@ -1,4 +1,3 @@
-import prismaClient from "@/lib/db";
 import getUsersProperties from "@/lib/db/properties/getUsersProperties";
 import { UserId } from "@/opaqueIdTypes";
 import { $userid } from "@/utils/public/routes";

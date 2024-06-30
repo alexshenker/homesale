@@ -1,3 +1,4 @@
+import handleParseError from "@/utils/public/handleParseError";
 import routes, {
     absoluteUrl,
     address_search,
@@ -100,7 +101,7 @@ const searchAddress = async (searchQuery: string): Promise<MapboxResponse> => {
     );
 
     if (!res.ok) {
-        throw new Error(`[${searchAddress}]: Failed to search address`);
+        throw new Error(`[${searchAddress.name}]: Failed to search address`);
     }
 
     const data = await res.json();
@@ -110,9 +111,7 @@ const searchAddress = async (searchQuery: string): Promise<MapboxResponse> => {
     if (parsed.success) {
         return parsed.data;
     } else {
-        throw new Error(
-            `[${searchAddress}]: Failed to parse: ${JSON.stringify(parsed.error.issues)}`
-        );
+        return handleParseError(searchAddress, parsed);
     }
 };
 

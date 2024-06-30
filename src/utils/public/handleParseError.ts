@@ -1,11 +1,11 @@
 import { SafeParseError } from "zod";
 
 const handleParseError = <T extends unknown = unknown>(
-    functionName: string,
+    functionOrName: string | Function,
     zodResponse: SafeParseError<T>
 ): never => {
     throw new Error(
-        `[${functionName}]: Failed to parse: ${JSON.stringify(zodResponse.error.issues)}`
+        `[${typeof functionOrName === "string" ? functionOrName : functionOrName.name}]: Failed to parse: ${JSON.stringify(zodResponse.error.issues)}`
     );
 };
 

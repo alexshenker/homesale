@@ -1,6 +1,5 @@
 import prismaClient from "@/lib/db";
-import { PropertyId, UserId } from "@/opaqueIdTypes";
-import { JSONString } from "@/utils/public/toJSONString";
+import { PropertyId } from "@/opaqueIdTypes";
 import transformProperty from "@/utils/public/transformProperty";
 import { z } from "zod";
 

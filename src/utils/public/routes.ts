@@ -11,7 +11,8 @@ export const create_property = "create_property";
 export const get_property = "get_property";
 export const edit_listing = "edit_listing";
 export const get_users_properties = "get_users_properties";
-
+export const get_signed_urls = "get_signed_urls";
+export const upload_property_documents = "upload_property_documents";
 export const buy = "buy";
 export const rent = "rent";
 
@@ -49,6 +50,11 @@ export const absoluteUrl = (path: string): string => {
 
 //Base routes
 const API = {
+    [get_signed_urls]: {
+        [upload_property_documents]: {
+            $: u(api, get_signed_urls, upload_property_documents),
+        },
+    },
     [properties]: {
         [create_property]: {
             $: u(api, properties, create_property),

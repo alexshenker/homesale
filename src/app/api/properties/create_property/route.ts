@@ -1,4 +1,6 @@
-import createProperty from "@/lib/db/properties/createProperty";
+import createProperty, {
+    CreatePropertyRes,
+} from "@/lib/db/properties/createProperty";
 import { PropertyCreateInput } from "@/lib/requests/properties/createProperty";
 import resStatus from "@/utils/private/resStatus";
 import { NextRequest } from "next/server";
@@ -13,7 +15,9 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-        const newProperty = await createProperty(parsedBody.data);
+        const newProperty = (await createProperty(
+            parsedBody.data
+        )) as CreatePropertyRes;
 
         return Response.json(newProperty);
     } catch (e) {

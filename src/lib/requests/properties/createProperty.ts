@@ -10,6 +10,7 @@ import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { MapboxPlaceId } from "../searchAddress/searchAddress";
 import { JSONString } from "@/utils/public/toJSONString";
+import handleParseError from "@/utils/public/handleParseError";
 
 const PrismaPropertyCreateInput = z
     .custom<OmitMod<Prisma.PropertyCreateInput, "creator">>()
@@ -44,7 +45,7 @@ const createProperty = async (body: PropertyCreateInput) => {
     );
 
     if (!res.ok) {
-        throw new Error(`[${createProperty}]: Failed to create property`);
+        throw new Error(`[${createProperty.name}]: Failed to create property`);
     }
 
     const data = await res.json();
@@ -54,9 +55,7 @@ const createProperty = async (body: PropertyCreateInput) => {
     if (parsedData.success) {
         return parsedData.data;
     } else {
-        throw new Error(
-            `[${createProperty}]: Failed to parse: ${JSON.stringify(parsedData.error.issues)}`
-        );
+        return handleParseError(createProperty, parsedData);
     }
 };
 

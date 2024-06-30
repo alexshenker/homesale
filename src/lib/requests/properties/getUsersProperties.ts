@@ -17,7 +17,9 @@ const getUsersProperties = async (userId: UserId) => {
     );
 
     if (!res.ok) {
-        throw new Error(`[${getUsersProperties}]: Failed to get properties`);
+        throw new Error(
+            `[${getUsersProperties.name}]: Failed to get properties`
+        );
     }
 
     const data = await res.json();

@@ -1,5 +1,6 @@
 import { GetPropertyRes } from "@/lib/db/properties/getProperty";
 import { PropertyId } from "@/opaqueIdTypes";
+import handleParseError from "@/utils/public/handleParseError";
 import routes, {
     $propertyid,
     absoluteUrl,
@@ -16,7 +17,7 @@ const getProperty = async (propertyId: PropertyId) => {
     );
 
     if (!res.ok) {
-        throw new Error(`[${getProperty}]: Failed to get property`);
+        throw new Error(`[${getProperty.name}]: Failed to get property`);
     }
 
     const data = await res.json();
@@ -26,9 +27,7 @@ const getProperty = async (propertyId: PropertyId) => {
     if (parsedData.success) {
         return parsedData.data;
     } else {
-        throw new Error(
-            `[${getProperty}]: Failed to parse: ${JSON.stringify(parsedData.error.issues)}`
-        );
+        return handleParseError(getProperty, parsedData);
     }
 };
 
