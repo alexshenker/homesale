@@ -1,5 +1,7 @@
 async function urlToFile(srcUrl: string, fileName: string, type?: string) {
-    const response = await fetch(srcUrl);
+    const cacheBust = `t=${new Date().getTime()}`;
+
+    const response = await fetch(`${srcUrl}?${cacheBust}`);
 
     const blob = await response.blob();
 

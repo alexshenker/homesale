@@ -1,5 +1,6 @@
 import { GetPropertyRes } from "@/lib/db/properties/getProperty";
 import { PropertyId } from "@/opaqueIdTypes";
+import createSignedUrl from "@/utils/private/createSignedUrl";
 import handleParseError from "@/utils/public/handleParseError";
 import routes, {
     $propertyid,

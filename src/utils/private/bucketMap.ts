@@ -48,19 +48,31 @@ export const S3HOA_bylaws = "HOA_bylaws";
 
 export const $S3propertyId = "property_id";
 
-export type PhotoNumber = 1 | 2 | 3 | 4 | 5 | 6; //6 is max number
+const photoNumbers = [1, 2, 3, 4, 5, 6] as const;
+
+export type PhotoNumber = (typeof photoNumbers)[number]; //6 is max number
+
+const photoFileNames = photoNumbers.map((n) => {
+    const fileName: S3PhotoFileName = `photo_${n}`;
+
+    return fileName;
+});
+
 export type S3PhotoFileName = `photo_${PhotoNumber}`;
 
 const $property_document_name = "property_document_name";
 
-export type PropertyDocumentName =
-    | typeof S3primary_photo
-    | S3PhotoFileName
-    | typeof S3owner_id_front
-    | typeof S3owner_id_back
-    | typeof S3deed
-    | typeof S3video
-    | typeof S3HOA_bylaws;
+export const propertyDocumentNames = [
+    ...photoFileNames,
+    S3primary_photo,
+    S3owner_id_front,
+    S3owner_id_back,
+    S3deed,
+    S3video,
+    S3HOA_bylaws,
+] as const;
+
+export type PropertyDocumentName = (typeof propertyDocumentNames)[number];
 
 /** The complete directory structure in wasabi */
 const bucketMap = {
