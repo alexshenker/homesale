@@ -48,6 +48,9 @@ const Preview = (props: Props): JSX.Element => {
                                 );
                             }
                         }}
+                        style={{
+                            position: "relative",
+                        }}
                     >
                         <Image
                             src={
@@ -56,7 +59,8 @@ const Preview = (props: Props): JSX.Element => {
                                     : URL.createObjectURL(f)
                             }
                             alt="Image Preview"
-                            fill
+                            width={imgW}
+                            height={imgH}
                             onLoad={({ target }) => {
                                 const { naturalWidth, naturalHeight } =
                                     target as HTMLImageElement;
