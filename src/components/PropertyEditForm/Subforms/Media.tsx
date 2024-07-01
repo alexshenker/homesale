@@ -13,11 +13,9 @@ import urlToFile from "@/utils/public/urlToFile";
 import useToast from "@/components/ui/Toast/useToast";
 import typedKeys from "@/utils/public/typedKeys";
 import uploadPropertyDocuments from "@/lib/requests/properties/uploadPropertyDocuments";
-import Button from "@/components/ui/button/Button";
 import Loading from "@/components/ui/Loading";
 import {
     PhotoNumber,
-    PropertyDocumentName,
     S3PhotoFileName,
     S3primary_photo,
 } from "@/utils/private/bucketMap";

@@ -1,4 +1,8 @@
-async function urlToFile(srcUrl: string, fileName: string, type?: string) {
+async function urlToFile(
+    srcUrl: string,
+    fileName: string,
+    type?: string
+): Promise<File> {
     const cacheBust = `t=${new Date().getTime()}`;
 
     const response = await fetch(`${srcUrl}?${cacheBust}`);
