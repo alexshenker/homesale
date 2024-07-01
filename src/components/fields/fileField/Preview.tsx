@@ -56,8 +56,7 @@ const Preview = (props: Props): JSX.Element => {
                                     : URL.createObjectURL(f)
                             }
                             alt="Image Preview"
-                            layout="fill"
-                            objectFit="contain"
+                            fill
                             onLoad={({ target }) => {
                                 const { naturalWidth, naturalHeight } =
                                     target as HTMLImageElement;
