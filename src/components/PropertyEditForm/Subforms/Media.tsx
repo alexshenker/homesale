@@ -15,6 +15,12 @@ import typedKeys from "@/utils/public/typedKeys";
 import uploadPropertyDocuments from "@/lib/requests/properties/uploadPropertyDocuments";
 import Button from "@/components/ui/button/Button";
 import Loading from "@/components/ui/Loading";
+import {
+    PhotoNumber,
+    PropertyDocumentName,
+    S3PhotoFileName,
+    S3primary_photo,
+} from "@/utils/private/bucketMap";
 
 const KB = 1024;
 const MB = KB * KB;
@@ -25,9 +31,9 @@ interface Props {
     property: NonNullable<GetPropertyRes>;
 }
 
-type localPhotoId = `${number}`;
-
-type OtherPhotos = Record<localPhotoId, File | null>;
+type OtherPhotos = {
+    [key in S3PhotoFileName]?: File | null;
+};
 
 const maxNumberOfPhotos = 6; //Not including primary photo
 
@@ -68,7 +74,7 @@ const Media = (props: Props): JSX.Element => {
 
             const promises = props.property.photos.map(
                 async (photoUrl, idx) => {
-                    return await urlToFile(photoUrl, `Photo ${idx + 1}`);
+                    return await urlToFile(photoUrl, `photo_${idx + 1}`);
                 }
             );
 
@@ -84,7 +90,9 @@ const Media = (props: Props): JSX.Element => {
             const photoObject: OtherPhotos = {};
 
             allElements.forEach((f, idx) => {
-                photoObject[`${idx + 1}`] = f;
+                const photoNum = (idx + 1) as PhotoNumber;
+
+                photoObject[`photo_${photoNum}`] = f;
             });
 
             setOtherPhotos(photoObject);
@@ -96,8 +104,6 @@ const Media = (props: Props): JSX.Element => {
             return;
         }
 
-        primaryPhotoFetched.current = true;
-
         if (primaryPhoto !== null) {
             return;
         }
@@ -106,19 +112,25 @@ const Media = (props: Props): JSX.Element => {
             return;
         }
 
+        primaryPhotoFetched.current = true;
+
         setPrimaryPhoto(savedPrimaryPhoto.data);
     });
 
-    const updatePrimaryPhoto = (photo: File | null) => {
+    const updatePrimaryPhoto = async (photo: File | null) => {
         if ((photo?.size ?? 0) > maximumSize) {
             toast.error(`File size should not exceed ${maxSizeMB}MB`);
             return;
         }
 
         setPrimaryPhoto(photo);
+
+        if (photo !== null) {
+            await uploadPhoto(photo, "primary_photo");
+        }
     };
 
-    const updateOtherPhoto = (photo: File | null, key: localPhotoId) => {
+    const updateOtherPhoto = (photo: File | null, key: S3PhotoFileName) => {
         if ((photo?.size ?? 0) > maximumSize) {
             toast.error(`File size should not exceed ${maxSizeMB}MB`);
             return;
@@ -132,25 +144,31 @@ const Media = (props: Props): JSX.Element => {
         setOtherPhotos(newOtherPhotos);
     };
 
-    const uploadPrimaryPhoto = async () => {
-        if (primaryPhoto === null) {
-            return toast.error("No file was provided");
-        }
+    const deletePhoto = async (
+        name: S3PhotoFileName | typeof S3primary_photo
+    ) => {};
 
+    const uploadPhoto = async (
+        photoFile: File,
+        name: S3PhotoFileName | typeof S3primary_photo
+    ) => {
         try {
             setLoading(true);
 
             await uploadPropertyDocuments({
                 propertyId: props.property.id,
                 files: {
-                    primary_photo: primaryPhoto,
+                    [name]: photoFile,
                 },
             });
 
-            toast.success("Document uploaded");
+            toast.success("Photo uploaded");
         } catch (e) {
-            console.error(e);
-            toast.error("Failed to upload document");
+            if (process.env.NODE_ENV !== "production") {
+                console.error(e);
+            }
+
+            toast.error("Failed to upload photo");
         } finally {
             setLoading(false);
         }

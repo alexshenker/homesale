@@ -11,7 +11,8 @@ const useUrlToFile = (
     } | null
 ): HookResult<File | null> => {
     const file = useQuery({
-        queryKey: ["url-to-file"],
+        queryKey:
+            input === null ? [] : ["url-to-file", input.url, input.fileName],
         queryFn:
             input === null
                 ? () => null
