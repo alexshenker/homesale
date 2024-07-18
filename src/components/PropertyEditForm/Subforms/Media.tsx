@@ -19,6 +19,7 @@ import {
     S3PhotoFileName,
     S3primary_photo,
 } from "@/utils/private/bucketMap";
+import useProperty from "@/lib/hooks/properties/useProperty";
 
 const KB = 1024;
 const MB = KB * KB;
@@ -36,6 +37,8 @@ type OtherPhotos = {
 const maxNumberOfPhotos = 6; //Not including primary photo
 
 const Media = (props: Props): JSX.Element => {
+    const propertyFetched = useProperty(props.property.id);
+
     const [primaryPhoto, setPrimaryPhoto] = useState<File | null>(null);
 
     //Track if we've already fetched the existing saved photos
@@ -95,7 +98,7 @@ const Media = (props: Props): JSX.Element => {
 
             setOtherPhotos(photoObject);
         })();
-    }, []);
+    }, [otherPhotos]);
 
     useEffect(() => {
         if (primaryPhotoFetched.current === true) {
@@ -113,7 +116,7 @@ const Media = (props: Props): JSX.Element => {
         primaryPhotoFetched.current = true;
 
         setPrimaryPhoto(savedPrimaryPhoto.data);
-    });
+    }, [primaryPhoto, savedPrimaryPhoto]);
 
     const updatePrimaryPhoto = async (photo: File | null) => {
         if ((photo?.size ?? 0) > maximumSize) {

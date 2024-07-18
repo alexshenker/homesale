@@ -56,7 +56,6 @@ const uploadPropertyDocuments = async (body: UploadPropertyDocumentBody) => {
         const parsedUrl = SignedUrlRes.safeParse(await signedUrl.json());
 
         if (parsedUrl.success === false) {
-            console.log(signedUrl);
             return handleParseError(uploadPropertyDocuments, parsedUrl);
         }
 

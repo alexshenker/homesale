@@ -23,7 +23,7 @@ const useUrlToFile = (
             input === null
                 ? undefined
                 : async () => urlToFile(input.url, input.fileName, input.type),
-        enabled: false,
+        enabled: input !== null,
     });
 
     return useMemo(() => {
