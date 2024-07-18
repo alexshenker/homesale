@@ -20,6 +20,7 @@ import {
     S3primary_photo,
 } from "@/utils/private/bucketMap";
 import useProperty from "@/lib/hooks/properties/useProperty";
+import useUploadPropertyDocuments from "@/lib/hooks/properties/useUploadPropertyDocuments";
 
 const KB = 1024;
 const MB = KB * KB;
@@ -46,6 +47,8 @@ const Media = (props: Props): JSX.Element => {
     const savedPhotosFetched = useRef(false);
 
     const toast = useToast();
+
+    const uploadDocuments = useUploadPropertyDocuments();
 
     const [loading, setLoading] = useState(false);
 
@@ -156,7 +159,7 @@ const Media = (props: Props): JSX.Element => {
         try {
             setLoading(true);
 
-            await uploadPropertyDocuments({
+            await uploadDocuments({
                 propertyId: props.property.id,
                 files: {
                     [name]: photoFile,

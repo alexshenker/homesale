@@ -3,9 +3,8 @@ import { useMemo } from "react";
 import { HookResult } from "./types";
 import urlToFile from "../urlToFile";
 
-export const urlToFileQueryKey = (url: string, fileName: string) => [
+export const urlToFileQueryKey = (fileName: string) => [
     "url-to-file",
-    url,
     fileName,
 ];
 
@@ -17,8 +16,7 @@ const useUrlToFile = (
     } | null
 ): HookResult<File | null> => {
     const file = useQuery({
-        queryKey:
-            input === null ? [] : urlToFileQueryKey(input.url, input.fileName),
+        queryKey: input === null ? [] : urlToFileQueryKey(input.fileName),
         queryFn:
             input === null
                 ? undefined
@@ -57,7 +55,7 @@ const useUrlToFile = (
             isLoading: false,
             hasError: false,
         };
-    }, [file, file.status, file.data]);
+    }, [input, file, file.status, file.data]);
 };
 
 export default useUrlToFile;
