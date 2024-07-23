@@ -2,11 +2,29 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { HookResult } from "./types";
 import urlToFile from "../urlToFile";
+import { PropertyDocumentName } from "@/utils/private/bucketMap";
 
 export const urlToFileQueryKey = (fileName: string) => [
     "url-to-file",
     fileName,
 ];
+
+/** Makes it easy to create an arg for useUrl to file without rewriting null checkers */
+export const makeArg = (
+    url: string | null,
+    fileName: PropertyDocumentName,
+    type?: "img"
+) => {
+    if (url === null) {
+        return null;
+    }
+
+    return {
+        url,
+        fileName,
+        type,
+    };
+};
 
 const useUrlToFile = (
     input: {

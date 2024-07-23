@@ -3,7 +3,7 @@ import { imgExtensions } from "@/utils/constants/extensions";
 import { Box } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { GetPropertyRes } from "@/lib/db/properties/getProperty";
-import useUrlToFile from "@/utils/public/hooks/useUrlToFile";
+import useUrlToFile, { makeArg } from "@/utils/public/hooks/useUrlToFile";
 import { isNil, range } from "lodash";
 import Wrap from "@/components/Wrap";
 import Space from "@/components/ui/Space";
@@ -47,9 +47,7 @@ const Media = (props: Props): JSX.Element => {
     const [loading, setLoading] = useState(false);
 
     const savedPrimaryPhoto = useUrlToFile(
-        props.property.primaryPhoto
-            ? { url: props.property.primaryPhoto, fileName: "primary_photo" }
-            : null
+        makeArg(props.property.primaryPhoto, "primary_photo")
     );
 
     const [otherPhotos, setOtherPhotos] = useState<OtherPhotos>({});

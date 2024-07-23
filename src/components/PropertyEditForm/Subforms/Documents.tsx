@@ -14,16 +14,56 @@ import { format } from "date-fns";
 import Space from "@/components/ui/Space";
 import FormTextField from "@/components/fields/formfields/FormTextField";
 import FileField from "@/components/fields/fileField/FileField";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import useUrlToFile, { makeArg } from "@/utils/public/hooks/useUrlToFile";
 
 interface Props {
     property: NonNullable<GetPropertyRes>;
 }
 
-const Documents = (props: Props): JSX.Element => {
+const Documents = ({ property }: Props): JSX.Element => {
+    //Track if we've already fetched a given file
+    const deedFetched = useRef(false);
+    const IDFrontFetched = useRef(false);
+    const IDBackFetched = useRef(false);
+
     const [deed, setDeed] = useState<File | null>(null);
     const [IDFront, setIDFront] = useState<File | null>(null);
     const [IDBack, setIDBack] = useState<File | null>(null);
+
+    const deedFile = useUrlToFile(makeArg(property.Deed_src, "deed"));
+    const IDFrontFile = useUrlToFile(
+        makeArg(property.Owner_ID_front_src, "owner_id_front")
+    );
+    const IDBackFile = useUrlToFile(
+        makeArg(property.Owner_ID_back_src, "owner_id_front")
+    );
+
+    useEffect(() => {
+        if (deedFetched.current === false && deed === null) {
+            if (deedFile.data !== undefined) {
+                deedFetched.current = true;
+
+                setDeed(deedFile.data);
+            }
+        }
+
+        if (IDFrontFetched.current === false && IDFront === null) {
+            if (IDFrontFile.data !== undefined) {
+                IDFrontFetched.current = true;
+
+                setIDFront(IDFrontFile.data);
+            }
+        }
+
+        if (IDBackFetched.current === false && IDBack === null) {
+            if (IDBackFile.data !== undefined) {
+                IDBackFetched.current = true;
+
+                setIDBack(IDBackFile.data);
+            }
+        }
+    }, [deedFile, IDFrontFile, IDBackFile]);
 
     return (
         <Box>
@@ -31,8 +71,8 @@ const Documents = (props: Props): JSX.Element => {
                 <FormCheckboxField
                     name={creatorConfirmedPermissionField}
                     disabled={
-                        props.property
-                            .creator_confirmed_management_permission === true
+                        property.creator_confirmed_management_permission ===
+                        true
                     }
                     label={
                         <Box maxWidth={"300px"}>
@@ -51,14 +91,12 @@ const Documents = (props: Props): JSX.Element => {
                     }
                     options={confirmPermissionOptions}
                 />
-                {props.property.creator_confirmed_management_permission &&
-                    props.property
-                        .creator_confirmed_management_permission_on_date && (
+                {property.creator_confirmed_management_permission &&
+                    property.creator_confirmed_management_permission_on_date && (
                         <Text>
                             Confirmed on{" "}
                             {format(
-                                props.property
-                                    .creator_confirmed_management_permission_on_date,
+                                property.creator_confirmed_management_permission_on_date,
                                 "MMMM do, yyyy"
                             )}
                         </Text>
