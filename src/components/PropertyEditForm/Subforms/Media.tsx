@@ -20,8 +20,8 @@ import useUploadPropertyDocuments from "@/lib/hooks/properties/useUploadProperty
 
 const KB = 1024;
 const MB = KB * KB;
-const maxSizeMB = 4;
-const maximumSize = MB * maxSizeMB;
+export const maxSizeMB = 4;
+export const maximumSize = MB * maxSizeMB;
 
 interface Props {
     property: NonNullable<GetPropertyRes>;

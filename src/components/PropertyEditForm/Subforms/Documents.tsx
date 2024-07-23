@@ -16,12 +16,32 @@ import FormTextField from "@/components/fields/formfields/FormTextField";
 import FileField from "@/components/fields/fileField/FileField";
 import { useEffect, useRef, useState } from "react";
 import useUrlToFile, { makeArg } from "@/utils/public/hooks/useUrlToFile";
+import {
+    PropertyDocumentName,
+    S3deed,
+    S3owner_id_back,
+    S3owner_id_front,
+    propertyDocumentNames,
+} from "@/utils/private/bucketMap";
+import useUploadPropertyDocuments from "@/lib/hooks/properties/useUploadPropertyDocuments";
+import useToast from "@/components/ui/Toast/useToast";
+import { useBoolean } from "usehooks-ts";
+import { maxSizeMB, maximumSize } from "./Media";
+import exhaustiveSwitch from "@/utils/public/exhaustiveSwitch";
 
 interface Props {
     property: NonNullable<GetPropertyRes>;
 }
 
+type DocNames =
+    | typeof S3owner_id_front
+    | typeof S3owner_id_back
+    | typeof S3deed;
+
 const Documents = ({ property }: Props): JSX.Element => {
+    const toast = useToast();
+    const loading = useBoolean();
+
     //Track if we've already fetched a given file
     const deedFetched = useRef(false);
     const IDFrontFetched = useRef(false);
@@ -31,6 +51,7 @@ const Documents = ({ property }: Props): JSX.Element => {
     const [IDFront, setIDFront] = useState<File | null>(null);
     const [IDBack, setIDBack] = useState<File | null>(null);
 
+    /* Below, we turn the src url of an existing document to a File so we can attach it to the respective file field */
     const deedFile = useUrlToFile(makeArg(property.Deed_src, "deed"));
     const IDFrontFile = useUrlToFile(
         makeArg(property.Owner_ID_front_src, "owner_id_front")
@@ -38,6 +59,8 @@ const Documents = ({ property }: Props): JSX.Element => {
     const IDBackFile = useUrlToFile(
         makeArg(property.Owner_ID_back_src, "owner_id_front")
     );
+
+    const uploadDocuments = useUploadPropertyDocuments();
 
     useEffect(() => {
         if (deedFetched.current === false && deed === null) {
@@ -64,6 +87,57 @@ const Documents = ({ property }: Props): JSX.Element => {
             }
         }
     }, [deedFile, IDFrontFile, IDBackFile]);
+
+    const setDocument = async (doc: File | null, name: DocNames) => {
+        if ((doc?.size ?? 0) > maximumSize) {
+            toast.error(`File size should not exceed ${maxSizeMB}MB`);
+            return;
+        }
+
+        () => {
+            switch (name) {
+                case "deed": {
+                    return setDeed(doc);
+                }
+                case "owner_id_front": {
+                    return setIDFront(doc);
+                }
+                case "owner_id_back": {
+                    return setIDBack(doc);
+                }
+                default: {
+                    return exhaustiveSwitch(name);
+                }
+            }
+        };
+
+        if (doc !== null) {
+            await uploadDocument(doc, name);
+        }
+    };
+
+    const uploadDocument = async (doc: File, name: DocNames) => {
+        try {
+            loading.setTrue();
+
+            await uploadDocuments({
+                propertyId: property.id,
+                files: {
+                    [name]: doc,
+                },
+            });
+
+            toast.success("Photo uploaded");
+        } catch (e) {
+            if (process.env.NODE_ENV !== "production") {
+                console.error(e);
+            }
+
+            toast.error("Failed to upload photo");
+        } finally {
+            loading.setFalse();
+        }
+    };
 
     return (
         <Box>
@@ -135,7 +209,7 @@ const Documents = ({ property }: Props): JSX.Element => {
             <Box width="100%" maxWidth={"300px"} minWidth="175px">
                 <FileField
                     value={deed}
-                    onChange={setDeed}
+                    onChange={(f) => setDocument(f, "deed")}
                     label="Upload Property Deed"
                 />
             </Box>
@@ -146,7 +220,7 @@ const Documents = ({ property }: Props): JSX.Element => {
                 <Box width={"300px"}>
                     <FileField
                         value={IDFront}
-                        onChange={setIDFront}
+                        onChange={(f) => setDocument(f, "owner_id_front")}
                         label="Owner ID Front"
                     />
                 </Box>
@@ -154,7 +228,7 @@ const Documents = ({ property }: Props): JSX.Element => {
                 <Box width={"300px"}>
                     <FileField
                         value={IDBack}
-                        onChange={setIDBack}
+                        onChange={(f) => setDocument(f, "owner_id_back")}
                         label="Owner ID Back"
                     />
                 </Box>
