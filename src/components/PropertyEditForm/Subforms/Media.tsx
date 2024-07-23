@@ -134,10 +134,17 @@ const Media = (props: Props): JSX.Element => {
         }
     };
 
-    const updateOtherPhoto = (photo: File | null, key: S3PhotoFileName) => {
+    const updateOtherPhoto = async (
+        photo: File | null,
+        key: S3PhotoFileName
+    ) => {
         if ((photo?.size ?? 0) > maximumSize) {
             toast.error(`File size should not exceed ${maxSizeMB}MB`);
             return;
+        }
+
+        if (photo !== null) {
+            await uploadPhoto(photo, key);
         }
 
         const newOtherPhotos = {
@@ -180,7 +187,7 @@ const Media = (props: Props): JSX.Element => {
 
     return (
         <Box>
-            {loading && <Loading />}
+            {loading && <Loading fixed />}
             <FileField
                 value={primaryPhoto}
                 onChange={updatePrimaryPhoto}

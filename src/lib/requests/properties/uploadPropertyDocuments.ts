@@ -53,10 +53,10 @@ const uploadPropertyDocuments = async (body: UploadPropertyDocumentBody) => {
             { method: "PUT", body: JSON.stringify(signedUrlBody) }
         );
 
-        const parsedUrl = SignedUrlRes.safeParse(await signedUrl.json());
+        const parsedSignedUrl = SignedUrlRes.safeParse(await signedUrl.json());
 
-        if (parsedUrl.success === false) {
-            return handleParseError(uploadPropertyDocuments, parsedUrl);
+        if (parsedSignedUrl.success === false) {
+            return handleParseError(uploadPropertyDocuments, parsedSignedUrl);
         }
 
         const file = body.files[fileName];
@@ -68,7 +68,7 @@ const uploadPropertyDocuments = async (body: UploadPropertyDocumentBody) => {
         //We get a signed URL in order to upload directly to wasabi from the browser to avoid
         //file size limits of doing it via the server
         try {
-            await fetch(parsedUrl.data, {
+            await fetch(parsedSignedUrl.data, {
                 method: "PUT",
                 headers: {
                     "Content-Type": file.type,
