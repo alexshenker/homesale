@@ -33,6 +33,9 @@ import Documents, {
     confirmPermissionOptions,
 } from "./Subforms/Documents";
 import Preview from "./Subforms/Preview";
+import useUpdateProperty from "@/lib/hooks/properties/useUpdateProperty";
+import { useBoolean } from "usehooks-ts";
+import useToast from "../ui/Toast/useToast";
 
 const subforms = [
     "Property Details",
@@ -59,9 +62,9 @@ export const bathroomsField = "bathrooms";
 export const propertyTypeField = "propertyType";
 export const salePriceField = "salePrice";
 export const rentPriceField = "rentPrice";
-export const propertyTaxField = "propertyTax";
-export const hoaMonthlyField = "hoaMonthly";
-export const leaseTermMonthsField = "leaseTermMonths";
+export const propertyTaxField = "annual_property_tax";
+export const hoaMonthlyField = "HOA_monthly_fee";
+export const leaseTermMonthsField = "leaseDurationMonths";
 export const numberOfFloorsField = "numberOfFloors";
 export const basementField = "basement";
 export const yearBuiltField = "yearBuilt";
@@ -69,11 +72,26 @@ export const lastRoofReplacementYearField = "lastRoofReplacementYear";
 export const acresField = "acres";
 export const descriptionField = "description";
 export const amenitiesField = "amenities";
-export const otherAmenitiesField = "amenitiesOther";
-export const creatorConfirmedPermissionField = "creatorConfirmedPermission";
-export const ownerFirstnameField = "ownerFirstname";
-export const ownerLastnameField = "ownerLastname";
-export const ownerMiddlenameField = "ownerMiddlename";
+export const otherAmenitiesField = "otherAmenities";
+export const creatorConfirmedPermissionField =
+    "creator_confirmed_management_permission";
+export const ownerFirstnameField = "Owner_first";
+export const ownerLastnameField = "Owner_last";
+export const ownerMiddlenameField = "Owner_middle";
+
+const strToNum = (s: string | null): number | null => {
+    if (s === null) {
+        return null;
+    }
+
+    if (/^-?\d+$/.test(s)) {
+        return parseInt(s, 10);
+    } else if (/^-?\d*\.\d+$/.test(s)) {
+        return parseFloat(s);
+    }
+
+    return null;
+};
 
 export interface PropertyForm {
     //Property details
@@ -117,93 +135,141 @@ const toNumString = (num: number | null): string | null => {
 };
 
 const PropertyEditForm = (props: Props): JSX.Element => {
-    const {
-        propertyType,
-        bedrooms,
-        bathrooms,
-        squareFeet,
-        salePrice,
-        annual_property_tax,
-        rentPrice,
-        HOA_monthly_fee,
-        leaseDurationMonths,
-        numberOfFloors,
-        basement,
-        yearBuilt,
-        lastRoofReplacementYear,
-        acres,
-        description,
-        amenities,
-        otherAmenities,
-        creator_confirmed_management_permission,
-        Owner_first,
-        Owner_last,
-        Owner_middle,
-    } = props.property;
+    /** Just to shorten variable */
+    const p = useMemo(() => {
+        return props.property;
+    }, [props.property]);
+
+    const loading = useBoolean();
 
     const defaultValues: PropertyForm = useMemo(() => {
         return {
-            [propertyTypeField]: getPropertyTypeOption(propertyType),
-            [squareFeetField]: toNumString(squareFeet),
-            [bedroomsField]: getBedroomOption(bedrooms),
-            [bathroomsField]: getBathroomOption(bathrooms),
-            [numberOfFloorsField]: getFloorOption(numberOfFloors),
+            [propertyTypeField]: getPropertyTypeOption(p.propertyType),
+            [squareFeetField]: toNumString(p.squareFeet),
+            [bedroomsField]: getBedroomOption(p.bedrooms),
+            [bathroomsField]: getBathroomOption(p.bathrooms),
+            [numberOfFloorsField]: getFloorOption(p.numberOfFloors),
             [basementField]:
-                basement === true ? "Yes" : basement === false ? "No" : null,
-            [yearBuiltField]: getYearOption(yearBuilt),
+                p.basement === true
+                    ? "Yes"
+                    : p.basement === false
+                      ? "No"
+                      : null,
+            [yearBuiltField]: getYearOption(p.yearBuilt),
             [lastRoofReplacementYearField]: getYearOption(
-                lastRoofReplacementYear
+                p.lastRoofReplacementYear
             ),
-            [acresField]: toNumString(acres),
-            [salePriceField]: toNumString(salePrice),
-            [propertyTaxField]: toNumString(annual_property_tax),
-            [hoaMonthlyField]: toNumString(HOA_monthly_fee),
-            [rentPriceField]: toNumString(rentPrice),
-            [leaseTermMonthsField]: toNumString(leaseDurationMonths),
-            [descriptionField]: description,
-            [amenitiesField]: getAmenityOptionsGrouped(amenities),
-            [otherAmenitiesField]: otherAmenities,
+            [acresField]: toNumString(p.acres),
+            [salePriceField]: toNumString(p.salePrice),
+            [propertyTaxField]: toNumString(p.annual_property_tax),
+            [hoaMonthlyField]: toNumString(p.HOA_monthly_fee),
+            [rentPriceField]: toNumString(p.rentPrice),
+            [leaseTermMonthsField]: toNumString(p.leaseDurationMonths),
+            [descriptionField]: p.description,
+            [amenitiesField]: getAmenityOptionsGrouped(p.amenities),
+            [otherAmenitiesField]: p.otherAmenities,
             [creatorConfirmedPermissionField]:
-                creator_confirmed_management_permission === true
+                p.creator_confirmed_management_permission === true
                     ? confirmPermissionOptions
                     : [],
-            [ownerFirstnameField]: Owner_first,
-            [ownerLastnameField]: Owner_last,
-            [ownerMiddlenameField]: Owner_middle,
+            [ownerFirstnameField]: p.Owner_first,
+            [ownerLastnameField]: p.Owner_last,
+            [ownerMiddlenameField]: p.Owner_middle,
         };
-    }, [
-        HOA_monthly_fee,
-        acres,
-        annual_property_tax,
-        basement,
-        bathrooms,
-        bedrooms,
-        description,
-        lastRoofReplacementYear,
-        leaseDurationMonths,
-        numberOfFloors,
-        propertyType,
-        rentPrice,
-        salePrice,
-        squareFeet,
-        yearBuilt,
-        creator_confirmed_management_permission,
-        Owner_first,
-        Owner_last,
-        Owner_middle,
-    ]);
+    }, [p]);
+
+    const updateProperty = useUpdateProperty();
 
     const methods = useForm<PropertyForm>({
         ...formProps,
         defaultValues: defaultValues,
     });
-    methods.setValue;
+
+    const { getValues, formState } = methods;
+
+    const toast = useToast();
+
     const [pageIndex, setPageIndex] = useState<number>(0);
 
     const formValues = useWatch({
         control: methods.control,
         defaultValue: defaultValues,
     }) as ExcludeUndefined<PropertyForm>;
+
+    const callUpdateProperty = async () => {
+        const values = getValues();
+
+        const {
+            salePrice,
+            rentPrice,
+            propertyType,
+            squareFeet,
+            amenities,
+            bedrooms,
+            bathrooms,
+            yearBuilt,
+            numberOfFloors,
+            acres,
+            basement,
+            annual_property_tax,
+            lastRoofReplacementYear,
+            HOA_monthly_fee,
+            leaseDurationMonths,
+            creator_confirmed_management_permission,
+            ...restValues
+        } = values;
+
+        const salePriceParsed = strToNum(salePrice);
+        const rentPriceParsed = strToNum(rentPrice);
+        const squareFeetParsed = strToNum(squareFeet);
+        const propertyTaxParsed = strToNum(annual_property_tax);
+        const HOAMonthlyParsed = strToNum(HOA_monthly_fee);
+        const acresParsed = strToNum(acres);
+        const basementParsed =
+            basement === "Yes" ? true : basement === "No" ? false : null;
+        const leaseTermMonthsParsed = strToNum(leaseDurationMonths);
+
+        const confirmedPermission =
+            creator_confirmed_management_permission.length > 0;
+        try {
+            loading.setTrue();
+
+            await updateProperty({
+                propertyId: p.id,
+                property: {
+                    creator_confirmed_management_permission:
+                        confirmedPermission,
+                    ...(confirmedPermission === true && {
+                        creator_confirmed_management_permission_on_date:
+                            new Date(),
+                    }),
+                    leaseDurationMonths: leaseTermMonthsParsed,
+                    HOA_monthly_fee: HOAMonthlyParsed,
+                    annual_property_tax: propertyTaxParsed,
+                    lastRoofReplacementYear:
+                        lastRoofReplacementYear?.value ?? null,
+                    acres: acresParsed,
+                    basement: basementParsed,
+                    numberOfFloors: numberOfFloors?.value ?? null,
+                    yearBuilt: yearBuilt?.value ?? null,
+                    bathrooms: values[bathroomsField]?.value ?? null,
+                    bedrooms: values[bedroomsField]?.value ?? null,
+                    squareFeet: squareFeetParsed,
+                    amenities: amenities.map((a) => a.value),
+                    propertyType: propertyType?.value ?? null,
+                    rentPrice: rentPriceParsed,
+                    salePrice: salePriceParsed,
+                    ...restValues,
+                },
+            });
+
+            toast.success("Property updated");
+        } catch {
+            toast.error("Failed to update property");
+        } finally {
+            loading.setFalse();
+        }
+    };
 
     return (
         <div>
@@ -268,16 +334,24 @@ const PropertyEditForm = (props: Props): JSX.Element => {
 
             <Space />
 
+            <Button onClick={callUpdateProperty}>Save</Button>
+
+            <Space />
+
             <Box display="flex" justifyContent={"space-between"}>
                 <Button
-                    onClick={() => setPageIndex(pageIndex - 1)}
+                    onClick={() => {
+                        setPageIndex(pageIndex - 1);
+                    }}
                     disabled={pageIndex === 0}
                 >
                     {"< Previous"}
                 </Button>
 
                 <Button
-                    onClick={() => setPageIndex(pageIndex + 1)}
+                    onClick={() => {
+                        setPageIndex(pageIndex + 1);
+                    }}
                     disabled={pageIndex === maxPageIndex}
                 >
                     {"Next >"}

@@ -8,6 +8,7 @@ export const api = "api";
 export const create_new_listing = "create_new_listing";
 export const properties = "properties";
 export const create_property = "create_property";
+export const update_property = "update_property";
 export const get_property = "get_property";
 export const edit_listing = "edit_listing";
 export const get_users_properties = "get_users_properties";
@@ -58,6 +59,9 @@ const API = {
     [properties]: {
         [create_property]: {
             $: u(api, properties, create_property),
+        },
+        [update_property]: {
+            $: u(api, properties, update_property),
         },
         [get_property]: {
             [$propertyid]: (propertyId: PropertyId) => {
