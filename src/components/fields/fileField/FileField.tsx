@@ -28,6 +28,7 @@ export type Props = Pick<
     accept?: Extension[] | readonly Extension[];
     disablePreview?: boolean;
     loading?: boolean;
+    onClear?: () => void;
 } & (
         | {
               multiple?: false;
@@ -110,6 +111,8 @@ const FileField = ({
         }
 
         props.onChange(null);
+
+        props.onClear?.();
     };
 
     const removeFile = (fileName: string) => {
