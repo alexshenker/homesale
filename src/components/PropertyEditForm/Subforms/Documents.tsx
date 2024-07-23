@@ -1,30 +1,30 @@
 "use client";
 
-import FormFileField from "@/components/fields/formfields/FormFileField";
 import { Box, Stack } from "@mui/material";
 import {
     creatorConfirmedPermissionField,
-    deedDocumentField,
     ownerFirstnameField,
-    ownerIDBackField,
-    ownerIDFrontField,
     ownerLastnameField,
     ownerMiddlenameField,
 } from "../PropertyEditForm";
 import FormCheckboxField from "@/components/fields/formfields/FormCheckboxField";
 import Text from "@/components/ui/text/Text";
-import { useState } from "react";
-import LinkText from "@/components/ui/text/LinkText/LinkText";
 import { GetPropertyRes } from "@/lib/db/properties/getProperty";
 import { format } from "date-fns";
 import Space from "@/components/ui/Space";
 import FormTextField from "@/components/fields/formfields/FormTextField";
+import FileField from "@/components/fields/fileField/FileField";
+import { useState } from "react";
 
 interface Props {
     property: NonNullable<GetPropertyRes>;
 }
 
 const Documents = (props: Props): JSX.Element => {
+    const [deed, setDeed] = useState<File | null>(null);
+    const [IDFront, setIDFront] = useState<File | null>(null);
+    const [IDBack, setIDBack] = useState<File | null>(null);
+
     return (
         <Box>
             <Stack>
@@ -95,8 +95,9 @@ const Documents = (props: Props): JSX.Element => {
             <Space />
 
             <Box width="100%" maxWidth={"300px"} minWidth="175px">
-                <FormFileField
-                    name={deedDocumentField}
+                <FileField
+                    value={deed}
+                    onChange={setDeed}
                     label="Upload Property Deed"
                 />
             </Box>
@@ -105,15 +106,17 @@ const Documents = (props: Props): JSX.Element => {
 
             <Box display="flex" flexWrap={"wrap"} gap={"8px"} maxWidth="608px">
                 <Box width={"300px"}>
-                    <FormFileField
-                        name={ownerIDFrontField}
+                    <FileField
+                        value={IDFront}
+                        onChange={setIDFront}
                         label="Owner ID Front"
                     />
                 </Box>
 
                 <Box width={"300px"}>
-                    <FormFileField
-                        name={ownerIDBackField}
+                    <FileField
+                        value={IDBack}
+                        onChange={setIDBack}
                         label="Owner ID Back"
                     />
                 </Box>

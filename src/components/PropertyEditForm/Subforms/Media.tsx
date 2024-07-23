@@ -1,9 +1,7 @@
 import FileField from "@/components/fields/fileField/FileField";
-import FormFileField from "@/components/fields/formfields/FormFileField";
 import { imgExtensions } from "@/utils/constants/extensions";
 import { Box } from "@mui/material";
-import { FC, useEffect, useRef, useState } from "react";
-import { mainPhotoSrcField } from "../PropertyEditForm";
+import { useEffect, useRef, useState } from "react";
 import { GetPropertyRes } from "@/lib/db/properties/getProperty";
 import useUrlToFile from "@/utils/public/hooks/useUrlToFile";
 import { isNil, range } from "lodash";
@@ -12,14 +10,12 @@ import Space from "@/components/ui/Space";
 import urlToFile from "@/utils/public/urlToFile";
 import useToast from "@/components/ui/Toast/useToast";
 import typedKeys from "@/utils/public/typedKeys";
-import uploadPropertyDocuments from "@/lib/requests/properties/uploadPropertyDocuments";
 import Loading from "@/components/ui/Loading";
 import {
     PhotoNumber,
     S3PhotoFileName,
     S3primary_photo,
 } from "@/utils/private/bucketMap";
-import useProperty from "@/lib/hooks/properties/useProperty";
 import useUploadPropertyDocuments from "@/lib/hooks/properties/useUploadPropertyDocuments";
 
 const KB = 1024;
@@ -38,8 +34,6 @@ type OtherPhotos = {
 const maxNumberOfPhotos = 6; //Not including primary photo
 
 const Media = (props: Props): JSX.Element => {
-    const propertyFetched = useProperty(props.property.id);
-
     const [primaryPhoto, setPrimaryPhoto] = useState<File | null>(null);
 
     //Track if we've already fetched the existing saved photos

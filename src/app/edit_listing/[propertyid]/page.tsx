@@ -16,29 +16,7 @@ const Page = (): JSX.Element => {
 
     const property = useProperty(params[$propertyid]);
 
-    const hoaBylawsDocument = useUrlToFile(
-        property?.data?.HOA_bylaws_document_src
-            ? {
-                  url: property.data.HOA_bylaws_document_src,
-                  fileName: "HOA_Bylaws_Document",
-              }
-            : null
-    );
-
-    const deedDocument = useUrlToFile(
-        property?.data?.Deed_src
-            ? {
-                  url: property.data.Deed_src,
-                  fileName: "Deed_Document",
-              }
-            : null
-    );
-
-    if (
-        property.isLoading ||
-        hoaBylawsDocument.isLoading ||
-        deedDocument.isLoading
-    ) {
+    if (property.isLoading) {
         return (
             <Box position="relative">
                 <Loading />
@@ -47,11 +25,7 @@ const Page = (): JSX.Element => {
         );
     }
 
-    if (
-        property.hasError ||
-        hoaBylawsDocument.hasError ||
-        deedDocument.hasError
-    ) {
+    if (property.hasError) {
         return <Text type="error">Failed to get property</Text>;
     }
 
@@ -59,13 +33,7 @@ const Page = (): JSX.Element => {
         return <Text type="error">Property not found</Text>;
     }
 
-    return (
-        <PropertyEditForm
-            property={property.data}
-            hoaBylawsDocument={hoaBylawsDocument.data}
-            deedDocument={deedDocument.data}
-        />
-    );
+    return <PropertyEditForm property={property.data} />;
 };
 
 export default Page;

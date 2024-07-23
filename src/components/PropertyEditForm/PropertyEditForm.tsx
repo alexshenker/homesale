@@ -50,8 +50,6 @@ const maxPageIndex = subforms.length - 1;
 
 interface Props {
     property: NonNullable<GetPropertyRes>;
-    hoaBylawsDocument: File | null;
-    deedDocument: File | null;
 }
 
 export const listingTypeField = "listingType";
@@ -63,7 +61,6 @@ export const salePriceField = "salePrice";
 export const rentPriceField = "rentPrice";
 export const propertyTaxField = "propertyTax";
 export const hoaMonthlyField = "hoaMonthly";
-export const hoaBylawsDocumentField = "hoaBylawsDocument";
 export const leaseTermMonthsField = "leaseTermMonths";
 export const numberOfFloorsField = "numberOfFloors";
 export const basementField = "basement";
@@ -73,12 +70,7 @@ export const acresField = "acres";
 export const descriptionField = "description";
 export const amenitiesField = "amenities";
 export const otherAmenitiesField = "amenitiesOther";
-export const deedDocumentField = "deedDocument";
-export const mainPhotoSrcField = "mainPhotoSrc";
-export const otherPhotosSrcsField = "otherPhotos";
 export const creatorConfirmedPermissionField = "creatorConfirmedPermission";
-export const ownerIDFrontField = "ownerLicenseFront";
-export const ownerIDBackField = "ownerLicenseBack";
 export const ownerFirstnameField = "ownerFirstname";
 export const ownerLastnameField = "ownerLastname";
 export const ownerMiddlenameField = "ownerMiddlename";
@@ -102,7 +94,6 @@ export interface PropertyForm {
     [salePriceField]: string | null;
     [propertyTaxField]: string | null;
     [hoaMonthlyField]: string | null;
-    [hoaBylawsDocumentField]: File | null;
     [rentPriceField]: string | null;
     [leaseTermMonthsField]: string | null;
 
@@ -110,15 +101,8 @@ export interface PropertyForm {
     [amenitiesField]: AmenityOption[];
     [otherAmenitiesField]: string | null;
 
-    //Media
-    [mainPhotoSrcField]: string | null;
-    [otherPhotosSrcsField]: string[];
-
     //Documents
     [creatorConfirmedPermissionField]: ConfirmPermissionOption | [];
-    [deedDocumentField]: File | null;
-    [ownerIDFrontField]: string | null;
-    [ownerIDBackField]: string | null;
     [ownerFirstnameField]: string | null;
     [ownerLastnameField]: string | null;
     [ownerMiddlenameField]: string | null;
@@ -151,11 +135,7 @@ const PropertyEditForm = (props: Props): JSX.Element => {
         description,
         amenities,
         otherAmenities,
-        primaryPhoto,
-        photos,
         creator_confirmed_management_permission,
-        Owner_ID_front_src,
-        Owner_ID_back_src,
         Owner_first,
         Owner_last,
         Owner_middle,
@@ -180,19 +160,13 @@ const PropertyEditForm = (props: Props): JSX.Element => {
             [hoaMonthlyField]: toNumString(HOA_monthly_fee),
             [rentPriceField]: toNumString(rentPrice),
             [leaseTermMonthsField]: toNumString(leaseDurationMonths),
-            [hoaBylawsDocumentField]: props.hoaBylawsDocument,
             [descriptionField]: description,
             [amenitiesField]: getAmenityOptionsGrouped(amenities),
             [otherAmenitiesField]: otherAmenities,
-            [deedDocumentField]: props.deedDocument,
-            [mainPhotoSrcField]: primaryPhoto,
-            [otherPhotosSrcsField]: photos,
             [creatorConfirmedPermissionField]:
                 creator_confirmed_management_permission === true
                     ? confirmPermissionOptions
                     : [],
-            [ownerIDFrontField]: Owner_ID_front_src,
-            [ownerIDBackField]: Owner_ID_back_src,
             [ownerFirstnameField]: Owner_first,
             [ownerLastnameField]: Owner_last,
             [ownerMiddlenameField]: Owner_middle,
@@ -205,7 +179,6 @@ const PropertyEditForm = (props: Props): JSX.Element => {
         bathrooms,
         bedrooms,
         description,
-        props.hoaBylawsDocument,
         lastRoofReplacementYear,
         leaseDurationMonths,
         numberOfFloors,
@@ -214,12 +187,7 @@ const PropertyEditForm = (props: Props): JSX.Element => {
         salePrice,
         squareFeet,
         yearBuilt,
-        primaryPhoto,
-        photos,
-        props.deedDocument,
         creator_confirmed_management_permission,
-        Owner_ID_front_src,
-        Owner_ID_back_src,
         Owner_first,
         Owner_last,
         Owner_middle,

@@ -1,7 +1,6 @@
 import { Box, Divider } from "@mui/material";
 import {
     PropertyForm,
-    hoaBylawsDocumentField,
     hoaMonthlyField,
     leaseTermMonthsField,
     propertyTaxField,
@@ -15,8 +14,8 @@ import FormAmountField from "@/components/fields/formfields/FormAmountField";
 import Space from "@/components/ui/Space";
 import Switch from "@/components/fields/Switch";
 import Label from "@/components/ui/text/Label";
-import FormFileField from "@/components/fields/formfields/FormFileField";
 import { ListingType } from "@prisma/client";
+import FileField from "@/components/fields/fileField/FileField";
 
 interface Props {
     formValues: PropertyForm;
@@ -30,6 +29,8 @@ const PriceDetails = ({
     listingType,
 }: Props): JSX.Element => {
     const [hasHOA, setHasHOA] = useState(formValues[hoaMonthlyField] !== null);
+
+    const [HOABylaws, setHOABylaws] = useState<File | null>(null);
 
     const toggleHasHOA = () => {
         if (hasHOA === true) {
@@ -100,8 +101,9 @@ const PriceDetails = ({
                                     maxWidth={"300px"}
                                     minWidth="175px"
                                 >
-                                    <FormFileField
-                                        name={hoaBylawsDocumentField}
+                                    <FileField
+                                        value={HOABylaws}
+                                        onChange={setHOABylaws}
                                         label="Upload HOA Bylaws Document"
                                     />
                                 </Box>
