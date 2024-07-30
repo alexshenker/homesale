@@ -13,6 +13,7 @@ import routes, { $propertyid, edit_listing } from "@/utils/public/routes";
 import toFullAddress from "@/utils/public/toFullAddress";
 import { Box, Stack } from "@mui/material";
 import { ListingType } from "@prisma/client";
+import { orderBy } from "lodash";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
@@ -69,12 +70,28 @@ const Manage = (): JSX.Element => {
             };
         }, [properties, searchTerm]);
 
-    const rows: HookResult<Row<Column>[]> = useMemo(() => {
+    const propertiesSorted: HookResult<GetUsersPropertiesRes> = useMemo(() => {
         if (propertiesFiltered.isLoading || propertiesFiltered.hasError) {
             return propertiesFiltered;
         }
 
-        const rowsLocal: Row<Column>[] = propertiesFiltered.data.map((p) => {
+        return {
+            data: orderBy(
+                propertiesFiltered.data,
+                (d) => d.street_address,
+                "asc"
+            ),
+            isLoading: false,
+            hasError: false,
+        };
+    }, [propertiesFiltered]);
+
+    const rows: HookResult<Row<Column>[]> = useMemo(() => {
+        if (propertiesSorted.isLoading || propertiesSorted.hasError) {
+            return propertiesSorted;
+        }
+
+        const rowsLocal: Row<Column>[] = propertiesSorted.data.map((p) => {
             const propertyRoute = `${routes[edit_listing][$propertyid](p.id).$}`;
 
             return {
@@ -98,7 +115,7 @@ const Manage = (): JSX.Element => {
             isLoading: false,
             hasError: false,
         };
-    }, [propertiesFiltered]);
+    }, [propertiesSorted]);
 
     if (properties.isLoading || rows.isLoading) {
         return <LoadingTable columns={columns} />;
