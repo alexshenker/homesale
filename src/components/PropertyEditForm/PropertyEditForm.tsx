@@ -36,6 +36,7 @@ import Preview from "./Subforms/Preview";
 import useUpdateProperty from "@/lib/hooks/properties/useUpdateProperty";
 import { useBoolean } from "usehooks-ts";
 import useToast from "../ui/Toast/useToast";
+import Loading from "../ui/Loading";
 
 const subforms = [
     "Property Details",
@@ -273,6 +274,7 @@ const PropertyEditForm = (props: Props): JSX.Element => {
 
     return (
         <div>
+            {loading.value && <Loading />}
             <div>
                 {subforms.map((f, idx) => {
                     return (
@@ -323,7 +325,12 @@ const PropertyEditForm = (props: Props): JSX.Element => {
                             return <Documents property={props.property} />;
                         }
                         case "Preview": {
-                            return <Preview />;
+                            return (
+                                <Preview
+                                    formState={formState}
+                                    property={props.property}
+                                />
+                            );
                         }
                         default: {
                             return exhaustiveSwitch(curForm);
