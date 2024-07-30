@@ -16,6 +16,8 @@ export const get_signed_urls = "get_signed_urls";
 export const upload_property_documents = "upload_property_documents";
 export const buy = "buy";
 export const rent = "rent";
+export const publish = "publish";
+export const unpublish = "unpublish";
 
 export const manage = "manage";
 
@@ -57,6 +59,20 @@ const API = {
         },
     },
     [properties]: {
+        [publish]: {
+            [$propertyid]: (propertyId: PropertyId) => {
+                return {
+                    $: u(api, properties, publish, propertyId),
+                };
+            },
+        },
+        [unpublish]: {
+            [$propertyid]: (propertyId: PropertyId) => {
+                return {
+                    $: u(api, properties, unpublish, propertyId),
+                };
+            },
+        },
         [create_property]: {
             $: u(api, properties, create_property),
         },

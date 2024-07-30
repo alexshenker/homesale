@@ -1,23 +1,16 @@
 import prismaClient from "@/lib/db";
-import createProperty from "@/lib/db/properties/createProperty";
 import { GetPropertyRes } from "@/lib/db/properties/getProperty";
-import { PropertyCreateInput } from "@/lib/requests/properties/createProperty";
 import {
     SignedUrlBody,
-    UploadPropertyDocumentBody,
 } from "@/lib/requests/properties/uploadPropertyDocuments";
-import { PropertyId } from "@/opaqueIdTypes";
-import bucketMap, {
-    PhotoNumber,
+import  {
     PropertyDocumentName,
-    S3PhotoFileName,
     bucketFunc,
     bucketUrlPath,
 } from "@/utils/private/bucketMap";
 import createSignedUrl from "@/utils/private/createSignedUrl";
 import resStatus from "@/utils/private/resStatus";
 import exhaustiveSwitch from "@/utils/public/exhaustiveSwitch";
-import { range } from "lodash";
 import { NextRequest } from "next/server";
 
 export async function PUT(req: NextRequest) {
