@@ -1,13 +1,13 @@
-import Button from "@/components/ui/button/Button";
 import usePublishProperty from "@/lib/hooks/properties/usePublishProperty";
 import useUnpublishProperty from "@/lib/hooks/properties/useUnpublishProperty";
-import { Box, Divider } from "@mui/material";
-import { FormState, UseFormGetValues } from "react-hook-form";
+import { FormState } from "react-hook-form";
 import { PropertyForm } from "../PropertyEditForm";
 import { GetPropertyRes } from "@/lib/db/properties/getProperty";
 import { useBoolean } from "usehooks-ts";
 import useToast from "@/components/ui/Toast/useToast";
-import Image from "next/image";
+import PropertyView from "@/components/PropertyView/PropertyView";
+import Button from "@/components/ui/button/Button";
+import { Box, Divider } from "@mui/material";
 
 interface Props {
     formValues: PropertyForm;
@@ -61,39 +61,20 @@ const Preview = (props: Props): JSX.Element => {
     };
 
     return (
-        <Box display="flex">
-            <Box padding={2} flex={1}>
-                {props.property.primaryPhoto && (
-                    <Box
-                        position={"relative"}
-                        minHeight={"300px"}
-                        width={"100%"}
-                        height={"100%"}
-                    >
-                        <Image
-                            src={props.property.primaryPhoto}
-                            alt="primary photo"
-                            fill
-                            objectFit="contain"
-                        />
-                    </Box>
-                )}
-            </Box>
-
-            <Divider orientation="vertical" flexItem />
-
-            <Box padding={2}>
+        <Box>
+            <Box display="flex" justifyContent={"flex-end"}>
                 {props.property.published ? (
-                    <Button onClick={callPublish}>Unpublish</Button>
+                    <Button onClick={callUnpublish}>Unpublish</Button>
                 ) : (
-                    <Button
-                        disabled={props.formState.isValid === false}
-                        onClick={callUnpublish}
-                    >
-                        Publish
-                    </Button>
+                    <Button onClick={callPublish}>Publish</Button>
                 )}
             </Box>
+
+            <Box padding={1}>
+                <Divider />
+            </Box>
+
+            <PropertyView property={props.property} />
         </Box>
     );
 };

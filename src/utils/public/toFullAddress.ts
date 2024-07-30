@@ -9,7 +9,7 @@ type Address = {
     state: States;
 };
 
-const toFullAddress = (address: Address): string => {
+const toFullAddress = (address: Address, short: boolean = false): string => {
     const { street_address, apartment, zipCode, zipCodeExt, city, state } =
         address;
 
@@ -18,6 +18,10 @@ const toFullAddress = (address: Address): string => {
     const street = apartment
         ? `${street_address}, ${apartment}`
         : street_address;
+
+    if (short) {
+        return street;
+    }
 
     return `${street}, ${city}, ${state} ${zip}`;
 };

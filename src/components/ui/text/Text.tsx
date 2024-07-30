@@ -28,7 +28,7 @@ const Text: FC<React.PropsWithChildren<Props>> = ({
                             : overlay
                               ? colors.text
                               : colors.text,
-                fontSize: props.fontSize ?? "14px",
+                fontSize: props.fontSize,
                 cursor: props.onClick !== undefined ? "pointer" : undefined,
                 width: "fit-content",
                 ...props.sx,
