@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    images: {
+        remotePatterns: [
+            { protocol: "https", hostname: "s3.us-east-1.wasabisys.com" },
+        ],
+    },
     env: {
         NEXTAUTH_URL:
             process.env.VERCEL_ENV === "production" &&

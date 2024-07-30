@@ -327,6 +327,7 @@ const PropertyEditForm = (props: Props): JSX.Element => {
                         case "Preview": {
                             return (
                                 <Preview
+                                    formValues={formValues}
                                     formState={formState}
                                     property={props.property}
                                 />
