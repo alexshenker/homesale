@@ -1,4 +1,4 @@
-import { PropertyId } from "@/opaqueIdTypes";
+import { PropertyId, UserId } from "@/opaqueIdTypes";
 import "server-only";
 
 export const s3BucketName = process.env.WASABI_BUCKET_NAME;
@@ -38,6 +38,7 @@ export const normalizeFileName = (fileName: string): string => {
         .replace("--", "-");
 };
 
+export const S3users = "users";
 export const S3properties = "properties";
 export const S3primary_photo = "primary_photo";
 export const S3deed = "deed";
@@ -47,6 +48,7 @@ export const S3video = "video";
 export const S3HOA_bylaws = "HOA_bylaws";
 
 export const $S3propertyId = "property_id";
+export const $S3userId = "user_id";
 
 const photoNumbers = [1, 2, 3, 4, 5, 6] as const;
 
@@ -76,26 +78,44 @@ export type PropertyDocumentName = (typeof propertyDocumentNames)[number];
 
 /** The complete directory structure in wasabi */
 const bucketMap = {
-    [S3properties]: {
-        [$S3propertyId]: (propId: PropertyId) => ({
-            $: key(S3properties, propId),
-            [$property_document_name]: (docName: PropertyDocumentName) => {
-                return {
-                    $: key(S3properties, propId, docName),
-                };
+    [S3users]: {
+        [$S3userId]: (userId: UserId) => ({
+            [S3properties]: {
+                [$S3propertyId]: (propId: PropertyId) => ({
+                    $: key(S3users, userId, S3properties, propId),
+                    [$property_document_name]: (
+                        docName: PropertyDocumentName
+                    ) => {
+                        return {
+                            $: key(
+                                S3users,
+                                userId,
+                                S3properties,
+                                propId,
+                                docName
+                            ),
+                        };
+                    },
+                }),
             },
         }),
     },
 };
 
 export const bucketFunc = {
-    propertyBucketPath: (propId: PropertyId) =>
-        bucketMap[S3properties][$S3propertyId](propId).$,
+    propertyBucketPath: (userId: UserId, propId: PropertyId) =>
+        bucketMap[S3users][$S3userId](userId)[S3properties][$S3propertyId](
+            propId
+        ).$,
 
-    propertyDocPath: (propId: PropertyId, fileName: PropertyDocumentName) => {
-        return bucketMap[S3properties][$S3propertyId](propId)[
-            $property_document_name
-        ](fileName).$;
+    propertyDocPath: (
+        userId: UserId,
+        propId: PropertyId,
+        fileName: PropertyDocumentName
+    ) => {
+        return bucketMap[S3users][$S3userId](userId)
+            [S3properties][$S3propertyId](propId)
+            [$property_document_name](fileName).$;
     },
 };
 
